@@ -17,9 +17,9 @@ class SocialSciencesTopPublications:
 
     def __init__(self):
         self.url = self.URL_ROOT + "citations"
-        self.query = {"language":  {"key" : "hl" , "value" : "en"},
+        self.query = {"language":  {"key" : "hl", "value" : "en"},
                       "order" :    {"key" : "view_op" , "value" :"top_venues"},
-                      "category" : {"key" : "vq" , "value" : "soc"}
+                      "category" : {"key" : "vq", "value" : "soc"}
                      }
 
     def getTopPublications(self):
@@ -56,7 +56,6 @@ class SocialSciencesTopPublications:
             print element.text
 
         return [element.text for element in result]
-
 
 
 if __name__ == "__main__":
