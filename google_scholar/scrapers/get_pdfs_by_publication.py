@@ -5,9 +5,11 @@
     URL format is http://scholar.google.com/scholar?start=0&q=IZA+Discussion+Papers&hl=en
 """
 import os
+import urllib
 
 import  urllib2
 from lxml import etree
+import sys
 
 
 class PublicationPdfCrawler:
@@ -21,30 +23,21 @@ class PublicationPdfCrawler:
         self.publication = publication
         self.path = "{0}/{1}".format(self.ROOT_DIR, publication)
 
-        pubQuery = publication.replace(' ', '+')
-        self.query = {"language":  {"key": "hl", "value": "en"},
-                      "page":    {"key": "start", "value": "0"},
-                      "publication": {"key": "q", "value": pubQuery}
-                      }
+        self.query = {"hl": "en",
+                      "start": "0",
+                      "q": publication
+                     }
 
     def getPdfs(self, pageCount = 1):
-        url = self.buildUrl()
+        url = self.encodeUrl()
         pdfUrls = self.getPdfUrls(url)
-
         self.saveUrls(pdfUrls)
 
         return pdfUrls
 
-    def buildUrl(self):
-        language = self.query["language"]
-        page = self.query["page"]
-        publication = self.query["publication"]
-        queries = [language, page, publication]
-
-        queryStringList = ["{0}={1}".format(el["key"], el["value"]) for el in queries]
-        queryString = "&".join(queryStringList)
-
-        url = "".join([self.url, "?", queryString])
+    def encodeUrl(self):
+        query = urllib.urlencode(self.query)
+        url = "".join([self.url, "?", query])
         print url
         return url
 
@@ -59,14 +52,22 @@ class PublicationPdfCrawler:
         req = urllib2.Request(url=pdfUrl,
                               headers={'User-Agent': self.USER_AGENT})
 
-        response = urllib2.urlopen(req)
+        try:
+            response = urllib2.urlopen(req)
+            self.savePdf(response, pdfUrl)
+        except urllib2.HTTPError as e:
+            print e.code
+            print e.read
+        except urllib2.URLError as e:
+            print e.reason
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+
+    def savePdf(self, response, pdfUrl):
         urlTitle = pdfUrl.split('/').pop()
-
         print "Saving to file " + urlTitle
-
-        f = open("{0}/{1}".format(self.path, urlTitle), "wb")
-        f.write(response.read())
-        f.close()
+        with open("{0}/{1}".format(self.path, urlTitle), "wb") as f:
+            f.write(response.read())
 
     def createDirectory(self):
         print "Creating directory for {publication}".format(publication=self.publication)
@@ -91,7 +92,6 @@ class PublicationPdfCrawler:
         titlePdfResult = tree.xpath(pdfTitleSelector)
         authorPdfResult = tree.xpath(pdfAuthorSelector)
 
-
         for element in urlPdfResult:
             print element.attrib["href"]
 
@@ -103,13 +103,12 @@ class PublicationPdfCrawler:
                 print [ el.text for el in element.findall('a')],
             print element.text
 
-
-        return [element.attrib["href"] for element in urlPdfResult]
+        return filter(lambda el: el.endswith(".pdf"), [element.attrib["href"] for element in urlPdfResult])
 
 
 if __name__ == "__main__":
-
-    pubPdfCrawler = PublicationPdfCrawler("American journal of public health")
+    print urllib.urlencode({"q": "Computers & Education"})
+    pubPdfCrawler = PublicationPdfCrawler("Computers & Education")
     pubPdfCrawler.getPdfs()
 
 
