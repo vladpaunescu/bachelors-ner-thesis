@@ -22,20 +22,20 @@ class TopAuthorsByDomain:
         self.domain_id = domain_id
         self.start_idx = 0
         self.end_idx = 99
-        self.query = {
-                      "AppId": constants.APP_ID,
+        self.query = {"AppId": constants.APP_ID,
                       "ResultObjects": "Author",
                       "DomainID": self.domain_id,
                       "StartIdx": self.start_idx,
                       "EndIdx": self.end_idx
-                     }
+                      }
 
-    def getTopAuthors(self):
-        url = self.encodeUrl()
+    def get_top_authors(self):
+        url = self.encode_url()
         json_resp = self.get_json(url)
-        self.parse(json_resp)
+        author_IDs = self.parse(json_resp)
+        return author_IDs
 
-    def encodeUrl(self):
+    def encode_url(self):
         query = urllib.urlencode(self.query)
         url = "".join([self.URL_ROOT, "?", query])
         print url
@@ -53,11 +53,14 @@ class TopAuthorsByDomain:
     def parse(self, json_resp):
         authors = json_resp['d']['Author']['Result']
         for author in authors:
-            print author
+            print author['ID']
+
+        return [author['ID'] for author in authors]
 
 
 if __name__ == "__main__":
-    socialSciences = TopAuthorsByDomain(domain_id=22)
-    socialSciences.getTopAuthors()
+    social_sciences = TopAuthorsByDomain(domain_id=22)
+    author_IDs = social_sciences.get_top_authors()
+    print author_IDs
 
 
