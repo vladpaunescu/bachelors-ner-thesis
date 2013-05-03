@@ -11,14 +11,17 @@ import urllib2
 import urllib
 
 # user imports
+import sqlalchemy
 import constants
+from scrapers.db.database import Storage, meta
+
 
 class TopAuthorsByDomain:
 
     URL_ROOT = constants.MS_ACADEMIC_URL
     APP_ID = constants.APP_ID
 
-    def __init__(self, domain_id ):
+    def __init__(self, domain_id):
         self.domain_id = domain_id
         self.start_idx = 0
         self.end_idx = 99
@@ -32,8 +35,8 @@ class TopAuthorsByDomain:
     def get_top_authors(self):
         url = self.encode_url()
         json_resp = self.get_json(url)
-        author_IDs = self.parse(json_resp)
-        return author_IDs
+        authors = self.parse(json_resp)
+        return authors
 
     def encode_url(self):
         query = urllib.urlencode(self.query)
@@ -52,15 +55,38 @@ class TopAuthorsByDomain:
 
     def parse(self, json_resp):
         authors = json_resp['d']['Author']['Result']
-        for author in authors:
-            print author['ID']
+        return authors
 
-        return [author['ID'] for author in authors]
+    def save_to_db(self, authors):
+        storage = Storage()
+        storage.connect()
+        print "Saving authors to db..."
+        map(lambda author: self.save_author_to_db(author, storage), authors)
+        storage.disconnect()
 
+    def save_author_to_db(self, author, storage):
+        authors_table = meta.tables['ms_academic_authors']
+        insert_data = {"first_name": author['FirstName'],
+                       "last_name": author['LastName'],
+                       "middle_name": author['MiddleName'],
+                       "citation_count": author['CitationCount'],
+                       "publication_count": author['PublicationCount'],
+                       "g_index": author['GIndex'],
+                       "h_index": author['HIndex'],
+                       "author_id": author['ID'],
+                       "homepage_url": author['HomepageURL'],
+                       "display_photo_url": author['DisplayPhotoURL'],
+                       "domain_id": self.domain_id
+                       }
+
+        query = sqlalchemy.insert(authors_table, insert_data)
+        print query
+        storage.execute(query)
 
 if __name__ == "__main__":
     social_sciences = TopAuthorsByDomain(domain_id=22)
-    author_IDs = social_sciences.get_top_authors()
-    print author_IDs
+    authors = social_sciences.get_top_authors()
+    print authors
+    social_sciences.save_to_db(authors)
 
 

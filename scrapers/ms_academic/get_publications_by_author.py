@@ -10,10 +10,15 @@ import os
 
 import urllib2
 import urllib
+import sqlalchemy
+import sys
 
 # user imports
 import constants
-import sys
+
+
+from scrapers.db.database import Storage, meta
+
 
 
 class TopPublicationsByAuthor:
@@ -27,6 +32,7 @@ class TopPublicationsByAuthor:
         self.start_idx = 0
         self.end_idx = 99
         self.path = "{0}/{1}".format(self.ROOT_DIR, author_id)
+        self.author_name = ""
 
         self.query = {"AppId": constants.APP_ID,
                       "ResultObjects": "Publication",
@@ -35,12 +41,16 @@ class TopPublicationsByAuthor:
                       "EndIdx": self.end_idx
                       }
 
+    def set_author_name(self, author_name):
+        self.author_name = author_name
+        self.path += " - {0}".format(author_name)
+        print "Directory path is {0}".format(self.path)
+
     def get_top_publications(self):
         url = self.encode_url()
         json_resp = self.get_json(url)
-        publication_urls = self.parse(json_resp)
-        publication_urls = [url[0] for url in publication_urls]
-        self.save_urls(publication_urls)
+        publications = self.parse_publications(json_resp)
+        return publications
 
     def encode_url(self):
         query = urllib.urlencode(self.query)
@@ -57,25 +67,55 @@ class TopPublicationsByAuthor:
         print data
         return data
 
-    def parse(self, json_resp):
+    def parse_publications(self, json_resp):
         publications = json_resp['d']['Publication']['Result']
         for publication in publications:
             print publication
 
-        return filter(lambda el: el != '' and el, [publication['FullVersionURL'] for publication in publications])
+        return filter(lambda el: el['FullVersionURL'] != '' and el['FullVersionURL'], publications)
 
-    def save_urls(self, urls):
-        print urls
+    def save_to_db(self, publications):
+        storage = Storage()
+        storage.connect()
+        print "Saving publications for author {0} - {1} to db...".format(self.author_id, self.author_name)
+        map(lambda publication: self.save_publication_to_db(publication, storage), publications)
+        storage.disconnect()
+
+    def save_publication_to_db(self, publication, storage):
+        publications_table = meta.tables['ms_academic_publications']
+        insert_data = {"title": publication['Title'],
+                       "year": publication['Year'],
+                       "full_version_url": publication['FullVersionURL'][0],
+                       "abstract": publication['Abstract'],
+                       "citation_count": publication['CitationCount'],
+                       "reference_count": publication['ReferenceCount'],
+                       "publication_id": publication['ID'],
+                       "author_id": self.author_id
+                       }
+
+        query = sqlalchemy.insert(publications_table, insert_data)
+        print query
+        storage.execute(query)
+
+    def save_to_disk(self, publications):
+        print "Saving publications for author {0} - {1} to disk".format(self.author_id, self.author_name)
         self.create_directory()
-        map(self.save_url, urls)
+        map(self.save_publication, publications)
 
     def create_directory(self):
         print "Creating directory for {author_id}".format(author_id=self.author_id)
+        print self.path
         if not os.path.exists(self.path):
             os.makedirs(self.path)
 
-    def save_url(self, url):
-        print "Downloading url " + url
+    def save_publication(self, publication):
+        url = publication['FullVersionURL'][0]
+
+        try:
+            print "Downloading publication {0} from url {1}".format(publication['Title'], url)
+        except UnicodeEncodeError as e:
+            print "Unicode error " + e.message
+
         req = urllib2.Request(url=url,
                               headers={'User-Agent': constants.USER_AGENT})
         try:
@@ -84,8 +124,18 @@ class TopPublicationsByAuthor:
             content_type = response.info().getheader('Content-Type')
             print content_type
             if content_type in ['application/pdf']:
-                self.save_pdf(response, url)
-                downloaded_urls.append(url)
+                try:
+                    print "Publication {0} is PDF file. Saving it to disk...".format(publication['Title'])
+                except UnicodeEncodeError as e:
+                    print "Unicode error " + e.message
+
+                filename = self.save_pdf(response, url)
+                update_values = {"filename": filename, "content_type": content_type, "downloaded": "1"}
+                self.update_entry_in_db(publication, update_values)
+
+            else:
+                update_values = {"content_type": content_type}
+                self.update_entry_in_db(publication, update_values)
 
         except urllib2.HTTPError as e:
             print e.code
@@ -95,17 +145,38 @@ class TopPublicationsByAuthor:
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
-
     def save_pdf(self, response, pdf_url):
         url_title = pdf_url.split('/').pop()
         print "Saving pdf to file " + url_title
         with open("{0}/{1}".format(self.path, url_title), "wb") as f:
             f.write(response.read())
+        response.close()
+        return url_title
+
+    def update_entry_in_db(self, publication, update_values):
+        publication_id = publication['ID']
+        publication_title = publication['Title']
+
+        try:
+            print "Updating publication {0} - {1} as in database...".format(publication_id, publication_title)
+        except UnicodeEncodeError as e:
+            print "Unicode error " + e.message
+
+        storage = Storage()
+        storage.connect()
+        publications_table = meta.tables['ms_academic_publications']
+        query = sqlalchemy.update(publications_table).where(publications_table.c.publication_id == publication_id)\
+            .values(update_values)
+        print query
+        storage.execute(query)
+        storage.disconnect()
 
 
 if __name__ == "__main__":
-    publications = TopPublicationsByAuthor(author_id=1759605)
-    publications.get_top_publications()
+    publications_scraper = TopPublicationsByAuthor(author_id=1759605)
+    publications = publications_scraper.get_top_publications()
+    publications_scraper.save_to_db(publications)
+    publications_scraper.save_to_disk(publications)
 
 
 
