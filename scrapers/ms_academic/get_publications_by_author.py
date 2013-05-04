@@ -123,7 +123,7 @@ class TopPublicationsByAuthor:
             # check content type:
             content_type = response.info().getheader('Content-Type')
             print content_type
-            if content_type in ['application/pdf']:
+            if 'application/pdf' in content_type:
                 try:
                     print "Publication {0} is PDF file. Saving it to disk...".format(publication['Title'])
                 except UnicodeEncodeError as e:
