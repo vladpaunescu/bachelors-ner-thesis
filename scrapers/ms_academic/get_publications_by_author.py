@@ -7,6 +7,7 @@
 """
 import json
 import os
+import socket
 
 import urllib2
 import urllib
@@ -20,18 +21,18 @@ import constants
 from scrapers.db.database import Storage, meta
 
 
-
 class TopPublicationsByAuthor:
 
     URL_ROOT = constants.MS_ACADEMIC_URL
     APP_ID = constants.APP_ID
     ROOT_DIR = "out"
 
-    def __init__(self, author_id):
+    def __init__(self, author_id, domain_dir):
         self.author_id = author_id
         self.start_idx = 0
         self.end_idx = 99
-        self.path = "{0}/{1}".format(self.ROOT_DIR, author_id)
+        self.domain_dir = domain_dir
+        self.path = "{0}/{1}/{2}".format(self.ROOT_DIR, domain_dir, author_id)
         self.author_name = ""
 
         self.query = {"AppId": constants.APP_ID,
@@ -43,14 +44,20 @@ class TopPublicationsByAuthor:
 
     def set_author_name(self, author_name):
         self.author_name = author_name
-        self.path += " - {0}".format(author_name)
-        print "Directory path is {0}".format(self.path)
+        self.path += u" - {0}".format(author_name)
+        self.print_unicode(u"Directory path is {0}".format(self.path))
 
     def get_top_publications(self):
         url = self.encode_url()
-        json_resp = self.get_json(url)
-        publications = self.parse_publications(json_resp)
-        return publications
+        try:
+            json_resp = self.get_json(url)
+            self.create_directory()
+            self.save_json(json_resp)
+            publications = self.parse_publications(json_resp)
+            return publications
+        except socket.error as e:
+            print e
+        return []
 
     def encode_url(self):
         query = urllib.urlencode(self.query)
@@ -77,7 +84,8 @@ class TopPublicationsByAuthor:
     def save_to_db(self, publications):
         storage = Storage()
         storage.connect()
-        print "Saving publications for author {0} - {1} to db...".format(self.author_id, self.author_name)
+        self.print_unicode(u"Saving publications for author {0} - {1} to db...".format(self.author_id, self.author_name))
+
         map(lambda publication: self.save_publication_to_db(publication, storage), publications)
         storage.disconnect()
 
@@ -98,23 +106,20 @@ class TopPublicationsByAuthor:
         storage.execute(query)
 
     def save_to_disk(self, publications):
-        print "Saving publications for author {0} - {1} to disk".format(self.author_id, self.author_name)
-        self.create_directory()
+        self.print_unicode(u"Saving publications for author {0} - {1} to disk".format(self.author_id,
+                                                                                      self.author_name))
         map(self.save_publication, publications)
 
     def create_directory(self):
         print "Creating directory for {author_id}".format(author_id=self.author_id)
-        print self.path
-        if not os.path.exists(self.path):
-            os.makedirs(self.path)
+        dirs = u"{0}/json".format(self.path)
+        self.print_unicode(dirs)
+        if not os.path.exists(dirs):
+            os.makedirs(dirs)
 
     def save_publication(self, publication):
         url = publication['FullVersionURL'][0]
-
-        try:
-            print "Downloading publication {0} from url {1}".format(publication['Title'], url)
-        except UnicodeEncodeError as e:
-            print "Unicode error " + e.message
+        self.print_unicode(u"Downloading publication {0} from url {1}".format(publication['Title'], url))
 
         req = urllib2.Request(url=url,
                               headers={'User-Agent': constants.USER_AGENT})
@@ -124,11 +129,8 @@ class TopPublicationsByAuthor:
             content_type = response.info().getheader('Content-Type')
             print content_type
             if 'application/pdf' in content_type:
-                try:
-                    print "Publication {0} is PDF file. Saving it to disk...".format(publication['Title'])
-                except UnicodeEncodeError as e:
-                    print "Unicode error " + e.message
-
+                self.print_unicode(u"Publication {0} is PDF file. Saving it to disk...".format(publication[
+                    'Title']))
                 filename = self.save_pdf(response, url)
                 update_values = {"filename": filename, "content_type": content_type, "downloaded": "1"}
                 self.update_entry_in_db(publication, update_values)
@@ -147,21 +149,29 @@ class TopPublicationsByAuthor:
 
     def save_pdf(self, response, pdf_url):
         url_title = pdf_url.split('/').pop()
-        print "Saving pdf to file " + url_title
-        with open("{0}/{1}".format(self.path, url_title), "wb") as f:
+
+        if not url_title.endswith('.pdf'):
+            self.print_unicode(u"Adding pdf extension to {0}".format(url_title))
+            url_title += '.pdf'
+            self.print_unicode(u"Pdf filename is {0}".format(url_title))
+
+        self.print_unicode(u"Saving pdf to file {0}".format(url_title))
+        with open(u"{0}/{1}".format(self.path, url_title), "wb") as f:
             f.write(response.read())
         response.close()
         return url_title
+
+    def save_json(self, json_resp):
+        print "Saving json to disk..."
+        with open(u"{0}/json/response.json".format(self.path), "w") as f:
+            json.dump(json_resp, f)
 
     def update_entry_in_db(self, publication, update_values):
         publication_id = publication['ID']
         publication_title = publication['Title']
 
-        try:
-            print "Updating publication {0} - {1} as in database...".format(publication_id, publication_title)
-        except UnicodeEncodeError as e:
-            print "Unicode error " + e.message
-
+        self.print_unicode(u"Updating publication {0} - {1} as in database...".format(publication_id,
+                                                                                      publication_title))
         storage = Storage()
         storage.connect()
         publications_table = meta.tables['ms_academic_publications']
@@ -170,6 +180,12 @@ class TopPublicationsByAuthor:
         print query
         storage.execute(query)
         storage.disconnect()
+
+    def print_unicode(self, string):
+        try:
+            print string
+        except UnicodeEncodeError as e:
+            print u"Unicode Error: {0}".format(e.encoding)
 
 
 if __name__ == "__main__":

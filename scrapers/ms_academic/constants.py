@@ -5,5 +5,6 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 "\
                  "(KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31"
 
 SOCIAL_SCIENCES_DOMAIN_ID = 22
-
+ARTS_AND_HUMANITIES_DOMAIN_ID = 3
+COMPUTER_SCIENCE_DOMAIN_ID = 2
 
