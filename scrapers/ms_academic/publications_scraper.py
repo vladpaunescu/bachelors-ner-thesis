@@ -29,7 +29,6 @@ def download_domain(domain_id, domain_name, resume_from_author_id=None):
         map(lambda author: download_publications(author, domain_dir), authors)
 
 
-
 def download_publications(author, domain_dir, ):
     author_name = " ".join([author['FirstName'], author['MiddleName'], author['LastName']])
     author_id = author['ID']
@@ -47,12 +46,14 @@ def download_publications(author, domain_dir, ):
 
 
 if __name__ == "__main__":
-    sys.stdout = open('publications_log_social_science.txt', 'w')
-    download_domain(constants.SOCIAL_SCIENCES_DOMAIN_ID, "Social Science")
+    #sys.stdout = open('publications_log_social_science.txt', 'a')
+    #download_domain(constants.SOCIAL_SCIENCES_DOMAIN_ID, "Social Science",
+    #                resume_from_author_id=2034223)
 
-    sys.stdout = open('publications_log_arts_and_humanities.txt', 'w')
-    download_domain(constants.ARTS_AND_HUMANITIES_DOMAIN_ID, "Arts & Humanities")
+    #sys.stdout = open('publications_log_arts_and_humanities.txt', 'w')
+    download_domain(constants.ARTS_AND_HUMANITIES_DOMAIN_ID, "Arts & Humanities",
+                    resume_from_author_id=42280450)
 
-    sys.stdout = open('publications_log_computer_science.txt', 'w')
-    download_domain(constants.COMPUTER_SCIENCE_DOMAIN_ID, "Computer Science")
+    #sys.stdout = open('publications_log_computer_science.txt', 'w')
+    #download_domain(constants.COMPUTER_SCIENCE_DOMAIN_ID, "Computer Science")
 

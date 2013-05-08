@@ -138,12 +138,17 @@ class TopPublicationsByAuthor:
             else:
                 update_values = {"content_type": content_type}
                 self.update_entry_in_db(publication, update_values)
+                response.close()
 
         except urllib2.HTTPError as e:
             print e.code
-            print e.read
+            update_values = {"content_type": e.code}
+            self.update_entry_in_db(publication, update_values)
+
         except urllib2.URLError as e:
             print e.reason
+            update_values = {"content_type": e.reason}
+            self.update_entry_in_db(publication, update_values)
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
