@@ -160,6 +160,8 @@ class TopPublicationsByAuthor:
             url_title += '.pdf'
             self.print_unicode(u"Pdf filename is {0}".format(url_title))
 
+        url_title = url_title.replace(':', '-')
+
         self.print_unicode(u"Saving pdf to file {0}".format(url_title))
         with open(u"{0}/{1}".format(self.path, url_title), "wb") as f:
             f.write(response.read())

@@ -51,9 +51,10 @@ if __name__ == "__main__":
     #                resume_from_author_id=2034223)
 
     #sys.stdout = open('publications_log_arts_and_humanities.txt', 'w')
-    download_domain(constants.ARTS_AND_HUMANITIES_DOMAIN_ID, "Arts & Humanities",
-                    resume_from_author_id=42280450)
+    #download_domain(constants.ARTS_AND_HUMANITIES_DOMAIN_ID, "Arts & Humanities",
+    #                resume_from_author_id=43306259)
 
     #sys.stdout = open('publications_log_computer_science.txt', 'w')
-    #download_domain(constants.COMPUTER_SCIENCE_DOMAIN_ID, "Computer Science")
+    download_domain(constants.COMPUTER_SCIENCE_DOMAIN_ID, "Computer Science",
+                    resume_from_author_id=469846)
 
