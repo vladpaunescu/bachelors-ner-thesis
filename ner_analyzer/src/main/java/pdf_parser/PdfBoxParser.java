@@ -2,13 +2,6 @@ package pdf_parser;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.xml.sax.SAXException;
 
 import java.io.*;
 
@@ -22,9 +15,10 @@ import java.io.*;
 public class PdfBoxParser implements PdfParser {
 
     private String  _filename;
+    
 
     public PdfBoxParser(String filename){
-        _filename = filename;
+        _filename = filename;        
     }
 
     @Override
@@ -34,7 +28,7 @@ public class PdfBoxParser implements PdfParser {
         try {
             doc = PDDocument.load(_filename);
             PDFTextStripper stripper = new PDFTextStripper();
-             text = stripper.getText(doc);
+            text = stripper.getText(doc);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -52,9 +46,10 @@ public class PdfBoxParser implements PdfParser {
 
     public static void main(String[] args) throws IOException {
         final String filename = "D:\\Shared\\Dropbox\\Work\\licenta-ner\\scrapers\\ms_academic\\out\\34111958\\17258_Chapter_8.pdf";
-        PdfParser parser = new PdfBoxParser(filename);
+        final String nonparsable = "C:\\Users\\vlad.paunescu\\Desktop\\scansmpl.pdf";
+        PdfParser parser = new PdfBoxParser(nonparsable);
 
-        PdfParser tikaParser = new TikaPdfParser(filename);
+        PdfParser tikaParser = new TikaPdfParser(nonparsable);
         String text  = tikaParser.parse();
         System.out.println(">>>>>>>>>>>>>>>");
         PrintWriter pw1 = new PrintWriter("parser_tika.txt");

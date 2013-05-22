@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 22, 2013 7:31:47 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="db.MsAcademicAuthors" table="ms_academic_authors" catalog="ner">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="msAcademicDomains" class="db.MsAcademicDomains" fetch="select">
+            <column name="domain_id" />
+        </many-to-one>
+        <property name="firstName" type="string">
+            <column name="first_name" length="64" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="64" />
+        </property>
+        <property name="middleName" type="string">
+            <column name="middle_name" length="32" />
+        </property>
+        <property name="citationCount" type="java.lang.Integer">
+            <column name="citation_count" />
+        </property>
+        <property name="publicationCount" type="java.lang.Integer">
+            <column name="publication_count" />
+        </property>
+        <property name="GIndex" type="java.lang.Integer">
+            <column name="g_index" />
+        </property>
+        <property name="HIndex" type="java.lang.Integer">
+            <column name="h_index" />
+        </property>
+        <property name="authorId" type="java.lang.Integer">
+            <column name="author_id" unique="true" />
+        </property>
+        <property name="homepageUrl" type="string">
+            <column name="homepage_url" length="256" />
+        </property>
+        <property name="displayPhotoUrl" type="string">
+            <column name="display_photo_url" length="256" />
+        </property>
+        <set name="msAcademicPublicationses" inverse="true">
+            <key>
+                <column name="author_id" />
+            </key>
+            <one-to-many class="db.MsAcademicPublications" />
+        </set>
+    </class>
+</hibernate-mapping>

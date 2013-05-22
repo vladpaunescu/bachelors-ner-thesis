@@ -5,3 +5,4 @@ out/
 
 *.class
 bin/
+/ner_analyzer/target/
