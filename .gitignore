@@ -1,8 +1,6 @@
 *.pyc
 .idea/
-out/
 *.pdf
-
 *.class
 bin/
 /ner_analyzer/target/
