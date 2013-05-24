@@ -11,15 +11,17 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.apache.log4j.Logger;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
  * @author vlad.paunescu
  */
-public class FileUtils {
+public class MyFileUtils {
     
     static Logger log = Logger.getLogger(
-                      FileUtils.class.getName());
+                      MyFileUtils.class.getName());
+    
     
     public static String getFileExtension(String filename){
         String extension = "";
@@ -28,8 +30,15 @@ public class FileUtils {
             extension = filename.substring(i+1);
         }
         
-        return extension;
-        
+        return extension;   
+    }
+    
+    public static String getFileNoExtension(String filename){
+        String extension = getFileExtension(filename);
+        if (!extension.equals("")){
+            return filename.substring(0, filename.lastIndexOf(extension) - 1);
+        }
+        return filename;
     }
     
     static class DirectoryFileFilter implements FileFilter{
@@ -41,7 +50,8 @@ public class FileUtils {
     }
     
     static class PdfFileFilter implements FileFilter{
-        final static String pdfType = "application/pdf";
+        final static String PDF_TYPE = "application/pdf";
+        final static String PDF_EXTENSION = "pdf";
         @Override
         public boolean accept(File pathname) {
             if(pathname.isDirectory()){
@@ -51,8 +61,8 @@ public class FileUtils {
             Path path = FileSystems.getDefault().getPath(pathname.getAbsolutePath());
             try {
                 String contentType = Files.probeContentType(path);
-                boolean isPdf = contentType != null && contentType.equals(pdfType);
-                if(isPdf && !FileUtils.getFileExtension(pathname.getName()).equals("pdf")){
+                boolean isPdf = contentType != null && contentType.equals(PDF_TYPE);
+                if(isPdf && !FilenameUtils.getExtension(pathname.getName()).equals(PDF_EXTENSION)){
                     log.info("File " + pathname.getName() + "is PDF, but no pdf extension");
                 }
                 return isPdf;
@@ -63,6 +73,11 @@ public class FileUtils {
             return false;
               
         }
+    }
+    
+    public static void main(String[] args){
+        String path ="D:/path/test.pdf";
+        System.out.println("File no extension " + getFileNoExtension(path));
         
     }
     
