@@ -14,17 +14,19 @@ import org.hibernate.Session;
 public class DbTests {
 
     public List<MsAcademicAuthors> listDomains() {
-        Session session = NerHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = NerHibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        List<MsAcademicAuthors> result = session.createQuery("SELECT NEW MsAcademicAuthors(a.first_Name) from MsAcademiAuthors as a").list();
+        List<MsAcademicAuthors> result = session.createQuery("from MsAcademicAuthors").list();
         session.getTransaction().commit();
         return result;
     }
     
     public static void main(String[] args){
         DbTests dbTests = new DbTests();
-        List domains = dbTests.listDomains();
-        System.out.println(domains);
+        List<MsAcademicAuthors> authors = dbTests.listDomains();
+        for (MsAcademicAuthors author : authors){
+            System.out.println(author.getFirstName());
+        }
         
     }
 }
