@@ -49,11 +49,14 @@ public class TextFileStats {
                     updateMap(_capitalWordsAtBeginningOfSentence, word);
                     beginingOfSentence = false;
 
-                } else {
-                    
+                } else { 
                     if (capitalWord != null){
                         capitalWord += " " + word;
                         updateMap(_capitalWordsInSentence, capitalWord);
+                    }
+                    else {
+                        capitalWord = word;
+                         updateMap(_capitalWordsInSentence, capitalWord);
                     }
                 }
             }
@@ -73,10 +76,10 @@ public class TextFileStats {
         System.out.println("Capital words at inside of sentence #: " +
                 _capitalWordsInSentence.size());
         
-        System.out.println("Capital words at the beginning of sentence:");
-        for(Map.Entry<String, Integer> entry : _capitalWordsAtBeginningOfSentence.entrySet()){
-            System.out.println(entry.getKey() + " " + entry.getValue());
-        }
+//        System.out.println("Capital words at the beginning of sentence:");
+//        for(Map.Entry<String, Integer> entry : _capitalWordsAtBeginningOfSentence.entrySet()){
+//            System.out.println(entry.getKey() + " " + entry.getValue());
+//        }
         
         System.out.println("Capital words in sentence:");
         for(Map.Entry<String, Integer> entry : _capitalWordsInSentence.entrySet()){

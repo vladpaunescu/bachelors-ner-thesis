@@ -96,7 +96,15 @@
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
             <version>1.0.2.GA</version>
-        </dependency>    
+        </dependency>   
+        
+        <!-- Apache OpenNLP Dependencies -->
+        
+        <dependency>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>1.5.3</version>
+        </dependency>
   
     </dependencies>
     <properties>
