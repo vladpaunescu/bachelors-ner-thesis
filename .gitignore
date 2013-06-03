@@ -6,3 +6,5 @@ bin/
 /ner_analyzer/target/
 old_out
 
+/ner-analyzer/target/
+*.iml
