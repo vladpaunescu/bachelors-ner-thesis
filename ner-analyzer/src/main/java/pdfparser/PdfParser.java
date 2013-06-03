@@ -1,4 +1,4 @@
-package pdf_parser;
+package pdfparser;
 
 /**
  * Created with IntelliJ IDEA.

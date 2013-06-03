@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package named_entity_recognizer;
+package ner;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ner.TextFileStats;
-import open_nlp.SentenceDetector;
+import opennlp.SentenceDetector;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
