@@ -4,27 +4,38 @@
  */
 package stanfordnlp;
 
+import edu.stanford.nlp.dcoref.CorefChain;
+import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.List;
+import java.util.Map;
+import org.apache.commons.io.FileUtils;
 
 public class StanfordNer {
 
-    private String _modelpath;
-
-    public StanfordNer(String modelpath) {
-        _modelpath = modelpath;
+    public StanfordNer() {
     }
 
-    public String[] detect(String text) {
+    public void detect(String text) {
         // creates a StanfordCoreNLP object, with POS tagging, lemmatization, NER, parsing, and coreference resolution 
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-
-
 
         // create an empty Annotation just with the given text
         Annotation document = new Annotation(text);
@@ -37,6 +48,7 @@ public class StanfordNer {
         List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
         for (CoreMap sentence : sentences) {
+            
             // traversing the words in the current sentence
             // a CoreLabel is a CoreMap with additional token-specific methods
             for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
@@ -46,13 +58,14 @@ public class StanfordNer {
                 String pos = token.get(PartOfSpeechAnnotation.class);
                 // this is the NER label of the token
                 String ne = token.get(NamedEntityTagAnnotation.class);
+                System.out.println(word + " " + pos + " " + ne);
             }
 
             // this is the parse tree of the current sentence
-            Tree tree = sentence.get(TreeAnnotation.class);
+            //Tree tree = sentence.get(TreeAnnotation.class);
 
             // this is the Stanford dependency graph of the current sentence
-            SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
+            //SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
         }
 
         // This is the coreference link graph
@@ -67,17 +80,8 @@ public class StanfordNer {
         String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - "
                 + "Social Science/1021291 - Wolff-Michael  Roth/JRST110.txt";
         String text = FileUtils.readFileToString(new File(textfile));
-
-
-
-        try (InputStream modelIn = new FileInputStream("models/apache-openNLP/en-token.bin")) {
-            TokenizerModel model = new TokenizerModel(modelIn);
-            Tokenizer tokenizer = new TokenizerME(model);
-            String tokens[] = tokenizer.tokenize(text);
-            NerCandidatesFinder nerFinder = new NerCandidatesFinder("models/apache-openNLP/ner/en-ner-person.bin");
-            nerFinder.detect(tokens);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        StanfordNer stanfordNer = new StanfordNer();
+        stanfordNer.detect(text.substring(0, 20000));
+       
     }
 }

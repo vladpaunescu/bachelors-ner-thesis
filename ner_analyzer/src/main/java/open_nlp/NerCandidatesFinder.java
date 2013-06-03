@@ -55,7 +55,6 @@ public class NerCandidatesFinder {
         String text = FileUtils.readFileToString(new File(textfile));
 
 
-
         try (InputStream modelIn = new FileInputStream("models/apache-openNLP/en-token.bin")) {
             TokenizerModel model = new TokenizerModel(modelIn);
             Tokenizer tokenizer = new TokenizerME(model);
