@@ -77,8 +77,7 @@ public class StanfordNer {
     }
 
     public static void main(String[] args) throws IOException {
-        String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - "
-                + "Social Science/1021291 - Wolff-Michael  Roth/JRST110.txt";
+        String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt";
         String text = FileUtils.readFileToString(new File(textfile));
         StanfordNer stanfordNer = new StanfordNer();
         stanfordNer.detect(text.substring(0, 20000));

@@ -3,8 +3,6 @@
     This module gets all social publications.
 """
 
-import sys
-
 from get_top_authors_by_category import TopAuthorsByDomain
 from get_publications_by_author import TopPublicationsByAuthor
 import constants

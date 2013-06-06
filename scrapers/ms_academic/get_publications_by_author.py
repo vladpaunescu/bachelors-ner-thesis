@@ -8,17 +8,17 @@
 import json
 import os
 import socket
-
 import urllib2
 import urllib
-import sqlalchemy
 import sys
 
+import sqlalchemy
+
+
 # user imports
-import constants
 
-
-from scrapers.db.database import Storage, meta
+from db.database import Storage, meta
+from ms_academic import constants
 
 
 class TopPublicationsByAuthor:

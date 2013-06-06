@@ -13,8 +13,8 @@ import urllib
 
 # user imports
 import sqlalchemy
-import constants
-from scrapers.db.database import Storage, meta
+from db.database import Storage, meta
+from ms_academic import constants
 
 
 class TopAuthorsByDomain:
