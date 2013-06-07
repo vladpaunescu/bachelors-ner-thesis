@@ -9,8 +9,9 @@ PERS = [u'Person']
 ORGS = [u'Company', u'Organization', u'FieldTerminology', u'PrintMedia']
 LOCS = [u'City', u'Country', u'State', u'StateOrCounty', u'StateOrCountry']
 
-ENTITY_TYPES = PERS + ORGS + LOCS
 
+ENTITY_TYPES = PERS + ORGS + LOCS
+MAX_ENTITY_COUNT = 100000
 
 
 

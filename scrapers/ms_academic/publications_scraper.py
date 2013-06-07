@@ -27,7 +27,7 @@ def download_domain(domain_id, domain_name, resume_from_author_id=None):
         map(lambda author: download_publications(author, domain_dir), authors)
 
 
-def download_publications(author, domain_dir, ):
+def download_publications(author, domain_dir):
     author_name = " ".join([author['FirstName'], author['MiddleName'], author['LastName']])
     author_id = author['ID']
 

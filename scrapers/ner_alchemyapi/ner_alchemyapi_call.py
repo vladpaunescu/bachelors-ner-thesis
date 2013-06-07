@@ -32,11 +32,10 @@ class NerAlchemyApiCall:
                       "text": self.text
         }
 
-        self.pers_found, self.orgs_found = set(), set()
-        self.locs_found, self.misc_found = set(), set()
-        self.entities_indices = []
+        self.pers_found, self.orgs_found = [], []
+        self.locs_found, self.misc_found = [], []
+        self.identified_entities_spans = []
         self.annotated_text = self.text
-
 
     def annotate_text(self):
         entities = self.extract_named_entities()
@@ -46,9 +45,22 @@ class NerAlchemyApiCall:
         print "All entities", [ent["text"] for ent in entities]
         for entity in entities:
             print entity['relevance'], entity['count'], entity['type'], entity['text']
-            self.annotate_entity(entity)
+            self.process_entity(entity)
+            self.process_entity(entity)
+
+        print "Finished processing entities. Entities and spans are are"
+        self.display_entity("Persons", self.pers_found)
+        self.display_entity("Locations", self.locs_found)
+        self.display_entity("Organizations", self.orgs_found)
 
         return self.text
+
+    def display_entity(self, type, entities):
+        print type
+        print "========"
+        for ent in entities:
+            print ent
+        print
 
     def extract_named_entities(self):
         url = self.encode_url()
@@ -62,72 +74,48 @@ class NerAlchemyApiCall:
         with open(u"ner_parse.json", "w") as f:
             json.dump(json_resp, f)
 
-    def annotate_entity(self, entity):
-        print "Annotatating entity " + entity['text']
+    def process_entity(self, entity):
+        print "Processing entity " + entity['text']
+
         entity_name, entity_type = entity['text'], entity['type']
-        entity_count = entity['count']
+
+        if len(entity_name) <= 3:
+            print "Entity too short", entity_name
+            return
 
         if entity_type in constants.PERS:
-            if not self.is_new_entity(entity_name, self.pers_found):
-                return
-            entity_type = "PER"
+            entities_found = self.pers_found
         elif entity_type in constants.ORGS:
-            if not self.is_new_entity(entity_name, self.orgs_found):
-                return
-            entity_type = "ORG"
+            entities_found = self.orgs_found
         elif entity_type in constants.LOCS:
-            if not self.is_new_entity(entity_name, self.pers_found):
-                return
-            entity_type = "LOC"
+            entities_found = self.locs_found
         else:
-            if not self.is_new_entity(entity_name, self.misc_found):
-                return
-            entity_type = "MISC"
+            entities_found = self.misc_found
 
-        annotated_entity = u"[{0} {1}]".format(entity_type, entity_name)
+        if not self.is_new_entity(entity_name, entities_found):
+            return
+
         index = self.text.find(entity_name)
-        count = 0
+        entity_spans = []
+        l_ent = len(entity_name)
         while index != -1:
-            count += 1
-            index = self.text.find(entity_name, index + 1)
             if self.is_outside_entity(index):
-                head, tail = self.text[0:index], self.text[index + len(entity_name):]
-                subtext = self.text[index:index + len(entity_name)]
-                self.text = head + subtext.replace(entity_name, annotated_entity) + tail
-        print "Count ", count, entity_count
+                entity_spans.append((index, index + l_ent - 1))
+            index = self.text.find(entity_name, index + 1)
 
-
-    def is_outside_entity(self, index):
-        found = False
-        i = index
-        start, end = len(self.text), -1
-        while not found and i < len(self.text):
-            if self.text[i] == "]":
-                end = i
-                found = True
-            if self.text[i] == "[":
-                found = True
-            i += 1
-        found = False
-        i = index
-
-        while not found and i >= 0:
-            if self.text[i] == "[":
-                start = i
-                found = True
-            if self.text[i] == "]":
-                found = True
-            i -= 1
-        if start <= end:
-            return False
-
-        return True
+        self.identified_entities_spans.extend(entity_spans)
+        entities_found.append((entity_name, entity_spans))
 
     def is_new_entity(self, entity_name, entities_found):
-        if entity_name in entities_found:
+        if entity_name in [ent[0] for ent in entities_found]:
             print "Already found entity {0}".format(entity_name)
             return False
-        entities_found.add(entity_name)
+        return True
+
+    def is_outside_entity(self, index):
+        for entity_span in self.identified_entities_spans:
+            if entity_span[0] <= index <= entity_span[1]:
+                return False
         return True
 
     def encode_url(self):
@@ -161,11 +149,12 @@ class NerAlchemyApiCall:
 if __name__ == "__main__":
     path = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/716514 - Eric  Neumayer/" \
            "2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt"
+
     with open(path, 'r') as f:
         text = f.read()
         text = unicode(text, errors='ignore')
 
-    ner_alchemyapi = NerAlchemyApiCall(text, 100000)
+    ner_alchemyapi = NerAlchemyApiCall(text, constants.MAX_ENTITY_COUNT)
     annotated_text = ner_alchemyapi.annotate_text()
     print annotated_text
 
