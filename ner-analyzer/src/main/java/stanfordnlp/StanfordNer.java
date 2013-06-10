@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.io.FileUtils;
 
 public class StanfordNer {
@@ -70,13 +71,20 @@ public class StanfordNer {
         // Both sentence and token offsets start at 1!
         Map<Integer, CorefChain> graph =
                 document.get(CorefChainAnnotation.class);
+        for(Entry<Integer, CorefChain> entry: graph.entrySet()){
+            System.out.println(entry.getKey());
+            CorefChain chain = entry.getValue();
+            CorefChain.CorefMention mention = chain.getRepresentativeMention();
+            System.out.println(mention);
+        }
     }
 
     public static void main(String[] args) throws IOException {
         String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt";
         String text = FileUtils.readFileToString(new File(textfile));
+        text ="John Doe is awesome. He is also a good teammate.";
         StanfordNer stanfordNer = new StanfordNer();
-        stanfordNer.detect(text.substring(0, 20000));
+        stanfordNer.detect(text);
        
     }
 }
