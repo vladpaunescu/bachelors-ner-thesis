@@ -1,0 +1,15 @@
+2013-06-11 05:48:57 INFO  StanfordNerAnnotator:39 - Annotating file D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap\dunlap_2000_5_nep_a.txt
+2013-06-11 05:49:05 INFO  StanfordNerAnnotator:56 - Writing annotations for file D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap\dunlap_2000_5_nep_a.txt
+2013-06-11 05:49:05 INFO  StanfordNerAnnotator:93 - Output file is D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap/annotations/dunlap_2000_5_nep_a_stanford.txt
+2013-06-11 05:49:05 INFO  StanfordNerAnnotator:39 - Annotating file D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap\mccright_2003.txt
+Jun 11, 2013 5:49:06 AM edu.stanford.nlp.process.Morpha next
+WARNING: Untokenizable: I (U+49, decimal: 73) - this may be because your text isn't using _ as a tag delimiter
+Jun 11, 2013 5:49:06 AM edu.stanford.nlp.process.Morpha next
+WARNING: Untokenizable: n (U+6E, decimal: 110) - this may be because your text isn't using _ as a tag delimiter
+Jun 11, 2013 5:49:06 AM edu.stanford.nlp.process.Morpha next
+WARNING: Untokenizable: c (U+63, decimal: 99) - this may be because your text isn't using _ as a tag delimiter
+Jun 11, 2013 5:49:06 AM edu.stanford.nlp.process.Morpha next
+WARNING: Untokenizable: . (U+2E, decimal: 46) - this may be because your text isn't using _ as a tag delimiter
+2013-06-11 05:49:20 INFO  StanfordNerAnnotator:56 - Writing annotations for file D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap\mccright_2003.txt
+2013-06-11 05:49:20 INFO  StanfordNerAnnotator:93 - Output file is D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42264336 - Riley E. Dunlap/annotations/mccright_2003_stanford.txt
+2013-06-11 05:49:21 INFO  StanfordNerAnnotator:39 - Annotating file D:\Work\NLP\corpuses\ms_academic\out\22 - Social Science\42279280 - Eric  Emerson\13-14b%202009.txt
