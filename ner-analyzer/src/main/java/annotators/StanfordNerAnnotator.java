@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ner;
+package annotators;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -37,6 +37,13 @@ public class StanfordNerAnnotator {
             text = eliminateHyphenation(text);
 
             log.info("Annotating file " + textFile.getAbsolutePath());
+            log.info("Cheking if file exists.");
+            if (alreadyAnnotated(textFile)) {
+                log.info(String.format("Annotation for file %s exists.", textFile));
+                return "";
+            }
+
+            log.info("File is new. Annotating.");
             StringBuilder collector = new StringBuilder();
 
             // create an empty Annotation just with the given text
@@ -83,18 +90,15 @@ public class StanfordNerAnnotator {
     }
 
     private void writeAnnotationOutput(File textFile, StringBuilder collector) {
-        String fileName = textFile.getAbsolutePath();
-        String fileNoExtenesion = FilenameUtils.removeExtension(textFile.getName());
-        String parentDirectory = FilenameUtils.getFullPathNoEndSeparator(fileName);
 
-        String extension = FilenameUtils.getExtension(textFile.getAbsolutePath());
-        String output = String.format("%s/annotations/%s_stanford.%s", parentDirectory, fileNoExtenesion, extension);
+        String output = getOutputFile(textFile);
 
         log.info("Output file is " + output);
-        File annotationsDirectory = new File(parentDirectory + "/annotations");
+        File annotationsDirectory = new File(FilenameUtils.getFullPathNoEndSeparator(output));
         if (!annotationsDirectory.exists()) {
             if (!annotationsDirectory.mkdirs()) {
-                log.error("Annotation directory creation failed for " + fileName);
+                log.error("Annotation directory creation failed for "
+                        + annotationsDirectory.getAbsolutePath());
             }
         }
 
@@ -104,6 +108,21 @@ public class StanfordNerAnnotator {
         } catch (IOException ex) {
             log.error("Writing annotation to file " + output + " failed with " + ex);
         }
+    }
+
+    private String getOutputFile(File textFile) {
+        String fileName = textFile.getAbsolutePath();
+        String fileNoExtenesion = FilenameUtils.removeExtension(textFile.getName());
+        String parentDirectory = FilenameUtils.getFullPathNoEndSeparator(fileName);
+
+        String extension = FilenameUtils.getExtension(fileName);
+        return String.format("%s/annotations/%s_stanford.%s", parentDirectory, fileNoExtenesion, extension);
+
+    }
+
+    private boolean alreadyAnnotated(File textFile) {
+        File outputFile = new File(getOutputFile(textFile));
+        return outputFile.exists();
     }
 
     public static void main(String[] args) {
@@ -116,7 +135,5 @@ public class StanfordNerAnnotator {
                 + "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt";
         String annotations = annotator.annotateFile(new File(textfile));
         System.out.println(annotations);
-
-
     }
 }
