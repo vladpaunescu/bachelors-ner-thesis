@@ -8,7 +8,10 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -48,7 +51,7 @@ public class DirectoryTreeCrawler {
         }
     }
 
-    public void annotateTextFiles() {
+    public void annotateTextFiles() throws InterruptedException {
         StanfordNerAnnotator annotator = initializeStanfordAnnotator();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -68,6 +71,10 @@ public class DirectoryTreeCrawler {
 
             } catch (TimeoutException e) {
                 log.warn(String.format("Annotation for file %s terminated at timeout.", textFile.getAbsolutePath()));
+                if (!future.cancel(true)) {
+                    log.warn("Annotation Thread could not be canceled.");
+                }
+                annotator = initializeStanfordAnnotator();
             } catch (InterruptedException ex) {
                 log.error(ex);
             } catch (ExecutionException ex) {
@@ -103,8 +110,8 @@ public class DirectoryTreeCrawler {
     private String eliminateHyphenation(String text) {
         return text.replaceAll("-((\\r\\n)|[\\r\\n])", "");
     }
-    
-    private File getOutputFileNoHyphenation(File textFile){
+
+    private File getOutputFileNoHyphenation(File textFile) {
         String fileName = textFile.getAbsolutePath();
         String fileNoExtenesion = FilenameUtils.removeExtension(fileName);
         String extension = FilenameUtils.getExtension(fileName);
@@ -130,9 +137,9 @@ public class DirectoryTreeCrawler {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         DirectoryTreeCrawler dirCrawler = new DirectoryTreeCrawler("D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science");
-        dirCrawler.eliminateHyphenationForTextFiles();
+        dirCrawler.annotateTextFiles();
 
     }
 }
@@ -143,13 +150,13 @@ class AnnotationTask implements Callable<String> {
     private File _textFile;
 
     public AnnotationTask(StanfordNerAnnotator annotator, File textFile) {
-        _textFile = textFile;
         _annotator = annotator;
+        _textFile = textFile;
+
     }
 
     @Override
     public String call() throws Exception {
         return _annotator.annotateFile(_textFile);
-
     }
 }
