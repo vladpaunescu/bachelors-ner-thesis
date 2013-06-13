@@ -24,6 +24,8 @@ public class StanfordNerAnnotator {
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             StanfordNerAnnotator.class.getName());
+    
+    public static final char TAB = '\t';
     private StanfordCoreNLP _snlp;
 
     public StanfordNerAnnotator(StanfordCoreNLP snlp) {
@@ -34,7 +36,6 @@ public class StanfordNerAnnotator {
         try {
 
             String text = FileUtils.readFileToString(textFile);
-            text = eliminateHyphenation(text);
 
             log.info("Annotating file " + textFile.getAbsolutePath());
             log.info("Cheking if file exists.");
@@ -72,20 +73,24 @@ public class StanfordNerAnnotator {
         return null;
     }
 
-    private String eliminateHyphenation(String text) {
-        return text.replaceAll("-((\\r\\n)|[\\r\\n])", "");
-    }
-
     private void annotateSentence(CoreMap sentence, StringBuilder collector) {
         // a CoreLabel is a CoreMap with additional token-specific methods
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
             // this is the text of the token
-            String word = token.get(CoreAnnotations.TextAnnotation.class);
+            String originalText = token.originalText();
+            String word = token.word();
+            
+            int beginPosition = token.beginPosition();
+            int endPosition = token.endPosition();
+            
             // this is the POS tag of the token
-            String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
+            String pos = token.tag();
             // this is the NER label of the token
-            String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
-            collector.append(word).append("\t").append(ne).append("\t").append(pos).append("\r\n");
+            String ne = token.ner();
+            
+            collector.append(originalText).append(TAB).append(word).append(TAB);
+            collector.append(beginPosition).append(TAB).append(endPosition).append(TAB);
+            collector.append(ne).append(TAB).append(pos).append("\r\n");
         }
     }
 
@@ -132,7 +137,7 @@ public class StanfordNerAnnotator {
 
         StanfordNerAnnotator annotator = new StanfordNerAnnotator(pipeline);
         String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/"
-                + "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt";
+                + "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal_tika.txt";
         String annotations = annotator.annotateFile(new File(textfile));
         System.out.println(annotations);
     }

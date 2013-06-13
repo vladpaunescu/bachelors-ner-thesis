@@ -4,6 +4,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
 import java.io.*;
+import org.apache.pdfbox.encoding.Encoding;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +28,10 @@ public class PdfBoxParser implements PdfParser {
         String text = null;
         try {
             doc = PDDocument.load(_filename);
+            
             PDFTextStripper stripper = new PDFTextStripper();
+      
+            
             text = stripper.getText(doc);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -45,13 +49,16 @@ public class PdfBoxParser implements PdfParser {
     }
 
     public static void main(String[] args) throws IOException {
-        final String filename = "D:\\Shared\\Dropbox\\Work\\licenta-ner\\scrapers\\ms_academic\\out\\34111958\\17258_Chapter_8.pdf";
-        final String nonparsable = "C:\\Users\\vlad.paunescu\\Desktop\\scansmpl.pdf";
-        PdfParser parser = new PdfBoxParser(nonparsable);
+        String filename = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/" +
+                "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.pdf";
+        filename ="D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/1021291 - Wolff-Michael  Roth/Profess.pdf";
+        
+        PdfParser parser = new PdfBoxParser(filename);
 
-        PdfParser tikaParser = new TikaPdfParser(nonparsable);
+        PdfParser tikaParser = new TikaPdfParser(filename);
         String text  = tikaParser.parse();
         System.out.println(">>>>>>>>>>>>>>>");
+        System.out.println("Text tika length " + text.length());
         PrintWriter pw1 = new PrintWriter("parser_tika.txt");
         PrintWriter pw2 = new PrintWriter("parser_pdfbox.txt");
         System.out.println(text);

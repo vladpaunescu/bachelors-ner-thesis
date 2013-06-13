@@ -28,7 +28,7 @@ public class DirectoryPdfScanner {
    
     private String directoryRoot;
     
-    private final static String TXT_EXT =".txt";
+    private final static String TXT_EXT ="txt";
     
     public DirectoryPdfScanner(String dirName){
         directoryRoot = dirName;
@@ -55,11 +55,12 @@ public class DirectoryPdfScanner {
     }
     
     
-    public void saveToTextFile(String text, File path){
+    public void saveToTextFile(String text, File path, String parserType){
         String filename = FilenameUtils.removeExtension(path.getAbsolutePath());
+        String outputName = String.format("%s_%s.%s", filename, parserType, TXT_EXT);
         log.info("Writing to file");
         try {
-            org.apache.commons.io.FileUtils.writeStringToFile(new File(filename + TXT_EXT), text);
+            org.apache.commons.io.FileUtils.writeStringToFile(new File(outputName), text);
         } catch (IOException ex) {
             log.error(ex);
         }
@@ -107,14 +108,22 @@ public class DirectoryPdfScanner {
         
         int nonParsable = 0;
         for (File pdf : pdfs){
-            PdfParser pdfParser = new PdfBoxParser(pdf.getAbsolutePath());
+            PdfParser pdfParser = new TikaPdfParser(pdf.getAbsolutePath());
             String text = pdfParser.parse();
             
-            if (text == null){
-                log.warn("Non parsable pdf " + pdf.getAbsolutePath());
+            if (text == null || text.length() == 0){
+                log.warn("Non parsable pdf with tika " + pdf.getAbsolutePath());
                 ++nonParsable;
+                log.info("Trying with PDFBox parser");
+                pdfParser = new PdfBoxParser(pdf.getAbsolutePath());
+                text = pdfParser.parse();
+                
+                if (text == null || text.length() == 0){
+                    log.warn("Non parsable pdf with PDFBox " + pdf.getAbsolutePath());
+                }
             }
-            pdfScanner.saveToTextFile(text, pdf);
+            
+            pdfScanner.saveToTextFile(text, pdf, "tika");
             pdfScanner.saveToDb(text, pdf.getName());
             System.out.println("Parsed " + pdf.getAbsolutePath());
         }

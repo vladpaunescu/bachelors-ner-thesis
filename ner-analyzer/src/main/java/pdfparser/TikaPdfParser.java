@@ -40,8 +40,8 @@ public class TikaPdfParser implements PdfParser{
                 String value = metadata.get(name);
 
                 if (value != null) {
-                    System.out.println("Metadata Name:  " + name);
-                    System.out.println("Metadata Value: " + value);
+//                    System.out.println("Metadata Name:  " + name);
+//                    System.out.println("Metadata Value: " + value);
                 }
             }
             return sw.toString();

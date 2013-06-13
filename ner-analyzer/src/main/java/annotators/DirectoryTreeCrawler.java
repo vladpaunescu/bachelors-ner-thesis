@@ -8,10 +8,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -35,7 +32,8 @@ public class DirectoryTreeCrawler {
             DirectoryTreeCrawler.class.getName());
     private static final String[] TEXT_EXTENSIONS = {"txt"};
     private static final String TEXT_EXTENSION = ".txt";
-    private static final int TIMEOUT_SECONDS = 100;
+    private static final String TIKA_PARSED_TXTS = "_tika.txt";
+    private static final int TIMEOUT_SECONDS = 360;
     private String _rootdir;
     private File _root;
 
@@ -51,14 +49,38 @@ public class DirectoryTreeCrawler {
         }
     }
 
-    public void annotateTextFiles() throws InterruptedException {
+    public void annotateTikaTextFiles() throws InterruptedException {
+        log.info("Annotating tika parsed text files");
+        Collection<File> textFiles = getTikaTextFilesExcludeAnnotations();
+        annotateTextFiles(textFiles);
+      
+    }
+
+    public void eliminateHyphenationForTikaTextFiles() {
+        Collection<File> textFiles = getTikaTextFilesExcludeAnnotations();
+        for (File textFile : textFiles) {
+            log.info(String.format("Elimination hyphenation for file %s", textFile.getAbsolutePath()));
+            try {
+                String text = FileUtils.readFileToString(textFile);
+                text = eliminateHyphenation(text);
+                FileUtils.writeStringToFile(getOutputFileNoHyphenation(textFile), text);
+            } catch (IOException ex) {
+                log.error(ex);
+            }
+        }
+    }
+
+    private void annotateTextFiles(Collection<File> textFiles) {
         StanfordNerAnnotator annotator = initializeStanfordAnnotator();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         int count = 0;
-        Collection<File> textFiles = getTextFilesExcludeAnnotations();
+        int total = textFiles.size();
+        int index = 1;
+        log.info(String.format("Annotating a total of %d text files", total));
         for (File textFile : textFiles) {
-
+            log.info(String.format("Annotating file %d of %d.", index, total));
+            
             long startTime = System.currentTimeMillis();
             Future<String> future = executor.submit(new AnnotationTask(annotator, textFile));
             try {
@@ -87,28 +109,16 @@ public class DirectoryTreeCrawler {
                 count = 0;
                 annotator = initializeStanfordAnnotator();
             }
+            index++;
         }
 
         log.info("Shutting down executor service");
         executor.shutdownNow();
-    }
 
-    public void eliminateHyphenationForTextFiles() {
-        Collection<File> textFiles = getTextFilesExcludeAnnotations();
-        for (File textFile : textFiles) {
-            log.info(String.format("Elimination hyphenation for file %s", textFile.getAbsolutePath()));
-            try {
-                String text = FileUtils.readFileToString(textFile);
-                text = eliminateHyphenation(text);
-                FileUtils.writeStringToFile(getOutputFileNoHyphenation(textFile), text);
-            } catch (IOException ex) {
-                log.error(ex);
-            }
-        }
     }
 
     private String eliminateHyphenation(String text) {
-        return text.replaceAll("-((\\r\\n)|[\\r\\n])", "");
+        return text.replaceAll("-((\\r\\n)|[\\n\\r])", "");
     }
 
     private File getOutputFileNoHyphenation(File textFile) {
@@ -134,12 +144,17 @@ public class DirectoryTreeCrawler {
     public Collection<File> getTextFilesExcludeAnnotations() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(TEXT_EXTENSION),
                 new NotFileFilter(new NameFileFilter("annotations")));
+    }
 
+    public Collection<File> getTikaTextFilesExcludeAnnotations() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_PARSED_TXTS),
+                new NotFileFilter(new NameFileFilter("annotations")));
     }
 
     public static void main(String[] args) throws InterruptedException {
         DirectoryTreeCrawler dirCrawler = new DirectoryTreeCrawler("D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science");
-        dirCrawler.annotateTextFiles();
+        //dirCrawler.eliminateHyphenationForTikaTextFiles();
+        dirCrawler.annotateTikaTextFiles();
 
     }
 }
