@@ -51,7 +51,7 @@ public class PdfBoxParser implements PdfParser {
     public static void main(String[] args) throws IOException {
         String filename = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/" +
                 "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.pdf";
-        filename ="D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/1021291 - Wolff-Michael  Roth/Profess.pdf";
+        //filename ="D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/1021291 - Wolff-Michael  Roth/Profess.pdf";
         
         PdfParser parser = new PdfBoxParser(filename);
 
@@ -59,8 +59,9 @@ public class PdfBoxParser implements PdfParser {
         String text  = tikaParser.parse();
         System.out.println(">>>>>>>>>>>>>>>");
         System.out.println("Text tika length " + text.length());
-        PrintWriter pw1 = new PrintWriter("parser_tika.txt");
-        PrintWriter pw2 = new PrintWriter("parser_pdfbox.txt");
+        PrintWriter pw1 = new PrintWriter("parser_tika.txt", "utf-8");
+       
+        PrintWriter pw2 = new PrintWriter("parser_pdfbox.txt", "utf-8");
         System.out.println(text);
         pw1.println(text);
         text = parser.parse();
