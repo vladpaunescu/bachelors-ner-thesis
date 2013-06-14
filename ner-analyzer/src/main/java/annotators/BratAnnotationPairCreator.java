@@ -55,6 +55,7 @@ public class BratAnnotationPairCreator {
 //      On	On	99	101	O	IN
 //      :	:	101	102	O	:
 //      11	11	103	105	DATE	CD
+// multline T1  DATE 20 25;26 30    jumps over 
     private String toBratAnnotation(File textFile, File stanfordFile) {
         StringBuilder annOutput = new StringBuilder();
         try {
