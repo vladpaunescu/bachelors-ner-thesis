@@ -7,9 +7,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
-import org.apache.pdfbox.encoding.Encoding;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA. User: vlad Date: 5/4/13 Time: 12:03 AM To change this template use File | Settings | File Templates.
@@ -58,19 +56,41 @@ public class PdfBoxParser implements PdfParser {
         String text = tikaParser.parse();
         System.out.println(">>>>>>>>>>>>>>>");
         System.out.println("Text tika length " + text.length());
-        PrintWriter pw1 = new PrintWriter("parser_tika.txt", "utf-8");
 
-        PrintWriter pw2 = new PrintWriter("parser_pdfbox.txt", "utf-16");
+        final Charset windowsCharset = Charset.forName("windows-1252");
+        final Charset utfCharset = Charset.forName("UTF-8");
+
+        PrintWriter pw1 = new PrintWriter("parser_tika.txt", "utf-8");
+        PrintWriter pw2 = new PrintWriter("parser_pdfbox.txt", "utf-8");
+
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("outfilename.txt"), "UTF-8"));
+        try {
+            out.write(text);
+        } finally {
+            out.close();
+        }
+
         System.out.println(text);
         pw1.println(text);
         text = parser.parse();
+
+        Writer out2 = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("outfilename_pdfbox.txt"), "UTF-8"));
+        try {
+            out2.write(text);
+        } finally {
+            out2.close();
+        }
+
+
         System.out.println(">>>>>>>>>>>>>>>");
         String inputEncoding = "Win-1252";
         String outputEncoding = "UTF-8";
-
-
-        final Charset windowsCharset = Charset.forName("windows-1252");
-        final Charset utfCharset = Charset.forName("UTF-16");
+        Properties props = System.getProperties();
+        for (Object key : props.keySet()) {
+            System.out.println(props.get(key));
+        }
 
         // Convert the byte array from starting inputEncoding into UCS2
         byte[] bufferToConvert = text.getBytes();

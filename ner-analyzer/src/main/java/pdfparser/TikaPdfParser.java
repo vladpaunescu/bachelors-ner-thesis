@@ -35,6 +35,7 @@ public class TikaPdfParser implements PdfParser{
             Metadata metadata = new Metadata();
 
             parser.parse(is, handler, metadata, new ParseContext());
+            
 
             for (String name : metadata.names()) {
                 String value = metadata.get(name);

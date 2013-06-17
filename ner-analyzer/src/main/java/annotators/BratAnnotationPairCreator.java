@@ -107,6 +107,7 @@ public class BratAnnotationPairCreator {
 
     private void addEntityToBratAnnotation(StringBuilder annOutput, String namedEntity, int entitiesIndex, String entityType,
             int entityStartIndex, int entityEndIndex) {
+        System.out.println("Here " + namedEntity + "\n");
         annOutput.append('T').append(entitiesIndex).append('\t').append(entityType).append(' ');
         annOutput.append(entityStartIndex).append(' ').append(entityEndIndex);
         annOutput.append('\t').append(namedEntity).append(CRLF);

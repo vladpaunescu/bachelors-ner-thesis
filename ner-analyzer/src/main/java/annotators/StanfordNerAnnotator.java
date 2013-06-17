@@ -9,8 +9,13 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
@@ -24,7 +29,7 @@ public class StanfordNerAnnotator {
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             StanfordNerAnnotator.class.getName());
-    
+     
     public static final char TAB = '\t';
     private StanfordCoreNLP _snlp;
 
@@ -35,7 +40,14 @@ public class StanfordNerAnnotator {
     public String annotateFile(File textFile) {
         try {
 
-            String text = FileUtils.readFileToString(textFile);
+            String text = FileUtils.readFileToString(textFile, "UTF-8");
+            
+            System.out.println(text.substring(0, 2000));
+            byte bytes[] = text.getBytes("UTF-8");
+            text = new String(bytes, "UTF-8");
+            text = text.replaceAll("\\ufffd", "");
+            System.out.println("After dxxxx");
+            System.out.println(text.substring(0, 2000));
 
             log.info("Annotating file " + textFile.getAbsolutePath());
             log.info("Cheking if file exists.");
@@ -107,12 +119,13 @@ public class StanfordNerAnnotator {
             }
         }
 
-        File outputFile = new File(output);
-        try {
-            FileUtils.writeStringToFile(outputFile, collector.toString());
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(output), "UTF-8"))) {
+            out.write(collector.toString());
         } catch (IOException ex) {
             log.error("Writing annotation to file " + output + " failed with " + ex);
         }
+
     }
 
     private String getOutputFile(File textFile) {
@@ -127,7 +140,8 @@ public class StanfordNerAnnotator {
 
     private boolean alreadyAnnotated(File textFile) {
         File outputFile = new File(getOutputFile(textFile));
-        return outputFile.exists();
+//        return outputFile.exists();
+        return false;
     }
 
     public static void main(String[] args) {
