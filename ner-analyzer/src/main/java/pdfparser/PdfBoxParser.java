@@ -85,8 +85,6 @@ public class PdfBoxParser implements PdfParser {
 
 
         System.out.println(">>>>>>>>>>>>>>>");
-        String inputEncoding = "Win-1252";
-        String outputEncoding = "UTF-8";
         Properties props = System.getProperties();
         for (Object key : props.keySet()) {
             System.out.println(props.get(key));

@@ -14,10 +14,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -29,7 +32,6 @@ public class StanfordNerAnnotator {
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             StanfordNerAnnotator.class.getName());
-     
     public static final char TAB = '\t';
     private StanfordCoreNLP _snlp;
 
@@ -42,12 +44,7 @@ public class StanfordNerAnnotator {
 
             String text = FileUtils.readFileToString(textFile, "UTF-8");
             
-            System.out.println(text.substring(0, 2000));
-            byte bytes[] = text.getBytes("UTF-8");
-            text = new String(bytes, "UTF-8");
-            text = text.replaceAll("\\ufffd", "");
-            System.out.println("After dxxxx");
-            System.out.println(text.substring(0, 2000));
+            text = cleanUpReplacementCharacter(text);
 
             log.info("Annotating file " + textFile.getAbsolutePath());
             log.info("Cheking if file exists.");
@@ -85,21 +82,34 @@ public class StanfordNerAnnotator {
         return null;
     }
 
+    private String cleanUpReplacementCharacter(String text) {
+        byte bytes[];
+        try {
+            bytes = text.getBytes("UTF-8");
+            text = new String(bytes, "UTF-8");
+            text = text.replaceAll("\\ufffd", "");
+        } catch (UnsupportedEncodingException ex) {
+            log.error(ex);
+        }
+        
+        return text;
+    }
+
     private void annotateSentence(CoreMap sentence, StringBuilder collector) {
         // a CoreLabel is a CoreMap with additional token-specific methods
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
             // this is the text of the token
             String originalText = token.originalText();
             String word = token.word();
-            
+
             int beginPosition = token.beginPosition();
             int endPosition = token.endPosition();
-            
+
             // this is the POS tag of the token
             String pos = token.tag();
             // this is the NER label of the token
             String ne = token.ner();
-            
+
             collector.append(originalText).append(TAB).append(word).append(TAB);
             collector.append(beginPosition).append(TAB).append(endPosition).append(TAB);
             collector.append(ne).append(TAB).append(pos).append("\r\n");
