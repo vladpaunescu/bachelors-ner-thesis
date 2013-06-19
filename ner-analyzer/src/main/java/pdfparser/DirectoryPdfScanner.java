@@ -6,12 +6,7 @@ package pdfparser;
 
 import db.MsAcademicPublications;
 import db.NerHibernateUtil;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,14 +55,7 @@ public class DirectoryPdfScanner {
         String filename = FilenameUtils.removeExtension(path.getAbsolutePath());
         String outputName = String.format("%s_%s.%s", filename, parserType, TXT_EXT);
         log.info("Writing to file");
-
-
-        try (Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(outputName), "UTF-8"))) {
-            out.write(text);
-        } catch (IOException ex) {
-            log.error(ex);
-        }
+        MyFileUtils.writeStringToFile(outputName, text);
     }
 
     public void saveToDb(String text, String filename) {
@@ -104,7 +92,6 @@ public class DirectoryPdfScanner {
 
     public static void main(String[] args) {
         String rootDir = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science";
-        //String rootDir = "D:/Facultate/Anul 4/Licenta/licenta-ner/scrapers/ms_academic/out/22 - Social Science";
         DirectoryPdfScanner pdfScanner = new DirectoryPdfScanner(rootDir);
         List<File> pdfs = pdfScanner.scanForPdfs();
         System.out.println("Total number of pdfs " + pdfs.size());
@@ -129,7 +116,7 @@ public class DirectoryPdfScanner {
             if (text != null && text.length() != 0) {
 
                 pdfScanner.saveToTextFile(text, pdf, "tika");
-                pdfScanner.saveToDb(text, pdf.getName());
+                //pdfScanner.saveToDb(text, pdf.getName());
                 System.out.println("Parsed " + pdf.getAbsolutePath());
             }
         }

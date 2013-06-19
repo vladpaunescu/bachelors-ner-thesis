@@ -4,10 +4,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,7 +70,7 @@ public class PdfBoxParser implements PdfParser {
         text = text.replaceAll("([^\\n-])\\n", "$1 ");
         
         // eliminate hyphenation
-        MerriamWebesterHyphenationChecker checker = new MerriamWebesterHyphenationChecker();
+        HyphenationChecker checker = new HyphenationChecker();
         Pattern p = Pattern.compile("([^\\s]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?'’]+)");
         Matcher m = p.matcher(text);
         

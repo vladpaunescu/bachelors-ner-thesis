@@ -21,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 /**
  *
@@ -33,6 +34,9 @@ public class DirectoryTreeCrawler {
     private static final String[] TEXT_EXTENSIONS = {"txt"};
     private static final String TEXT_EXTENSION = ".txt";
     private static final String TIKA_PARSED_TXTS = "_tika.txt";
+    private static final String TIKA_CLEANED_TXTS = "_tika_cleaned.txt";
+    private static final String TIKA_NO_NEWLINE_TXTS = "tika_cleaned_no_newline.txt";
+    
     private static final int TIMEOUT_SECONDS = 360;
     private String _rootdir;
     private File _root;
@@ -53,7 +57,7 @@ public class DirectoryTreeCrawler {
         log.info("Annotating tika parsed text files");
         Collection<File> textFiles = getTikaTextFilesExcludeAnnotations();
         annotateTextFiles(textFiles);
-      
+
     }
 
     public void eliminateHyphenationForTikaTextFiles() {
@@ -80,7 +84,7 @@ public class DirectoryTreeCrawler {
         log.info(String.format("Annotating a total of %d text files", total));
         for (File textFile : textFiles) {
             log.info(String.format("Annotating file %d of %d.", index, total));
-            
+
             long startTime = System.currentTimeMillis();
             Future<String> future = executor.submit(new AnnotationTask(annotator, textFile));
             try {
@@ -156,6 +160,16 @@ public class DirectoryTreeCrawler {
         //dirCrawler.eliminateHyphenationForTikaTextFiles();
         dirCrawler.annotateTikaTextFiles();
 
+    }
+
+    public Collection<File> getTikaProperUnicodeTextFiles() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_CLEANED_TXTS),
+                TrueFileFilter.INSTANCE);
+    }
+
+    public Collection<File> getTikaProperUnicodeNoNewlineFiles() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_NO_NEWLINE_TXTS),
+                TrueFileFilter.INSTANCE);
     }
 }
 
