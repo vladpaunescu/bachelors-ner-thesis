@@ -4,6 +4,7 @@
  */
 package annotators;
 
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,6 @@ public class DirectoryTreeCrawler {
     private static final String TIKA_PARSED_TXTS = "_tika.txt";
     private static final String TIKA_CLEANED_TXTS = "_tika_cleaned.txt";
     private static final String TIKA_NO_NEWLINE_TXTS = "tika_cleaned_no_newline.txt";
-    
     private static final int TIMEOUT_SECONDS = 360;
     private String _rootdir;
     private File _root;
@@ -136,6 +136,10 @@ public class DirectoryTreeCrawler {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
+        //props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        //props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
+
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
         return new StanfordNerAnnotator(pipeline);

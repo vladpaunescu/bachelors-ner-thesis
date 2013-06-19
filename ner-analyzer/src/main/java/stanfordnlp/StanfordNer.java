@@ -6,6 +6,8 @@ package stanfordnlp;
 
 import edu.stanford.nlp.dcoref.CorefChain;
 import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
+import edu.stanford.nlp.ie.NERClassifierCombiner;
+import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -13,6 +15,7 @@ import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.File;
@@ -31,9 +34,13 @@ public class StanfordNer {
     public void detect(String text) {
         // creates a StanfordCoreNLP object, with POS tagging, lemmatization, NER, parsing, and coreference resolution 
         Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
+        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
+        //props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        //props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-
+        
+        
         // create an empty Annotation just with the given text
         Annotation document = new Annotation(text);
 
@@ -69,20 +76,20 @@ public class StanfordNer {
         // Each chain stores a set of mentions that link to each other,
         // along with a method for getting the most representative mention
         // Both sentence and token offsets start at 1!
-        Map<Integer, CorefChain> graph =
-                document.get(CorefChainAnnotation.class);
-        for(Entry<Integer, CorefChain> entry: graph.entrySet()){
-            System.out.println(entry.getKey());
-            CorefChain chain = entry.getValue();
-            CorefChain.CorefMention mention = chain.getRepresentativeMention();
-            System.out.println(mention);
-        }
+//        Map<Integer, CorefChain> graph =
+//                document.get(CorefChainAnnotation.class);
+//        for(Entry<Integer, CorefChain> entry: graph.entrySet()){
+//            System.out.println(entry.getKey());
+//            CorefChain chain = entry.getValue();
+//            CorefChain.CorefMention mention = chain.getRepresentativeMention();
+//            System.out.println(mention);
+//        }
     }
 
     public static void main(String[] args) throws IOException {
         String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal.txt";
         String text = FileUtils.readFileToString(new File(textfile));
-        text ="John Doe is awesome. He is also a good teammate.";
+      //  text ="John Doe is awesome. He is also a good teammate.";
         StanfordNer stanfordNer = new StanfordNer();
         stanfordNer.detect(text);
        
