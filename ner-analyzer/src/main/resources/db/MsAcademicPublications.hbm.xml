@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated May 22, 2013 7:51:05 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Jun 19, 2013 5:44:14 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="db.MsAcademicPublications" table="ms_academic_publications" catalog="ner">
         <id name="id" type="java.lang.Integer">
@@ -24,7 +24,7 @@
             <column name="abstract" length="65535" />
         </property>
         <property name="content" type="string">
-            <column name="content" length="65535" />
+            <column name="content" length="16777215" />
         </property>
         <property name="filename" type="string">
             <column name="filename" length="512" />

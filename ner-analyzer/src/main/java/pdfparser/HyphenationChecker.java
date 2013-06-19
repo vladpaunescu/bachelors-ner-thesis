@@ -4,6 +4,9 @@
  */
 package pdfparser;
 
+import db.HyphenatedWords;
+import db.MsAcademicPublications;
+import db.NerHibernateUtil;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -20,10 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
-import static pdfparser.TextFileHyphenationMerger.log;
 
 /**
  *
@@ -52,24 +56,33 @@ public class HyphenationChecker {
 
     public boolean chekcHyphenatedWordExists(String word, String wordNoHyphen) {
         String lemmatizedWord = lemmatizeWord(wordNoHyphen);
-        
+        lemmatizedWord = lemmatizedWord.toLowerCase();
+
         log.info(String.format("Checking if word %s is in local dictionary.", lemmatizedWord));
         if (_correctWords.contains(lemmatizedWord.toLowerCase())) {
             log.info(String.format("Word %s in cache.", lemmatizedWord));
             return true;
         }
-        
-        if(_currentNer.equals("PERSON") || _currentNer.equals("ORGANIZATION") || _currentNer.equals("LOCATION")){
+
+        log.info(String.format("Checking if word %s is in database.", lemmatizedWord));
+        if (isInDatabase(lemmatizedWord)) {
+            return true;
+        }
+
+        if (_currentNer.equals("PERSON") || _currentNer.equals("ORGANIZATION") || _currentNer.equals("LOCATION")) {
             log.info(String.format("%s is a %s.", wordNoHyphen, _currentNer));
             _correctWords.add(_currentNer.toLowerCase());
+            insertWordIntoDb(word, lemmatizedWord);
             return true;
         }
 
         if (checkOnDictionaryReference(lemmatizedWord)) {
+            insertWordIntoDb(word, lemmatizedWord);
             return true;
         }
 
         if (checkOnMeriamDictionary(lemmatizedWord)) {
+            insertWordIntoDb(word, lemmatizedWord);
             return true;
         }
 
@@ -80,7 +93,12 @@ public class HyphenationChecker {
             log.error(ex);
         }
 
-        return checkOnFreeDctionary(lemmatizedWord);
+        if (checkOnFreeDctionary(lemmatizedWord)) {
+            insertWordIntoDb(word, lemmatizedWord);
+            return true;
+        }
+        
+        return false;
     }
 
     private boolean checkOnDictionaryReference(String lemmatizedWord) {
@@ -173,6 +191,42 @@ public class HyphenationChecker {
             }
         }
         return wordNoHyphen;
+    }
+
+    private boolean isInDatabase(String lemmatizedWord) {
+        log.info("Checking for word lemma in db " + lemmatizedWord);
+
+        Session session = NerHibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<HyphenatedWords> words = session.createCriteria(HyphenatedWords.class)
+                .add(Restrictions.eq("normalWord", lemmatizedWord)).list();
+        log.info("Words retrieved from db, count " + words.size());
+        if (words.size() > 1) {
+            log.warn("More than one word found " + words.size());
+        }
+        session.close();
+
+        if (words.size() > 0) {
+            log.info(String.format("Word lemma %s found in db", lemmatizedWord));
+            return true;
+        }
+
+        return false;
+    }
+
+    private void insertWordIntoDb(String word, String lemmatizedWord) {
+        log.info(String.format("Inserting pair (hyphenated , lemma): %s , %s into db.", word, lemmatizedWord));
+
+        Session session = NerHibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        HyphenatedWords row = new HyphenatedWords();
+        row.setHyphenatedWord(word);
+        row.setNormalWord(lemmatizedWord);
+        session.save(row);
+        session.getTransaction().commit();
+        session.close();
+
+        log.info("Finished inserting words into db.");
     }
 
     private boolean processDictionaryReferenceHtml(BufferedReader in, String lemmatizedWord) {

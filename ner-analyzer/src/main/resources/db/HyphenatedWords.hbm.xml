@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 19, 2013 5:44:14 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="db.HyphenatedWords" table="hyphenated_words" catalog="ner">
+        <id name="id" type="int" unsaved-value="null">
+            <column name="id" not-null="true"/>
+            <generator class="identity" />
+        </id>
+        <property name="hyphenatedWord" type="string">
+            <column name="hyphenated_word" length="512" />
+        </property>
+        <property name="normalWord" type="string">
+            <column name="normal_word" length="512" />
+        </property>
+    </class>
+</hibernate-mapping>

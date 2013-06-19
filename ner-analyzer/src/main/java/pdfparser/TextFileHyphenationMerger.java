@@ -23,7 +23,7 @@ public class TextFileHyphenationMerger {
             TextFileHyphenationMerger.class.getName());
     private DirectoryTreeCrawler _crawler;
     private HyphenationChecker _checker;
-    private Pattern hyphen = Pattern.compile("([^\\s,\\.:!?'’”\\(\\)]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?'’”\\(\\)]+)");
+    private Pattern hyphen = Pattern.compile("([^\\s,\\.:!?'’”“‘\\(\\)\\[\\]]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?'’”‘\\(\\)\\[\\]]+)");
 
     public TextFileHyphenationMerger(DirectoryTreeCrawler crawler) {
         _crawler = crawler;
@@ -40,6 +40,7 @@ public class TextFileHyphenationMerger {
             log.info(String.format("\nRemoving for %d of %d. Name: %s", count, total, textFile.getAbsolutePath()));
             String text = removeHyphenation(textFile);
             writeTextToFile(textFile, text);
+            count++;
         }
         log.info("Finished removing hyphenation.");
 
@@ -54,13 +55,18 @@ public class TextFileHyphenationMerger {
             Matcher matcher = hyphen.matcher(text);
 
             while (matcher.find()) {
-                // System.out.println(m.group());
-                log.info(matcher.group());
+                String matchedGroup = matcher.group();
+                log.info(matchedGroup);
                 String wordWithHyphen = matcher.group(1) + matcher.group(2) + matcher.group(5);
                 String wordNoHyphen = matcher.group(1) + matcher.group(5);
                 if (_checker.chekcHyphenatedWordExists(wordWithHyphen, wordNoHyphen)) {
-                    log.info(String.format("Replacing %s with %s.", matcher.group(), wordNoHyphen));
-                    text = text.replaceAll(matcher.group(), wordNoHyphen);
+                    log.info(String.format("Replacing %s with %s.", matchedGroup, wordNoHyphen));
+                    text = text.replaceAll(matchedGroup, wordNoHyphen);
+                }
+                else {
+                    log.info(String.format("Keeping hyphen. Replacing %s with %s", 
+                            matchedGroup, wordWithHyphen));
+                    text = text.replaceAll(matchedGroup, wordWithHyphen);
                 }
             }
 

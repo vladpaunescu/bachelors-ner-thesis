@@ -2,7 +2,8 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="ner"/>
-  <table-filter match-name="ms_academic_publications"/>
-  <table-filter match-name="ms_academic_domains"/>
   <table-filter match-name="ms_academic_authors"/>
+  <table-filter match-name="ms_academic_domains"/>
+  <table-filter match-name="ms_academic_publications"/>
+  <table-filter match-name="hyphenated_words"/>
 </hibernate-reverse-engineering>
