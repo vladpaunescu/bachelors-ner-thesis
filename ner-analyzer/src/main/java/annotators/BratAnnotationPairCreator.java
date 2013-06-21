@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hslf.record.Sound;
 import pdfparser.DirectoryTreeCrawler;
 import pdfparser.MyFileUtils;
 
@@ -37,12 +35,16 @@ public class BratAnnotationPairCreator {
     private String _outputDirName;
     private String _annotationConfigFileContents;
     private Set<String> _namedEntityTypes;
+    private boolean _useGenericNames;
+    private String _currentBaseDir;
 
     public BratAnnotationPairCreator(String rootDir, String outputDir) {
         _rootDirName = rootDir;
         _outputDirName = outputDir;
         _crawler = new DirectoryTreeCrawler(rootDir);
         _namedEntityTypes = new HashSet<>();
+        _useGenericNames = false;
+        _currentBaseDir = "";
     }
 
     public void convertFilesToBratFormat() {
@@ -54,16 +56,29 @@ public class BratAnnotationPairCreator {
         int count = 1;
         log.info("Total files to process " + total);
         for (File properFile : properFiles) {
+            if((count - 1) % 10 == 0){
+                createDirectory(count);
+            }
             log.info(String.format("Converting to brat format file %d of %d : %s", count, total, properFile.getAbsolutePath()));
-            toBratAnnotationFormatPair(properFile);
+            toBratAnnotationFormatPair(properFile, count);
             count++;
-            break;
+          
+        }
+        
+        log.info("Entity types");
+        for(String type : _namedEntityTypes){
+            log.info(type);
         }
     }
 
-    public void toBratAnnotationFormatPair(File textFile) {
+    public void setGenericNames(boolean isGeneric) {
+        _useGenericNames = isGeneric;
+    }
+
+    private void toBratAnnotationFormatPair(File textFile, int count) {
         String stanfordFilename = getCorrespondingStanfordFile(textFile);
-        String outputFilename = getOutputFilename(textFile);
+        String outputFilename = getOutputFilename(textFile, count);
+
         if (ensureDirectoryCreated(outputFilename)) {
             exportTextFile(textFile, new File(outputFilename));
             String annFormat = toBratAnnotation(textFile, new File(stanfordFilename));
@@ -141,25 +156,7 @@ public class BratAnnotationPairCreator {
                     }
                 }
                 String namedEntity = inputFile.substring(beginIndex, endIndex);
-                System.out.println(namedEntity);
                 Matcher matcher = NEWLINE.matcher(namedEntity);
-                int count = 0;
-                List<Integer> newLineSplits = new LinkedList<>();
-//                while (matcher.find()) {
-//                    String matchedGroup = matcher.group();
-//                    System.out.println(">>>>>>>>>>");
-//                    String groupNoNewline = matcher.group(1) + " "; 
-//                    Integer splitIndex = beginIndex + matcher.start() + matcher.group(1).length();
-//                    System.out.println(matchedGroup);
-//                    System.out.println(groupNoNewline);
-//                    System.out.println(splitIndex);
-//                    namedEntity = namedEntity.replaceAll(matchedGroup, groupNoNewline);
-//                    inputFile = inputFile.replaceAll(matchedGroup, groupNoNewline);
-//                    System.out.println("Named ent after " + namedEntity);
-//                    System.out.println("");
-//                    newLineSplits.add(splitIndex);
-//                    count++;
-//                }
                 if (!matcher.find()) {
                     addEntityToBratAnnotation(annOutput, namedEntity, entitiesIndex, entityType,
                             beginIndex, endIndex);
@@ -191,8 +188,18 @@ public class BratAnnotationPairCreator {
         log.info("Stanford filename is " + stanfordFilename);
         return stanfordFilename;
     }
+    
+     private void createDirectory(int count) {
+         _currentBaseDir = String.format("%d-%d", count, count + 9);
+         String dirFilename = String.format("%s/%s", _outputDirName, _currentBaseDir);
+         log.info(String.format("Creating directory %s", dirFilename));
+         MyFileUtils.makeDirectories(new File(dirFilename));
+    }
 
-    private String getOutputFilename(File file) {
+    private String getOutputFilename(File file, int count) {
+        if(_useGenericNames){
+            return String.format("%s/%s/%d.txt", _outputDirName, _currentBaseDir, count);
+        }
         String filename = file.getAbsolutePath();
         String properFileNameNoDir = FilenameUtils.getName(filename);
         String srcDirPath = FilenameUtils.getPath(filename);
@@ -237,11 +244,13 @@ public class BratAnnotationPairCreator {
     public static void main(String[] args) {
 
         String rootSrcDir = "D:/Work/NLP/corpuses/ms_academic/parsed";
-        String rootOutputDir = "D:/Work/NLP/corpuses/ms_academic/brat-data";
+        String rootOutputDir = "D:/Work/NLP/corpuses/ms_academic/brat-data/";
 
 
         BratAnnotationPairCreator annotationCreator = new BratAnnotationPairCreator(rootSrcDir, rootOutputDir);
-
+        annotationCreator.setGenericNames(true);
         annotationCreator.convertFilesToBratFormat();
     }
+
+   
 }
