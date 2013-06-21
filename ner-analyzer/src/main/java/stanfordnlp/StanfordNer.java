@@ -4,10 +4,6 @@
  */
 package stanfordnlp;
 
-import edu.stanford.nlp.dcoref.CorefChain;
-import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
-import edu.stanford.nlp.ie.NERClassifierCombiner;
-import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -22,8 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.apache.commons.io.FileUtils;
 
 public class StanfordNer {

@@ -27,6 +27,8 @@ public class DirectoryTreeCrawler {
     private static final String TIKA_NO_NEWLINE_TXTS = "tika_cleaned_no_newline.txt";
     private static final String TIKA_NO_NEWLINE_NO_HYPHEN_TXTS = "tika_cleaned_no_newline_no_hyphenation.txt";
     private static final String TIKA_PROPER_STANFORD = "tika_cleaned_no_newline_no_hyphenation_stanford.txt";
+    private static final String PROPER_FILES = "_proper.txt";
+    
     private String _rootdir;
     private File _root;
 
@@ -73,6 +75,11 @@ public class DirectoryTreeCrawler {
 
     public Collection<File> getTikaProperStanfordFiles() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_PROPER_STANFORD),
+                TrueFileFilter.INSTANCE);
+    }
+    
+    public Collection<File> getProperFiles(){
+        return FileUtils.listFiles(_root, new SuffixFileFilter(PROPER_FILES),
                 TrueFileFilter.INSTANCE);
     }
 

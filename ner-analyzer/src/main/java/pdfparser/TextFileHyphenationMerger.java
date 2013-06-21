@@ -20,9 +20,9 @@ public class TextFileHyphenationMerger {
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             TextFileHyphenationMerger.class.getName());
+    private static Pattern HYPHEN = Pattern.compile("([^\\s,\\.:!?'\\+\\*\"’”“‘\\(\\)\\[\\]\\{\\}\\\\]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?\\+\\*\"'’”‘\\(\\)\\[\\]\\{\\}\\\\]+)");
     private DirectoryTreeCrawler _crawler;
     private HyphenationChecker _checker;
-    private Pattern hyphen = Pattern.compile("([^\\s,\\.:!?'\\+\\*\"’”“‘\\(\\)\\[\\]\\{\\}\\\\]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?\\+\\*\"'’”‘\\(\\)\\[\\]\\{\\}\\\\]+)");
 
     public TextFileHyphenationMerger(DirectoryTreeCrawler crawler) {
         _crawler = crawler;
@@ -36,7 +36,7 @@ public class TextFileHyphenationMerger {
         int total = files.size();
         int count = 1;
         for (File textFile : files) {
-            if (alreadyProcessed(textFile)){
+            if (alreadyProcessed(textFile)) {
                 log.info(String.format("File %s already processed. Skipping.", textFile.getAbsolutePath()));
                 count++;
                 continue;
@@ -51,13 +51,13 @@ public class TextFileHyphenationMerger {
     }
 
     private String removeHyphenation(File textFile) {
-        
+
         String text = "";
         try {
             text = FileUtils.readFileToString(textFile, "UTF-8");
 
             // eliminate hyphenation            
-            Matcher matcher = hyphen.matcher(text);
+            Matcher matcher = HYPHEN.matcher(text);
 
             while (matcher.find()) {
                 String matchedGroup = matcher.group();
