@@ -7,6 +7,7 @@ package annotators;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.BufferedWriter;
@@ -40,8 +41,6 @@ public class StanfordNerAnnotator {
         try {
 
             String text = FileUtils.readFileToString(textFile, "UTF-8");
-            
-            text = cleanUpReplacementCharacter(text);
 
             log.info("Annotating file " + textFile.getAbsolutePath());
             log.info("Cheking if file exists.");
@@ -77,19 +76,6 @@ public class StanfordNerAnnotator {
         }
 
         return null;
-    }
-
-    private String cleanUpReplacementCharacter(String text) {
-        byte bytes[];
-        try {
-            bytes = text.getBytes("UTF-8");
-            text = new String(bytes, "UTF-8");
-            text = text.replaceAll("\\ufffd", "");
-        } catch (UnsupportedEncodingException ex) {
-            log.error(ex);
-        }
-        
-        return text;
     }
 
     private void annotateSentence(CoreMap sentence, StringBuilder collector) {
@@ -147,18 +133,23 @@ public class StanfordNerAnnotator {
 
     private boolean alreadyAnnotated(File textFile) {
         File outputFile = new File(getOutputFile(textFile));
-//        return outputFile.exists();
-        return false;
+        return outputFile.exists();
+    //   return false;
     }
 
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
+        //props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        //props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
         StanfordNerAnnotator annotator = new StanfordNerAnnotator(pipeline);
         String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/"
-                + "716514 - Eric  Neumayer/2001_The_human_development_index_and_sustainability_a_constructive_proposal_tika.txt";
+                + "716514 - Eric  Neumayer/proper_unicode/"
+                + "2001_The_human_development_index_and_sustainability_a_constructive_proposal_tika_cleaned_no_newline_no_hyphenation.txt";
         String annotations = annotator.annotateFile(new File(textfile));
         System.out.println(annotations);
     }

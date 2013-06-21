@@ -90,8 +90,8 @@ public class MyFileUtils {
 
         }
     }
-
-    public static void main(String[] args) {
+    
+     public static void main(String[] args) {
         String path = "D:/path/test.pdf";
         System.out.println("File no extension " + getFileNoExtension(path));
 

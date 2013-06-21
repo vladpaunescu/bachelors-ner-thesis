@@ -5,11 +5,11 @@
 package pdfparser;
 
 import db.HyphenatedWords;
-import db.MsAcademicPublications;
 import db.NerHibernateUtil;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.BufferedReader;
@@ -39,19 +39,25 @@ public class HyphenationChecker {
     private static final String FREE_DICTIONARY_ROOT = "http://www.thefreedictionary.com";
     private static final String DICTIONARY_REFERENCE_ROOT = "http://dictionary.reference.com/browse";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36";
+    private static final long DELAY = 2000;
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             HyphenationChecker.class.getName());
     private Set<String> _correctWords;
+    private Set<String> _wordsWithHyphen;
     private StanfordCoreNLP _snlp;
     private String _currentNer;
+    private long _previousTime;
 
     public HyphenationChecker() {
         _correctWords = new HashSet<>();
+        _wordsWithHyphen = new HashSet<>();
         System.setProperty("http.agent", "");
 
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
         _snlp = new StanfordCoreNLP(props);
+        _previousTime = System.currentTimeMillis();
     }
 
     public boolean chekcHyphenatedWordExists(String word, String wordNoHyphen) {
@@ -59,13 +65,14 @@ public class HyphenationChecker {
         lemmatizedWord = lemmatizedWord.toLowerCase();
 
         log.info(String.format("Checking if word %s is in local dictionary.", lemmatizedWord));
-        if (_correctWords.contains(lemmatizedWord.toLowerCase())) {
+        if (_correctWords.contains(lemmatizedWord)) {
             log.info(String.format("Word %s in cache.", lemmatizedWord));
             return true;
         }
 
         log.info(String.format("Checking if word %s is in database.", lemmatizedWord));
         if (isInDatabase(lemmatizedWord)) {
+            _correctWords.add(lemmatizedWord);
             return true;
         }
 
@@ -75,6 +82,20 @@ public class HyphenationChecker {
             insertWordIntoDb(word, lemmatizedWord);
             return true;
         }
+
+        log.info(String.format("Checking if the word with hyphen %s is in local dictionary.", word));
+        if (_wordsWithHyphen.contains(word.toLowerCase())) {
+            log.info(String.format("Word %s in cache.", word));
+            return false;
+        }
+
+        log.info(String.format("Checking if the word with hyphen %s is in database", word));
+        if (isInDatabase(word.toLowerCase())) {
+            log.info(String.format("Word %s in cache.", word));
+            return false;
+        }
+
+
 
         if (checkOnDictionaryReference(lemmatizedWord)) {
             insertWordIntoDb(word, lemmatizedWord);
@@ -87,8 +108,11 @@ public class HyphenationChecker {
         }
 
         log.info("Waiting for Free Dictionary.");
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = Math.min(currentTime - _previousTime, DELAY);
+        log.info(String.format("Elapsed time %.2f s. Waiting for %.2f s.", elapsedTime/1000., (DELAY - elapsedTime) /1000.));
         try {
-            Thread.sleep(10000);
+            Thread.sleep(DELAY - elapsedTime);
         } catch (InterruptedException ex) {
             log.error(ex);
         }
@@ -97,7 +121,10 @@ public class HyphenationChecker {
             insertWordIntoDb(word, lemmatizedWord);
             return true;
         }
-        
+
+        _wordsWithHyphen.add(word.toLowerCase());
+        insertWordIntoDb(word, word.toLowerCase());
+
         return false;
     }
 
@@ -117,6 +144,7 @@ public class HyphenationChecker {
         log.info(String.format("Checking lemma %s on Free Dictionary for existance.", lemmatizedWord));
 
         try (BufferedReader in = getUrlResponse(FREE_DICTIONARY_ROOT, lemmatizedWord)) {
+            _previousTime = System.currentTimeMillis();
             return processFreeDictionaryHtml(in, lemmatizedWord);
         } catch (IOException ex) {
             log.error(ex);
@@ -193,13 +221,13 @@ public class HyphenationChecker {
         return wordNoHyphen;
     }
 
-    private boolean isInDatabase(String lemmatizedWord) {
-        log.info("Checking for word lemma in db " + lemmatizedWord);
+    private boolean isInDatabase(String word) {
+        log.info("Checking for word lemma in db " + word);
 
         Session session = NerHibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         List<HyphenatedWords> words = session.createCriteria(HyphenatedWords.class)
-                .add(Restrictions.eq("normalWord", lemmatizedWord)).list();
+                .add(Restrictions.eq("normalWord", word)).list();
         log.info("Words retrieved from db, count " + words.size());
         if (words.size() > 1) {
             log.warn("More than one word found " + words.size());
@@ -207,21 +235,21 @@ public class HyphenationChecker {
         session.close();
 
         if (words.size() > 0) {
-            log.info(String.format("Word lemma %s found in db", lemmatizedWord));
+            log.info(String.format("Word lemma %s found in db", word));
             return true;
         }
 
         return false;
     }
 
-    private void insertWordIntoDb(String word, String lemmatizedWord) {
-        log.info(String.format("Inserting pair (hyphenated , lemma): %s , %s into db.", word, lemmatizedWord));
+    private void insertWordIntoDb(String word, String normalWord) {
+        log.info(String.format("Inserting pair (hyphenated , normal word): %s , %s into db.", word, normalWord));
 
         Session session = NerHibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         HyphenatedWords row = new HyphenatedWords();
         row.setHyphenatedWord(word);
-        row.setNormalWord(lemmatizedWord);
+        row.setNormalWord(normalWord);
         session.save(row);
         session.getTransaction().commit();
         session.close();

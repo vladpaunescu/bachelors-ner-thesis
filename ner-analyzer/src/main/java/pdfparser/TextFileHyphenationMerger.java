@@ -4,7 +4,6 @@
  */
 package pdfparser;
 
-import annotators.DirectoryTreeCrawler;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -23,7 +22,7 @@ public class TextFileHyphenationMerger {
             TextFileHyphenationMerger.class.getName());
     private DirectoryTreeCrawler _crawler;
     private HyphenationChecker _checker;
-    private Pattern hyphen = Pattern.compile("([^\\s,\\.:!?'’”“‘\\(\\)\\[\\]]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?'’”‘\\(\\)\\[\\]]+)");
+    private Pattern hyphen = Pattern.compile("([^\\s,\\.:!?'\\+\\*\"’”“‘\\(\\)\\[\\]\\{\\}\\\\]+)(-)((\\r\\n)|[\\n\\r])([^\\s!,\\.:!?\\+\\*\"'’”‘\\(\\)\\[\\]\\{\\}\\\\]+)");
 
     public TextFileHyphenationMerger(DirectoryTreeCrawler crawler) {
         _crawler = crawler;
@@ -37,6 +36,11 @@ public class TextFileHyphenationMerger {
         int total = files.size();
         int count = 1;
         for (File textFile : files) {
+            if (alreadyProcessed(textFile)){
+                log.info(String.format("File %s already processed. Skipping.", textFile.getAbsolutePath()));
+                count++;
+                continue;
+            }
             log.info(String.format("\nRemoving for %d of %d. Name: %s", count, total, textFile.getAbsolutePath()));
             String text = removeHyphenation(textFile);
             writeTextToFile(textFile, text);
@@ -47,10 +51,11 @@ public class TextFileHyphenationMerger {
     }
 
     private String removeHyphenation(File textFile) {
+        
         String text = "";
         try {
             text = FileUtils.readFileToString(textFile, "UTF-8");
-            
+
             // eliminate hyphenation            
             Matcher matcher = hyphen.matcher(text);
 
@@ -62,9 +67,8 @@ public class TextFileHyphenationMerger {
                 if (_checker.chekcHyphenatedWordExists(wordWithHyphen, wordNoHyphen)) {
                     log.info(String.format("Replacing %s with %s.", matchedGroup, wordNoHyphen));
                     text = text.replaceAll(matchedGroup, wordNoHyphen);
-                }
-                else {
-                    log.info(String.format("Keeping hyphen. Replacing %s with %s", 
+                } else {
+                    log.info(String.format("Keeping hyphen. Replacing %s with %s",
                             matchedGroup, wordWithHyphen));
                     text = text.replaceAll(matchedGroup, wordWithHyphen);
                 }
@@ -80,6 +84,11 @@ public class TextFileHyphenationMerger {
         String output = getOutputFile(textFile);
         log.info("No hyphenation output file is " + output);
         MyFileUtils.writeStringToFile(output, text);
+    }
+
+    public boolean alreadyProcessed(File textFile) {
+        File outputFile = new File(getOutputFile(textFile));
+        return outputFile.exists();
     }
 
     private String getOutputFile(File textFile) {
