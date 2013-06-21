@@ -4,22 +4,9 @@
  */
 package pdfparser;
 
-import annotators.StanfordNerAnnotator;
-import edu.stanford.nlp.pipeline.DefaultPaths;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Properties;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -39,7 +26,7 @@ public class DirectoryTreeCrawler {
     private static final String TIKA_CLEANED_TXTS = "_tika_cleaned.txt";
     private static final String TIKA_NO_NEWLINE_TXTS = "tika_cleaned_no_newline.txt";
     private static final String TIKA_NO_NEWLINE_NO_HYPHEN_TXTS = "tika_cleaned_no_newline_no_hyphenation.txt";
-
+    private static final String TIKA_PROPER_STANFORD = "tika_cleaned_no_newline_no_hyphenation_stanford.txt";
     private String _rootdir;
     private File _root;
 
@@ -82,7 +69,11 @@ public class DirectoryTreeCrawler {
     public Collection<File> getTikaProperUnicodeNoHyphenFiles() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_NO_NEWLINE_NO_HYPHEN_TXTS),
                 new NotFileFilter(new NameFileFilter("annotations")));
+    }
 
+    public Collection<File> getTikaProperStanfordFiles() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_PROPER_STANFORD),
+                TrueFileFilter.INSTANCE);
     }
 
     public static void main(String[] args) {
@@ -91,5 +82,3 @@ public class DirectoryTreeCrawler {
         dirCrawler.getTikaProperUnicodeNoHyphenFiles();
     }
 }
-
-

@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.apache.log4j.Logger;
 import org.apache.commons.io.FilenameUtils;
-import static pdfparser.DirectoryPdfScanner.log;
 
 /**
  *
@@ -50,9 +49,15 @@ public class MyFileUtils {
                 new FileOutputStream(fileanme), "UTF-8"))) {
             out.write(text);
         } catch (IOException ex) {
-            log.error("Writing text to file "+ fileanme + " failed with exception "+ ex);
+            log.error("Writing text to file " + fileanme + " failed with exception " + ex);
         }
+    }
 
+    public static boolean makeDirectories(File directory) {
+        if (!directory.exists()) {
+            return directory.mkdirs();
+        }
+        return true;
     }
 
     static class DirectoryFileFilter implements FileFilter {
@@ -90,8 +95,8 @@ public class MyFileUtils {
 
         }
     }
-    
-     public static void main(String[] args) {
+
+    public static void main(String[] args) {
         String path = "D:/path/test.pdf";
         System.out.println("File no extension " + getFileNoExtension(path));
 
