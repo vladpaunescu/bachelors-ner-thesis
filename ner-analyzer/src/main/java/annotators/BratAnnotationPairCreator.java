@@ -7,12 +7,16 @@ package annotators;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hslf.record.Sound;
 import pdfparser.DirectoryTreeCrawler;
 import pdfparser.MyFileUtils;
 
@@ -26,19 +30,19 @@ public class BratAnnotationPairCreator {
             BratAnnotationPairCreator.class.getName());
     private static final String OUTSIDE_ENTITY = "O";
     private static final String CRLF = "\r\n";
-    private static final String[] CONLL_ENTITIES = {"PERSON", "ORGANIZATION",
-        "LOCATION", "MISC", "DATE", "NUMBER"};
-    private static final Pattern NEWLINE = Pattern.compile("([^\\n]+)(\\n)([^\\n]+)");
+    private static final Pattern NEWLINE = Pattern.compile("([^\\n]+)(\\n)");
     private static final String ANNOTATION_CONFIG = "annotation.conf";
     private DirectoryTreeCrawler _crawler;
     private String _rootDirName;
     private String _outputDirName;
     private String _annotationConfigFileContents;
+    private Set<String> _namedEntityTypes;
 
     public BratAnnotationPairCreator(String rootDir, String outputDir) {
         _rootDirName = rootDir;
         _outputDirName = outputDir;
         _crawler = new DirectoryTreeCrawler(rootDir);
+        _namedEntityTypes = new HashSet<>();
     }
 
     public void convertFilesToBratFormat() {
@@ -53,6 +57,7 @@ public class BratAnnotationPairCreator {
             log.info(String.format("Converting to brat format file %d of %d : %s", count, total, properFile.getAbsolutePath()));
             toBratAnnotationFormatPair(properFile);
             count++;
+            break;
         }
     }
 
@@ -87,6 +92,7 @@ public class BratAnnotationPairCreator {
 //      :	:	101	102	O	:
 //      11	11	103	105	DATE	CD
 // multline T1  DATE 20 25;26 30    jumps over 
+// PER 0 20;21 26;27 30	William Henry "Bill" Gates III
 // in 002967 - Barry J. Fraser/swproxy_proper    
 //    ORGANIZATION 347 405	UK 
 //International Journal of Science Education Publication
@@ -115,6 +121,10 @@ public class BratAnnotationPairCreator {
                     continue;
                 }
 
+                if (!_namedEntityTypes.contains(entityType)) {
+                    _namedEntityTypes.add(entityType);
+                }
+
                 int beginIndex = Integer.parseInt(tokens[2]);
                 int endIndex = Integer.parseInt(tokens[3]);
 
@@ -127,23 +137,36 @@ public class BratAnnotationPairCreator {
                         endIndex = Integer.parseInt(tokens[3]);
                     } else {
                         // different entity type
-                        String namedEntity = inputFile.substring(beginIndex, endIndex);
-                        Matcher matcher = NEWLINE.matcher(namedEntity);
-                        while (matcher.find()) {
-                            String matchedGroup = matcher.group();
-                            System.out.println(">>>>>>>>>>");
-                            System.out.println(matchedGroup);
-                            System.out.println(matcher.group(1) + " " + matcher.group(3));
-                        }
-
-                        addEntityToBratAnnotation(annOutput, namedEntity, entitiesIndex, entityType,
-                                beginIndex, endIndex);
-
-                        entitiesIndex++;
-                        //log.info(namedEntity);
                         break;
                     }
                 }
+                String namedEntity = inputFile.substring(beginIndex, endIndex);
+                System.out.println(namedEntity);
+                Matcher matcher = NEWLINE.matcher(namedEntity);
+                int count = 0;
+                List<Integer> newLineSplits = new LinkedList<>();
+//                while (matcher.find()) {
+//                    String matchedGroup = matcher.group();
+//                    System.out.println(">>>>>>>>>>");
+//                    String groupNoNewline = matcher.group(1) + " "; 
+//                    Integer splitIndex = beginIndex + matcher.start() + matcher.group(1).length();
+//                    System.out.println(matchedGroup);
+//                    System.out.println(groupNoNewline);
+//                    System.out.println(splitIndex);
+//                    namedEntity = namedEntity.replaceAll(matchedGroup, groupNoNewline);
+//                    inputFile = inputFile.replaceAll(matchedGroup, groupNoNewline);
+//                    System.out.println("Named ent after " + namedEntity);
+//                    System.out.println("");
+//                    newLineSplits.add(splitIndex);
+//                    count++;
+//                }
+                if (!matcher.find()) {
+                    addEntityToBratAnnotation(annOutput, namedEntity, entitiesIndex, entityType,
+                            beginIndex, endIndex);
+                    entitiesIndex++;
+                }
+
+                //log.info(namedEntity);
             }
         } catch (IOException ex) {
             log.error(ex);
@@ -151,10 +174,14 @@ public class BratAnnotationPairCreator {
         return annOutput.toString();
     }
 
+    //PER 0 20;21 26;27 30	William Henry "Bill" Gates III
     private void addEntityToBratAnnotation(StringBuilder annOutput, String namedEntity, int entitiesIndex, String entityType,
             int entityStartIndex, int entityEndIndex) {
         annOutput.append('T').append(entitiesIndex).append('\t').append(entityType).append(' ');
-        annOutput.append(entityStartIndex).append(' ').append(entityEndIndex);
+        annOutput.append(entityStartIndex);
+        annOutput.append(' ');
+
+        annOutput.append(entityEndIndex);
         annOutput.append('\t').append(namedEntity).append(CRLF);
     }
 
@@ -183,7 +210,7 @@ public class BratAnnotationPairCreator {
     private String getAnnotationsConfigFileContents() {
         StringBuilder sb = new StringBuilder();
         sb.append("[entities]" + CRLF);
-        for (String entity : CONLL_ENTITIES) {
+        for (String entity : _namedEntityTypes) {
             sb.append(entity).append(CRLF);
         }
         log.info("annotation.config content is");
