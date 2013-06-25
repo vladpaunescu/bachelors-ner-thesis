@@ -30,14 +30,23 @@ public class StanfordTextFilesAnnotator {
     private static final int TIMEOUT_SECONDS = 360;
     
     private DirectoryTreeCrawler _crawler;
+    private boolean _genericEnabled;
 
      public StanfordTextFilesAnnotator(DirectoryTreeCrawler crawler) {
         _crawler = crawler;
+        _genericEnabled = false;
     }
     
     public void annotateProperUnicodTikaNoHyphen() throws InterruptedException {
         log.info("Annotating tika parsed text files");
         Collection<File> textFiles = _crawler.getTikaProperUnicodeNoHyphenFiles();
+        annotateTextFiles(textFiles);
+    }
+    
+    public void annotateSplitFiles(){
+        log.info("Annotating file-split files files");
+        _genericEnabled = true;
+        Collection<File> textFiles = _crawler.getGenericFileSplitFiles();
         annotateTextFiles(textFiles);
     }
 
@@ -98,13 +107,14 @@ public class StanfordTextFilesAnnotator {
 
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
-        return new StanfordNerAnnotator(pipeline);
+        return new StanfordNerAnnotator(pipeline, _genericEnabled);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        DirectoryTreeCrawler dirCrawler = new DirectoryTreeCrawler("D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science");
+        DirectoryTreeCrawler dirCrawler = new DirectoryTreeCrawler(
+                "D:/Work/NLP/corpuses/ms_academic/brat-data/file-split-no-comma");
         StanfordTextFilesAnnotator annotator = new StanfordTextFilesAnnotator(dirCrawler);
-        annotator.annotateProperUnicodTikaNoHyphen();
+        annotator.annotateSplitFiles();
     }
 }
 

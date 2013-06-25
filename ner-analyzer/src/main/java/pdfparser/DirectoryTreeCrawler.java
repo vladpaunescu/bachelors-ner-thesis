@@ -7,10 +7,12 @@ package pdfparser;
 import java.io.File;
 import java.util.Collection;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  *
@@ -28,7 +30,8 @@ public class DirectoryTreeCrawler {
     private static final String TIKA_NO_NEWLINE_NO_HYPHEN_TXTS = "tika_cleaned_no_newline_no_hyphenation.txt";
     private static final String TIKA_PROPER_STANFORD = "tika_cleaned_no_newline_no_hyphenation_stanford.txt";
     private static final String PROPER_FILES = "_proper.txt";
-    
+    private static final String GENERIC_FILE_SPLIT = "*_*.txt";
+    private static final String DONE_ANN_FILE_SUFFIX = "_done.ann";
     private String _rootdir;
     private File _root;
 
@@ -77,9 +80,20 @@ public class DirectoryTreeCrawler {
         return FileUtils.listFiles(_root, new SuffixFileFilter(TIKA_PROPER_STANFORD),
                 TrueFileFilter.INSTANCE);
     }
-    
-    public Collection<File> getProperFiles(){
+
+    public Collection<File> getProperFiles() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(PROPER_FILES),
+                TrueFileFilter.INSTANCE);
+    }
+
+    public Collection<File> getGenericFileSplitFiles() {
+        return FileUtils.listFiles(_root, new AndFileFilter(new WildcardFileFilter(GENERIC_FILE_SPLIT),
+                new NotFileFilter(new SuffixFileFilter("_stanford.txt"))),
+                TrueFileFilter.INSTANCE);
+    }
+
+    public Collection<File> getAnnotationFiles() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(DONE_ANN_FILE_SUFFIX),
                 TrueFileFilter.INSTANCE);
     }
 

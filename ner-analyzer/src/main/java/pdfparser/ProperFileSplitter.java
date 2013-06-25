@@ -1,0 +1,116 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package pdfparser;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.apache.commons.io.FileUtils;
+
+/**
+ *
+ * @author vlad
+ */
+public class ProperFileSplitter {
+
+    static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
+            ProperFileSplitter.class.getName());
+    private static String END_OF_PARAGRAPH_SPLIT =  "(?<=[\\.!\\?])[ ]*\\n";
+    private String _rootDirName;
+    private String _outputDirName;
+    private DirectoryTreeCrawler _crawler;
+    private String _currentBaseDir;
+
+    public ProperFileSplitter(String rootDir, String outputDir) {
+        _rootDirName = rootDir;
+        _outputDirName = outputDir;
+        _crawler = new DirectoryTreeCrawler(rootDir);
+        _currentBaseDir = "";
+    }
+
+    public void splitFiles() {
+        log.info(String.format("Output directory is %s", _outputDirName));
+        List<File> properFiles = new ArrayList<>(_crawler.getProperFiles());
+        Collections.shuffle(properFiles);
+
+        int total = properFiles.size();
+        int count = 1;
+        log.info("Total files to process " + total);
+        for (File properFile : properFiles) {
+            createDirectory(count);
+            log.info(String.format("Splitting file %d of %d : %s", count, total, properFile.getAbsolutePath()));
+            splitFile(properFile, count);
+            count++;
+        }
+
+    }
+
+    private void splitFile(File properFile, int count) {
+        String text = "";
+        try {
+            text = FileUtils.readFileToString(properFile, "UTF-8");
+        } catch (IOException ex) {
+            log.warn(ex);
+        }
+        String[] lines = text.split(END_OF_PARAGRAPH_SPLIT);
+        System.out.println(lines.length);
+//        for(String line : lines){
+//            System.out.println(">>>");
+//            System.out.println(line);
+//        }
+        constructSplits(lines, count);
+    }
+
+    private void constructSplits(String[] lines, int count) {
+        int charIndex = 0;
+        int linesCount = 0;
+        int splitCount = 1;
+        StringBuilder sb = new StringBuilder();
+        System.out.println(lines.length);
+        for (String line : lines) {
+            sb.append(line).append('\n');
+            charIndex += line.length() + 1;
+            linesCount++;
+
+            if (linesCount > 5 || charIndex > 4000) {
+                writeLines(sb, count, splitCount);
+                splitCount++;
+                sb = new StringBuilder();
+                charIndex = 0;
+                linesCount = 0;
+            }
+
+        }
+    }
+
+    private void writeLines(StringBuilder sb, int count, int splitCount) {
+        String outputFilename = getOutputFilenameSplit(count, splitCount);
+        log.info("Output filename is " + outputFilename);
+        MyFileUtils.writeStringToFile(outputFilename, sb.toString());
+    }
+
+    private void createDirectory(int count) {
+        _currentBaseDir = String.format("%d", count);
+        String dirFilename = String.format("%s/%s", _outputDirName, _currentBaseDir);
+        log.info(String.format("Creating directory %s", dirFilename));
+        MyFileUtils.makeDirectories(new File(dirFilename));
+    }
+
+    private String getOutputFilenameSplit(int count, int splitCount) {
+        return String.format("%s/%s/%d_%d.txt", _outputDirName, _currentBaseDir, count, splitCount);
+    }
+
+    public static void main(String[] args) {
+
+        String rootSrcDir = "D:/Work/NLP/corpuses/ms_academic/parsed";
+        String rootOutputDir = "D:/Work/NLP/corpuses/ms_academic/brat-data/file-split-no-comma";
+
+
+        ProperFileSplitter splitter = new ProperFileSplitter(rootSrcDir, rootOutputDir);
+        splitter.splitFiles();
+    }
+}

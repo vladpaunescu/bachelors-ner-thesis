@@ -4,23 +4,21 @@
  */
 package annotators;
 
+import edu.stanford.nlp.ie.NERClassifierCombiner;
+import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import pdfparser.MyFileUtils;
 
 /**
  *
@@ -32,9 +30,16 @@ public class StanfordNerAnnotator {
             StanfordNerAnnotator.class.getName());
     public static final char TAB = '\t';
     private StanfordCoreNLP _snlp;
+    private boolean _genericEnabled;
 
     public StanfordNerAnnotator(StanfordCoreNLP snlp) {
         _snlp = snlp;
+        _genericEnabled = false;
+    }
+
+    public StanfordNerAnnotator(StanfordCoreNLP snlp, boolean generic) {
+        _snlp = snlp;
+        _genericEnabled = true;
     }
 
     public String annotateFile(File textFile) {
@@ -78,6 +83,26 @@ public class StanfordNerAnnotator {
         return null;
     }
 
+    public NamedEntities annotateText(String text) {
+        NamedEntities namedEntities = new NamedEntities();
+
+        // create an empty Annotation just with the given text
+        Annotation document = new Annotation(text);
+
+        // run all Annotators on this text
+        _snlp.annotate(document);
+
+        // these are all the sentences in this document
+        // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
+        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+
+        for (CoreMap sentence : sentences) {
+            annotateSentence(sentence, namedEntities);
+        }
+
+        return namedEntities;
+    }
+
     private void annotateSentence(CoreMap sentence, StringBuilder collector) {
         // a CoreLabel is a CoreMap with additional token-specific methods
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -99,6 +124,31 @@ public class StanfordNerAnnotator {
         }
     }
 
+    private void annotateSentence(CoreMap sentence, NamedEntities namedEntities) {
+        // a CoreLabel is a CoreMap with additional token-specific methods
+        for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+            // this is the text of the token
+            String originalText = token.originalText();
+
+            int beginPosition = token.beginPosition();
+            int endPosition = token.endPosition();
+
+            // this is the NER label of the token
+            String ne = token.ner();
+            
+            if(ne.equals("O")){
+                continue;
+            }
+
+            AnnNamedEntity entity = new AnnNamedEntity(ne);
+            entity.setStartIndex(beginPosition);
+            entity.setEndIndex(endPosition);
+            entity.setNamedEntityText(originalText);
+
+            namedEntities.addEntityToCategory(entity, ne);
+        }
+    }
+
     private void writeAnnotationOutput(File textFile, StringBuilder collector) {
 
         String output = getOutputFile(textFile);
@@ -112,12 +162,7 @@ public class StanfordNerAnnotator {
             }
         }
 
-        try (Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(output), "UTF-8"))) {
-            out.write(collector.toString());
-        } catch (IOException ex) {
-            log.error("Writing annotation to file " + output + " failed with " + ex);
-        }
+        MyFileUtils.writeStringToFile(output, collector.toString());
 
     }
 
@@ -127,29 +172,33 @@ public class StanfordNerAnnotator {
         String parentDirectory = FilenameUtils.getFullPathNoEndSeparator(fileName);
 
         String extension = FilenameUtils.getExtension(fileName);
-        return String.format("%s/annotations/%s_stanford.%s", parentDirectory, fileNoExtenesion, extension);
 
+        if (!_genericEnabled) {
+            return String.format("%s/annotations/%s_stanford.%s", parentDirectory, fileNoExtenesion, extension);
+        }
+        return String.format("%s_stanford.txt", FilenameUtils.removeExtension(fileName));
     }
 
     private boolean alreadyAnnotated(File textFile) {
         File outputFile = new File(getOutputFile(textFile));
-        return outputFile.exists();
-    //   return false;
+        //  return outputFile.exists();
+        return false;
     }
 
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
-        //props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
-        //props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
+        //props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
+        props.put("ner.model", "D:/Work/NLP/corpuses/ms_academic/models/14-class.ser.gz");
+        props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
         StanfordNerAnnotator annotator = new StanfordNerAnnotator(pipeline);
-        String textfile = "D:/Work/NLP/corpuses/ms_academic/out/22 - Social Science/"
-                + "716514 - Eric  Neumayer/proper_unicode/"
-                + "2001_The_human_development_index_and_sustainability_a_constructive_proposal_tika_cleaned_no_newline_no_hyphenation.txt";
+        String textfile = "D:/Work/NLP/corpuses/ms_academic/parsed/47737 - Judee K. Burgoon/biocca1_proper.txt";
+
+        textfile = "D:/Work/NLP/corpuses/ms_academic/train-io/5_10_done.txt";
+
         String annotations = annotator.annotateFile(new File(textfile));
         System.out.println(annotations);
     }
