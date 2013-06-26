@@ -11,4 +11,10 @@ International~Organization for Standardization.
 B.~Sundheim R.~Grishman.
 \newblock Message understanding conference - 6: A brief history, 1996.
 
+\bibitem{rau1991}
+Lisa~F. Rau.
+\newblock Extracting company names from text.
+\newblock In Proc. Conference on Artificial Intelligence Applications of IEEE,
+  1991.
+
 \end{thebibliography}

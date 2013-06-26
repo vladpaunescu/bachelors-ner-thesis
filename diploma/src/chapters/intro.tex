@@ -4,7 +4,33 @@
 \section{Contextul Problemei}
 
 Termenul de Entitate cu Nume (eng. Named Entity - NE \abbrev{NE}{Named Entity}) \abbrev{eng.}{Engleza} este des întâlnit în Extragerea de Informații (eng. Information Extraction - IE \abbrev{IE}{Information Extraction}). El a fost inventat la a șasea Conferință pentru Înțelegerea Mesajelor (eng. Message Understanding Conference - MUC)
-\abbrev{MUC}{Message Understanding Conference}, MUC-6. \cite{grishman1996}
+\abbrev{MUC}{Message Understanding Conference}, MUC-6. \cite{grishman1996}. Aceste conferințe au influențat cercetarea in domeniul IE în anii 90. La acel moment, MUC se concentra pe task-uri de IE în care informație structurată trebuia extrasă din articole din ziar din domeniul militar sau terorist.
+
+
+În definiera sarcinilor IE, oamenii au observat că era esențial sa se recunoască unități de informație precum \textbf{nume proprii} ce includeau persoane, organizații și locații. Dacă în fazele inițiale ale formularii problemei, alte entităti (nume proprii) erau considerate ca fiind Amestecate (eng. Misc.), mai târziu, alte unități informaționale au fost introduse, entități care nu mai se identificau cu conceptul de nume propriu (substantiv propriu), ci aveau o corelare cu \textbf{expresiile numerice}, cum ar fi: data calendaristica, numeral cardinal, numeral ordinal, timp, unități monetare și procente.
+
+
+Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre task-urile importante la IE și a fost denumită \textit{Named Entity Recognition} (NER).
+
+
+Înainte ca domeniul NER să fie oficial recunoscut la MUC-6 în 1996, cercetări înrudite au fost făcute pentru identificarea numelor proprii. O lucrare publicată în 1991 de Lisa F. Rau este adesea citată ca punctul de naștere al domeniului.\cite{rau1991}
+
+Pentru mai bine de 20 de ani, o comuniate de cercetători a abordat această problemă, folosind diferite tehnici și e creat soluții pentru a perfecționa sistemele NER.
+
+
+Ca o definiție, un sistem NER este în esență un sistem care primește ca input un text din limaj natural, nestrucuturat. Output-ul sau reprezintă informație structurată, formata din entitațile identificate și categorizate din textul dat.
+
+
+Vasta majoritate a sistemelor propuse până în prezent se împart în două categorii:
+
+\begin{itemize}
+\item sisteme bazate pe reguli făcute de mână;
+\item sisteme folosesc algoritmi de Învățare Automată (eng. Machine Learning ML \abbrev{ML}{Machine Learning}).
+\end{itemize}
+
+
+În ambele cazuri, colecții mari de documente trebuie să fie analizate ori pentru a deduce reguli și pattern-uri, ori pentru a le putea folosi ca antrenament pt algoritmii de Învățare Automată. Lingviști specializați trebuie să execute această sarcină importantă, care reprezintă un volum semnficiativ de muncă. Este foarte important ca această sarcină să fie făcută corect, deoarece stă la baza algoritmilor de ML. Fiind destul de anevoios și necesitand lucru manual, acastă sarcină constituie un impediement in construirea și întreținerea unui sistem NER la scară largă.
+
 
 \textbf{This is just a demo file. It should not be used as a sample for a thesis.}\\
 \todo{Remove this line (this is a TODO)}

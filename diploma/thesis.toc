@@ -3,11 +3,11 @@
 \contentsline {chapter}{Abstract}{ii}{chapter*.5}
 \contentsline {chapter}{\numberline {1}Introducere}{1}{chapter.1}
 \contentsline {section}{\numberline {1.1}Contextul Problemei}{1}{section.1.1}
-\contentsline {section}{\numberline {1.2}Project Description}{1}{section.1.2}
-\contentsline {subsection}{\numberline {1.2.1}Project Scope}{1}{subsection.1.2.1}
+\contentsline {section}{\numberline {1.2}Project Description}{2}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Project Scope}{2}{subsection.1.2.1}
 \contentsline {subsection}{\numberline {1.2.2}Project Objectives}{2}{subsection.1.2.2}
-\contentsline {subsection}{\numberline {1.2.3}Related Work}{2}{subsection.1.2.3}
-\contentsline {subsection}{\numberline {1.2.4}Demo listings}{2}{subsection.1.2.4}
+\contentsline {subsection}{\numberline {1.2.3}Related Work}{3}{subsection.1.2.3}
+\contentsline {subsection}{\numberline {1.2.4}Demo listings}{3}{subsection.1.2.4}
 \contentsline {subsection}{\numberline {1.2.5}Tables}{3}{subsection.1.2.5}
-\contentsline {chapter}{\numberline {A}Project Build System Makefiles}{4}{appendix.A}
-\contentsline {section}{\numberline {A.1}Makefile.test}{4}{section.A.1}
+\contentsline {chapter}{\numberline {A}Project Build System Makefiles}{5}{appendix.A}
+\contentsline {section}{\numberline {A.1}Makefile.test}{5}{section.A.1}
