@@ -15,6 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  *
  * @author vlad
+ * 
  */
 public class TextFileHyphenationMerger {
 
