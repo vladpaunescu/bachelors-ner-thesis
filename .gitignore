@@ -9,6 +9,8 @@ old_out
 /ner-analyzer/target/
 *.iml
 
+#LaTeX ignored files
+
 *.aux
 *.glo
 *.idx
