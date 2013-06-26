@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  26 JUN 2013 17:39
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  27 JUN 2013 02:00
 entering extended mode
 **main.tex
-(D:\Work\licenta-ner\diploma\src\main.tex
+("D:\Facultate\Anul 4\Licenta\licenta-ner\diploma\src\main.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -24,7 +24,7 @@ No file src/chapters/intro.tex.
  
 Here is how much of TeX's memory you used:
  9 strings out of 493921
- 186 string characters out of 3144852
+ 246 string characters out of 3144879
  49031 words of memory out of 3000000
  3400 multiletter control sequences out of 15000+200000
  3640 words of font info for 14 fonts, out of 3000000 for 9000

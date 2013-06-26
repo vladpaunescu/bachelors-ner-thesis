@@ -89,6 +89,19 @@
 	\newpage
 }
 
+\def\execute{%
+\begingroup
+\catcode`\%=12
+\catcode`\\=12
+\executeaux}
+\def\executeaux#1{\immediate\write18{#1}\endgroup}
+%% With this customized command execute the necessary command to run makeindex with the necessary parameters for the nomenclature package
+% During the first run of LaTeX by the package nomenclature a file, called YOURLATEXFILEMAME.nlo is generated.
+% During the second run of LaTeX, with this line makeindex generates a YOURLATEXFILENAME.nls of that.
+\execute{makeindex thesis.nlo -s nomencl.ist -o thesis.nls}
+%% The next commands during the first run of LaTex writes the .nlo file.
+% Do not change the order! Otherwise the file will be open aleady and the now first of the two commands fails silently!
+
 \makenomenclature
 
 
