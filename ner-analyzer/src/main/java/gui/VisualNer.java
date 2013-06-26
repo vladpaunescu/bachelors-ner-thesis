@@ -10,6 +10,7 @@ import annotators.StanfordNerAnnotator;
 import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import static gui.VisualNer.log;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
@@ -452,15 +453,7 @@ public class VisualNer extends javax.swing.JFrame {
         _rawText = nerTextPane.getText();
         NerTask task = new NerTask(_rawText, _annotator, this);
         task.execute();
-        String annotatedText = "";
-        try {
-            annotatedText = task.get();
-        } catch (InterruptedException | ExecutionException ex) {
-            log.error(ex);
-        }
-        nerTextPane.setText(annotatedText);
-        nerTextPane.setPreferredSize(new Dimension(550, 578));
-        nerTextPane.setMaximumSize(new Dimension(550, 578));
+       
     }//GEN-LAST:event_annotateEntitiesButtonActionPerformed
 
     private void loadTextFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTextFileButtonActionPerformed
@@ -607,7 +600,7 @@ public class VisualNer extends javax.swing.JFrame {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", MODEL_5_CLASS);
+        props.put("ner.model", MODEL_14_CLASS);
         props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
         props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
 
@@ -797,7 +790,8 @@ class NerTask extends SwingWorker<String, Integer> {
         String annotatedText = annotateHtml(entities);
         log.info("Ann text " + annotatedText);
         _visualNer.setAnnotatedText(annotatedText);
-        //_visualNer.getNerTextPane().setText(annotatedText);
+        _visualNer.getNerTextPane().setText(annotatedText);
+        
         return annotatedText;
 
     }
