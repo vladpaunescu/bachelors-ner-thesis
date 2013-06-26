@@ -78,7 +78,7 @@
 \usepackage{nomencl}
 
 \let\abbrev\nomenclature
-\renewcommand{\nomname}{Notations and Abbreviations}
+\renewcommand{\nomname}{Notații și Abrevieri}
 
 \renewcommand{\nomlabel}[1]{#1 --}
 \setlength{\nomitemsep}{-\parsep}

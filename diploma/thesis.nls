@@ -3,7 +3,7 @@
  \nomgroup{A}
 
   \item [{CS}]\begingroup Computer Science\nomeqref {1.0}\nompageref{2}
-  \item [{eng.}]\begingroup Engleza\nomeqref {1.0}\nompageref{1}
+  \item [{eng.}]\begingroup Engleză\nomeqref {1.0}\nompageref{1}
   \item [{IE}]\begingroup Information Extraction\nomeqref {1.0}
 		\nompageref{1}
   \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{1}
