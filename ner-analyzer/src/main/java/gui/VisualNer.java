@@ -10,15 +10,17 @@ import annotators.StanfordNerAnnotator;
 import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import org.apache.commons.io.FileUtils;
-
 
 /**
  *
@@ -31,7 +33,9 @@ public class VisualNer extends javax.swing.JFrame {
     /**
      * Creates new form VisuaNer
      */
-    public static final String MODEL_5_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz";
+    private static final String MODEL_5_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz";
+    private static final String MODEL_14_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/14-class.ser.gz";
+    private boolean _allClassesEnabled;
     private String _textFilename;
     private File _textFile;
     private String _rawText;
@@ -41,8 +45,12 @@ public class VisualNer extends javax.swing.JFrame {
     public VisualNer() {
 
         initComponents();
+        _allClassesEnabled = false;
+        initalizeEntitiesLegend();
         _annotator = initializeStanfordAnnotator();
         nerTextPane.setContentType("text/html");
+        nerTextPane.setPreferredSize(new Dimension(550, 578));
+        nerTextPane.setMaximumSize(new Dimension(550, 578));
 
     }
 
@@ -54,16 +62,67 @@ public class VisualNer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
+        nerScrollPane = new javax.swing.JScrollPane();
         nerTextPane = new javax.swing.JTextPane();
         annotateEntitiesButton = new javax.swing.JButton();
         loadTextFileButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        personLabel = new javax.swing.JLabel();
+        personCanvas = new java.awt.Canvas();
+        organizationLabel = new javax.swing.JLabel();
+        organizationCanvas = new java.awt.Canvas();
+        organizationTotal = new javax.swing.JLabel();
+        locationCanvas = new java.awt.Canvas();
+        locationLabel = new javax.swing.JLabel();
+        personTotal = new javax.swing.JLabel();
+        miscLabel = new javax.swing.JLabel();
+        miscCanvas = new java.awt.Canvas();
+        nationalityCanvas = new java.awt.Canvas();
+        nationalityLabel = new javax.swing.JLabel();
+        nationalityTotal = new javax.swing.JLabel();
+        numberCanvas = new java.awt.Canvas();
+        numberLabel = new javax.swing.JLabel();
+        percentCanvas = new java.awt.Canvas();
+        moneyLabel = new javax.swing.JLabel();
+        locationTotal = new javax.swing.JLabel();
+        miscTotal = new javax.swing.JLabel();
+        percentTotal = new javax.swing.JLabel();
+        numberTotal = new javax.swing.JLabel();
+        moneyCanvas = new java.awt.Canvas();
+        moneyTotal = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
+        dateTotal = new javax.swing.JLabel();
+        dateCanvas = new java.awt.Canvas();
+        durationLabel = new javax.swing.JLabel();
+        timeLabel = new javax.swing.JLabel();
+        ordinalLabel = new javax.swing.JLabel();
+        ordinalCanvas = new java.awt.Canvas();
+        ordinalTotal = new javax.swing.JLabel();
+        percentLabel = new javax.swing.JLabel();
+        setLabel = new javax.swing.JLabel();
+        durationCanvas = new java.awt.Canvas();
+        timeCanvas = new java.awt.Canvas();
+        setCanvas = new java.awt.Canvas();
+        durationTotal = new javax.swing.JLabel();
+        setTotal = new javax.swing.JLabel();
+        timeTotal = new javax.swing.JLabel();
+        totalLabel = new javax.swing.JLabel();
+        entitiesTotal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        wordsLabel = new javax.swing.JLabel();
+        sentenceLabel = new javax.swing.JLabel();
+        charactersLabel = new javax.swing.JLabel();
+        charactersCount = new javax.swing.JLabel();
+        wordsCount = new javax.swing.JLabel();
+        sentenceCount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane2.setViewportView(nerTextPane);
+        nerScrollPane.setMaximumSize(new java.awt.Dimension(32767, 578));
+
+        nerTextPane.setMaximumSize(new java.awt.Dimension(2147483647, 578));
+        nerScrollPane.setViewportView(nerTextPane);
 
         annotateEntitiesButton.setText("Identifica Entitati");
         annotateEntitiesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +140,266 @@ public class VisualNer extends javax.swing.JFrame {
 
         jLabel5.setText("Adaugati text mai jos");
 
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tipuri Entitati"));
+
+        personLabel.setText("Persoane");
+
+        organizationLabel.setText("Ogranizatii");
+
+        organizationTotal.setText("0");
+
+        locationLabel.setText("Locatii");
+
+        personTotal.setText("0");
+
+        miscLabel.setText("Altele");
+
+        nationalityLabel.setText("Nationalitati");
+
+        nationalityTotal.setText("0");
+
+        numberLabel.setText("Numar");
+
+        moneyLabel.setText("Bani");
+
+        locationTotal.setText("0");
+
+        miscTotal.setText("0");
+
+        percentTotal.setText("0");
+
+        numberTotal.setText("0");
+
+        moneyTotal.setText("0");
+
+        dateLabel.setText("Data calendaristica");
+
+        dateTotal.setText("0");
+
+        durationLabel.setText("Durata");
+
+        timeLabel.setText("Timp");
+
+        ordinalLabel.setText("Numeral Ordinal");
+
+        ordinalTotal.setText("0");
+
+        percentLabel.setText("Procent");
+
+        setLabel.setText("Set");
+
+        durationTotal.setText("0");
+
+        setTotal.setText("0");
+
+        timeTotal.setText("0");
+
+        totalLabel.setText("Total Entitati");
+
+        entitiesTotal.setText("0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(numberLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(miscLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(organizationLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(locationLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(personLabel, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(nationalityTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(numberTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ordinalTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(percentTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(moneyTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(dateTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(durationTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(setTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(timeTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(entitiesTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ordinalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(moneyLabel)
+                                    .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nationalityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nationalityCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(miscCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                            .addComponent(miscTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(locationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(locationTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(organizationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(organizationTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(personCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(personTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(numberCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(moneyCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ordinalCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(percentCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dateCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(durationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(timeCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(setCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(59, 59, 59))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(setLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(durationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(percentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(personLabel)
+                            .addComponent(personCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(organizationTotal, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(organizationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(organizationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(personTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(locationLabel)
+                    .addComponent(locationTotal)
+                    .addComponent(locationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(miscLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(miscCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(miscTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(nationalityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nationalityCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nationalityTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(numberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(numberCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numberTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ordinalLabel)
+                    .addComponent(ordinalTotal)
+                    .addComponent(ordinalCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(percentLabel)
+                    .addComponent(percentCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(percentTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(moneyCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(moneyTotal)
+                    .addComponent(moneyLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTotal)
+                    .addComponent(dateLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(durationLabel)
+                    .addComponent(durationCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(durationTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(timeLabel)
+                    .addComponent(timeCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(timeTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(setLabel)
+                    .addComponent(setCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(setTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(totalLabel)
+                    .addComponent(entitiesTotal))
+                .addGap(49, 49, 49))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistici Document"));
+
+        wordsLabel.setText("Numar Cuvinte");
+
+        sentenceLabel.setText("Numar Propozitii");
+
+        charactersLabel.setText("Numar caractere");
+
+        charactersCount.setText("0");
+
+        wordsCount.setText("0");
+
+        sentenceCount.setText("0");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(charactersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(wordsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sentenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sentenceCount, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(wordsCount, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(charactersCount, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(charactersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(charactersCount))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(wordsLabel)
+                    .addComponent(wordsCount))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sentenceLabel)
+                    .addComponent(sentenceCount))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,39 +408,40 @@ public class VisualNer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
+                        .addGap(23, 23, 23)
                         .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(loadTextFileButton)
-                        .addGap(327, 327, 327))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(annotateEntitiesButton)
+                        .addGap(28, 28, 28)
+                        .addComponent(loadTextFileButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(198, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(nerScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(annotateEntitiesButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(139, 139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadTextFileButton)
                     .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(annotateEntitiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(197, 197, 197))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(36, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(annotateEntitiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nerScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         pack();
@@ -133,6 +452,15 @@ public class VisualNer extends javax.swing.JFrame {
         _rawText = nerTextPane.getText();
         NerTask task = new NerTask(_rawText, _annotator, this);
         task.execute();
+        String annotatedText = "";
+        try {
+            annotatedText = task.get();
+        } catch (InterruptedException | ExecutionException ex) {
+            log.error(ex);
+        }
+        nerTextPane.setText(annotatedText);
+        nerTextPane.setPreferredSize(new Dimension(550, 578));
+        nerTextPane.setMaximumSize(new Dimension(550, 578));
     }//GEN-LAST:event_annotateEntitiesButtonActionPerformed
 
     private void loadTextFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTextFileButtonActionPerformed
@@ -209,11 +537,59 @@ public class VisualNer extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton annotateEntitiesButton;
+    private javax.swing.JLabel charactersCount;
+    private javax.swing.JLabel charactersLabel;
+    private java.awt.Canvas dateCanvas;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JLabel dateTotal;
+    private java.awt.Canvas durationCanvas;
+    private javax.swing.JLabel durationLabel;
+    private javax.swing.JLabel durationTotal;
+    private javax.swing.JLabel entitiesTotal;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton loadTextFileButton;
+    private java.awt.Canvas locationCanvas;
+    private javax.swing.JLabel locationLabel;
+    private javax.swing.JLabel locationTotal;
+    private java.awt.Canvas miscCanvas;
+    private javax.swing.JLabel miscLabel;
+    private javax.swing.JLabel miscTotal;
+    private java.awt.Canvas moneyCanvas;
+    private javax.swing.JLabel moneyLabel;
+    private javax.swing.JLabel moneyTotal;
+    private java.awt.Canvas nationalityCanvas;
+    private javax.swing.JLabel nationalityLabel;
+    private javax.swing.JLabel nationalityTotal;
+    private javax.swing.JScrollPane nerScrollPane;
     private javax.swing.JTextPane nerTextPane;
+    private java.awt.Canvas numberCanvas;
+    private javax.swing.JLabel numberLabel;
+    private javax.swing.JLabel numberTotal;
+    private java.awt.Canvas ordinalCanvas;
+    private javax.swing.JLabel ordinalLabel;
+    private javax.swing.JLabel ordinalTotal;
+    private java.awt.Canvas organizationCanvas;
+    private javax.swing.JLabel organizationLabel;
+    private javax.swing.JLabel organizationTotal;
+    private java.awt.Canvas percentCanvas;
+    private javax.swing.JLabel percentLabel;
+    private javax.swing.JLabel percentTotal;
+    private java.awt.Canvas personCanvas;
+    private javax.swing.JLabel personLabel;
+    private javax.swing.JLabel personTotal;
+    private javax.swing.JLabel sentenceCount;
+    private javax.swing.JLabel sentenceLabel;
+    private java.awt.Canvas setCanvas;
+    private javax.swing.JLabel setLabel;
+    private javax.swing.JLabel setTotal;
+    private java.awt.Canvas timeCanvas;
+    private javax.swing.JLabel timeLabel;
+    private javax.swing.JLabel timeTotal;
+    private javax.swing.JLabel totalLabel;
+    private javax.swing.JLabel wordsCount;
+    private javax.swing.JLabel wordsLabel;
     // End of variables declaration//GEN-END:variables
 
     private void loadText() {
@@ -231,7 +607,7 @@ public class VisualNer extends javax.swing.JFrame {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz");
+        props.put("ner.model", MODEL_5_CLASS);
         props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
         props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
 
@@ -260,7 +636,137 @@ public class VisualNer extends javax.swing.JFrame {
     public javax.swing.JTextPane getNerTextPane() {
         return nerTextPane;
     }
+
+    public javax.swing.JScrollPane getNerScrollPane() {
+        return nerScrollPane;
+    }
+
+    public void setPersonsTotal(int total) {
+        personTotal.setText(Integer.toString(total));
+    }
+
+    public void setPersonsCanvasColor(Color color) {
+        personCanvas.setBackground(color);
+    }
+
+    public void setOrganizationTotal(int total) {
+        organizationTotal.setText(Integer.toString(total));
+    }
+
+    public void setOrganizationCanvasColor(Color color) {
+        organizationCanvas.setBackground(color);
+    }
+
+    public void setLocationTotal(int total) {
+        locationTotal.setText(Integer.toString(total));
+    }
+
+    public void setLocationCanvasColor(Color color) {
+        locationCanvas.setBackground(color);
+    }
+
+    public void setMiscTotal(int total) {
+        miscTotal.setText(Integer.toString(total));
+    }
+
+    public void setMiscCanvasColor(Color color) {
+        miscCanvas.setBackground(color);
+    }
+
+    public void setNationalityTotal(int total) {
+        nationalityTotal.setText(Integer.toString(total));
+    }
+
+    public void setNationalityCanvasColor(Color color) {
+        nationalityCanvas.setBackground(color);
+    }
+
+    public void setNumberTotal(int total) {
+        numberTotal.setText(Integer.toString(total));
+    }
+
+    public void setNumberCanvasColor(Color color) {
+        numberCanvas.setBackground(color);
+    }
+
+    public void setOrdinalTotal(int total) {
+        ordinalTotal.setText(Integer.toString(total));
+    }
+
+    public void setOrdinalCanvasColor(Color color) {
+        ordinalCanvas.setBackground(color);
+    }
+
+    public void setPercentTotal(int total) {
+        percentTotal.setText(Integer.toString(total));
+    }
+
+    public void setPercentCanvasColor(Color color) {
+        percentCanvas.setBackground(color);
+    }
+
+    public void setMoneyTotal(int total) {
+        moneyTotal.setText(Integer.toString(total));
+    }
+
+    public void setMoneyCanvasColor(Color color) {
+        moneyCanvas.setBackground(color);
+    }
+
+    public void setDateTotal(int total) {
+        dateTotal.setText(Integer.toString(total));
+    }
+
+    public void setDateCanvasColor(Color color) {
+        dateCanvas.setBackground(color);
+    }
+
+    public void setDurationTotal(int total) {
+        durationTotal.setText(Integer.toString(total));
+    }
+
+    public void setDurationCanvasColor(Color color) {
+        durationCanvas.setBackground(color);
+    }
+
+    public void setTimeTotal(int total) {
+        timeTotal.setText(Integer.toString(total));
+    }
+
+    public void setTimeCanvasColor(Color color) {
+        timeCanvas.setBackground(color);
+    }
+
+    public void setSetTotal(int total) {
+        setTotal.setText(Integer.toString(total));
+    }
+
+    public void setSetCanvasColor(Color color) {
+        setCanvas.setBackground(color);
+    }
+
+    public void setEntitiesTotal(int total) {
+        entitiesTotal.setText(Integer.toString(total));
+    }
+
+    public void setCharactersTotal(int total) {
+        charactersCount.setText(Integer.toString(total));
+    }
+
+    public void setWordsTotal(int total) {
+        wordsCount.setText(Integer.toString(total));
+    }
+
+    public void setSentenceTotal(int total) {
+        sentenceCount.setText(Integer.toString(total));
+    }
+
+    private void initalizeEntitiesLegend() {
+        if (!_allClassesEnabled) {
+        }
+    }
 }
+
 class NerTask extends SwingWorker<String, Integer> {
 
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
@@ -283,20 +789,15 @@ class NerTask extends SwingWorker<String, Integer> {
 
         Set<String> categories = entities.getAllCategories();
         log.info("Categories count " + categories.size());
-        int personsCount = 0;
-        int orgCount = 0;
-        int locationsCount = 0;
-        int miscCount = 0;
-        
-        List<AnnNamedEntity> personEntities = entities.getEntitiesByCategory("PERSON");
-        List<AnnNamedEntity> orgEntities = entities.getEntitiesByCategory("ORGANIZATION");
-        List<AnnNamedEntity> locationEntity = entities.getEntitiesByCategory("LOCATION");
-        List
+
+        setAnnotationStatistics(entities);
+
+
 
         String annotatedText = annotateHtml(entities);
         log.info("Ann text " + annotatedText);
         _visualNer.setAnnotatedText(annotatedText);
-        _visualNer.getNerTextPane().setText(annotatedText);
+        //_visualNer.getNerTextPane().setText(annotatedText);
         return annotatedText;
 
     }
@@ -307,27 +808,93 @@ class NerTask extends SwingWorker<String, Integer> {
         log.info("Count " + sortedEntities.size());
 
         int currentIndexInText = 0;
-        int count = 0;
-
         log.info("Text length " + _text.length());
         for (AnnNamedEntity entity : sortedEntities) {
             int startIndex = entity.getStartIndex();
             int endIndex = entity.getEndIndex();
-            log.info(startIndex);
-            log.info(endIndex);
-          //  log.info(entity.getNamedEntityText());
-          
+            Color entityColor = entities.getCategoryColor(entity.getType());
+            String htmlColor = Util.getHTMLColor(entityColor);
+
             sb.append(_text.substring(currentIndexInText, startIndex)).
-                    append("<span style='background-color: #ffffcc;'>").
+                    append("<span style='background-color: ").append(htmlColor).
+                    append(";'>").
                     append(_text.substring(startIndex, endIndex)).
                     append("</span>");
-          //  log.info(count++);
-           // log.info(sortedEntities.size());
             currentIndexInText = endIndex;
         }
-        
+
         sb.append(_text.substring(currentIndexInText));
 
+
         return sb.toString();
+    }
+
+    private void setAnnotationStatistics(NamedEntities entities) {
+        List<AnnNamedEntity> personEntities = entities.getEntitiesByCategory("PERSON");
+        List<AnnNamedEntity> orgEntities = entities.getEntitiesByCategory("ORGANIZATION");
+        List<AnnNamedEntity> locationEntity = entities.getEntitiesByCategory("LOCATION");
+        List<AnnNamedEntity> miscEntity = entities.getEntitiesByCategory("MISC");
+        List<AnnNamedEntity> nationalityEntity = entities.getEntitiesByCategory("NATIONALITY");
+        List<AnnNamedEntity> numberEntity = entities.getEntitiesByCategory("NUMBER");
+        List<AnnNamedEntity> ordinalEntity = entities.getEntitiesByCategory("ORDINAL");
+        List<AnnNamedEntity> percentEntity = entities.getEntitiesByCategory("PERCENT");
+        List<AnnNamedEntity> moneyEntity = entities.getEntitiesByCategory("MONEY");
+        List<AnnNamedEntity> dateEntity = entities.getEntitiesByCategory("DATE");
+        List<AnnNamedEntity> durationEntity = entities.getEntitiesByCategory("DURATION");
+        List<AnnNamedEntity> timeEntity = entities.getEntitiesByCategory("TIME");
+        List<AnnNamedEntity> setEntity = entities.getEntitiesByCategory("SET");
+
+
+        int personsCount = personEntities.size();
+        int orgCount = orgEntities.size();
+        int locationsCount = locationEntity.size();
+        int miscCount = miscEntity.size();
+        int nationalityCount = nationalityEntity.size();
+        int numberCount = numberEntity.size();
+        int ordinalCount = ordinalEntity.size();
+        int percentCount = percentEntity.size();
+        int moneyCount = moneyEntity.size();
+        int dateCount = dateEntity.size();
+        int durationCount = durationEntity.size();
+        int timeCount = timeEntity.size();
+        int setCount = setEntity.size();
+
+        _visualNer.setPersonsTotal(personsCount);
+        _visualNer.setOrganizationTotal(orgCount);
+        _visualNer.setLocationTotal(locationsCount);
+        _visualNer.setMiscTotal(miscCount);
+        _visualNer.setNationalityTotal(nationalityCount);
+        _visualNer.setNumberTotal(numberCount);
+        _visualNer.setOrdinalTotal(ordinalCount);
+        _visualNer.setPercentTotal(percentCount);
+        _visualNer.setMoneyTotal(moneyCount);
+        _visualNer.setDateTotal(dateCount);
+        _visualNer.setDurationTotal(durationCount);
+        _visualNer.setTimeTotal(timeCount);
+        _visualNer.setSetTotal(setCount);
+
+        _visualNer.setPersonsCanvasColor(entities.getCategoryColor("PERSON"));
+        _visualNer.setOrganizationCanvasColor(entities.getCategoryColor("ORGANIZATION"));
+        _visualNer.setLocationCanvasColor(entities.getCategoryColor("LOCATION"));
+        _visualNer.setMiscCanvasColor(entities.getCategoryColor("MISC"));
+        _visualNer.setNationalityCanvasColor(entities.getCategoryColor("NATIONALITY"));
+        _visualNer.setNumberCanvasColor(entities.getCategoryColor("NUMBER"));
+        _visualNer.setOrdinalCanvasColor(entities.getCategoryColor("ORDINAL"));
+        _visualNer.setPercentCanvasColor(entities.getCategoryColor("PERCENT"));
+        _visualNer.setMoneyCanvasColor(entities.getCategoryColor("MONEY"));
+        _visualNer.setDateCanvasColor(entities.getCategoryColor("DATE"));
+        _visualNer.setDurationCanvasColor(entities.getCategoryColor("DURATION"));
+        _visualNer.setTimeCanvasColor(entities.getCategoryColor("TIME"));
+        _visualNer.setSetCanvasColor(entities.getCategoryColor("SET"));
+
+
+        _visualNer.setEntitiesTotal(personsCount + orgCount + locationsCount + miscCount
+                + nationalityCount + numberCount + ordinalCount + percentCount
+                + moneyCount + dateCount + durationCount + timeCount + setCount);
+
+        String words[] = _text.split("\\s");
+        _visualNer.setCharactersTotal(_text.length());
+        _visualNer.setWordsTotal(words.length);
+        _visualNer.setSentenceTotal(_anntoator.getTotalSentences());
     }
 }

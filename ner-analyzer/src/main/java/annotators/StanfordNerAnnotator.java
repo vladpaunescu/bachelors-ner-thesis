@@ -31,6 +31,7 @@ public class StanfordNerAnnotator {
     public static final char TAB = '\t';
     private StanfordCoreNLP _snlp;
     private boolean _genericEnabled;
+    private int _totalSentences;
 
     public StanfordNerAnnotator(StanfordCoreNLP snlp) {
         _snlp = snlp;
@@ -95,6 +96,7 @@ public class StanfordNerAnnotator {
         // these are all the sentences in this document
         // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+        setTotalSentences(sentences.size());
 
         for (CoreMap sentence : sentences) {
             annotateSentence(sentence, namedEntities);
@@ -201,5 +203,19 @@ public class StanfordNerAnnotator {
 
         String annotations = annotator.annotateFile(new File(textfile));
         System.out.println(annotations);
+    }
+
+    /**
+     * @return the _totalSentences
+     */
+    public int getTotalSentences() {
+        return _totalSentences;
+    }
+
+    /**
+     * @param totalSentences the _totalSentences to set
+     */
+    public void setTotalSentences(int totalSentences) {
+        this._totalSentences = totalSentences;
     }
 }

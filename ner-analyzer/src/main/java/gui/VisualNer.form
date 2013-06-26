@@ -23,59 +23,65 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="loadTextFileButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="327" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="553" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="annotateEntitiesButton" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="loadTextFileButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nerScrollPane" min="-2" pref="553" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="annotateEntitiesButton" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="198" max="32767" attributes="0"/>
+              <EmptySpace min="320" pref="139" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="loadTextFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="annotateEntitiesButton" min="-2" pref="23" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="462" max="-2" attributes="0"/>
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="nerScrollPane" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace pref="108" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+    <Container class="javax.swing.JScrollPane" name="nerScrollPane">
+      <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[32767, 578]"/>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -83,6 +89,11 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JTextPane" name="nerTextPane">
+          <Properties>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[2147483647, 578]"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -107,12 +118,462 @@
         <Property name="text" type="java.lang.String" value="Adaugati text mai jos"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="jPanel2">
+    <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Tipuri Entitati"/>
+          </Border>
+        </Property>
+      </Properties>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-        <Property name="columns" type="int" value="0"/>
-        <Property name="rows" type="int" value="1"/>
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="numberLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="miscLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="organizationLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="locationLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="personLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="nationalityTotal" max="32767" attributes="0"/>
+                                      <Component id="numberTotal" max="32767" attributes="0"/>
+                                      <Component id="ordinalTotal" max="32767" attributes="0"/>
+                                      <Component id="percentTotal" max="32767" attributes="0"/>
+                                      <Component id="moneyTotal" max="32767" attributes="0"/>
+                                      <Component id="dateTotal" max="32767" attributes="0"/>
+                                      <Component id="durationTotal" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="setTotal" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="timeTotal" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="entitiesTotal" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="ordinalLabel" min="-2" pref="102" max="-2" attributes="0"/>
+                                      <Component id="moneyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="dateLabel" min="-2" pref="102" max="-2" attributes="0"/>
+                                      <Component id="nationalityLabel" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace pref="89" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="nationalityCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="miscCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                              <EmptySpace pref="32" max="32767" attributes="0"/>
+                                              <Component id="miscTotal" min="-2" pref="44" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="locationCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="locationTotal" min="-2" pref="44" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="organizationCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="organizationTotal" min="-2" pref="44" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="personCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="personTotal" min="-2" pref="44" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="numberCanvas" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                          <Component id="moneyCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="ordinalCanvas" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="percentCanvas" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="dateCanvas" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="durationCanvas" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="timeCanvas" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="setCanvas" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="timeLabel" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="setLabel" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="durationLabel" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="percentLabel" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="totalLabel" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="personLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="personCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="organizationTotal" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="organizationLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="organizationCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Component id="personTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="locationLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="locationTotal" min="-2" max="-2" attributes="0"/>
+                      <Component id="locationCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="miscLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="miscCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="miscTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="nationalityLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="nationalityCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="nationalityTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="numberLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="numberCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="numberTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="ordinalLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="ordinalTotal" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="ordinalCanvas" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="percentLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="percentCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="percentTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="moneyCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="moneyTotal" min="-2" max="-2" attributes="0"/>
+                      <Component id="moneyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="dateCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="dateTotal" min="-2" max="-2" attributes="0"/>
+                      <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="durationLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="durationCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="durationTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="timeLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="timeCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="timeTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="setLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="setCanvas" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="setTotal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="totalLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="entitiesTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
       </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="personLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Persoane"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="personCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="organizationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ogranizatii"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="organizationCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="organizationTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="locationCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="locationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Locatii"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="personTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="miscLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Altele"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="miscCanvas">
+        </Component>
+        <Component class="java.awt.Canvas" name="nationalityCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="nationalityLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nationalitati"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="nationalityTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="numberCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="numberLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numar"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="percentCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="moneyLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Bani"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="locationTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="miscTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="percentTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="numberTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="moneyCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="moneyTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="dateLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Data calendaristica"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="dateTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="dateCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="durationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Durata"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="timeLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Timp"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="ordinalLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numeral Ordinal"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="ordinalCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="ordinalTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="percentLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Procent"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="setLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Set"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Canvas" name="durationCanvas">
+        </Component>
+        <Component class="java.awt.Canvas" name="timeCanvas">
+        </Component>
+        <Component class="java.awt.Canvas" name="setCanvas">
+        </Component>
+        <Component class="javax.swing.JLabel" name="durationTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="setTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="timeTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Total Entitati"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="entitiesTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel2">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Statistici Document"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="charactersLabel" alignment="0" min="-2" pref="91" max="-2" attributes="0"/>
+                      <Component id="wordsLabel" alignment="0" min="-2" pref="91" max="-2" attributes="0"/>
+                      <Component id="sentenceLabel" alignment="0" min="-2" pref="91" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="sentenceCount" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="wordsCount" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="charactersCount" min="-2" pref="43" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="charactersLabel" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="charactersCount" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="wordsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="wordsCount" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="sentenceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sentenceCount" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="17" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="wordsLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numar Cuvinte"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="sentenceLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numar Propozitii"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="charactersLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numar caractere"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="charactersCount">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="wordsCount">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="sentenceCount">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+      </SubComponents>
     </Container>
   </SubComponents>
 </Form>

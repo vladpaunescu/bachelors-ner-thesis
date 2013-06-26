@@ -4,10 +4,8 @@
  */
 package annotators;
 
-import com.sun.xml.internal.ws.api.ha.HaInfo;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +26,17 @@ public class NamedEntities implements Iterable {
         new Color(255, 0, 50),
         new Color(153,255,153),
         new Color(153,255,255), 
-        new Color(255, 255, 0)
+        new Color(255, 255, 0),
+        new Color(234, 174, 245),
+        new Color(133, 161, 237),
+        new Color(133, 237, 235),
+        new Color(51, 204, 89),
+        new Color(168, 230, 87),
+        new Color(230, 194, 87),
+        new Color(87, 230, 156),
+        new Color(17, 158, 95),
+        new Color(132, 222, 35),
+        new Color(234,212,252)
     };
     
     private int _categoriesCount;
@@ -49,7 +57,11 @@ public class NamedEntities implements Iterable {
     }
 
     public List<AnnNamedEntity> getEntitiesByCategory(String type) {
-        return _entityTypes.get(type);
+        if(_entityTypes.containsKey(type)){
+            return _entityTypes.get(type);
+        }
+        
+        return new ArrayList<>();
     }
 
     public void addEntityToCategory(AnnNamedEntity entity, String type) {
@@ -82,6 +94,9 @@ public class NamedEntities implements Iterable {
     }
     
     public Color getCategoryColor(String category){
-        return _categoryColors.get(category);
+        if(_categoryColors.containsKey(category)){
+            return _categoryColors.get(category);
+        }
+        return Color.GRAY;
     }
 }
