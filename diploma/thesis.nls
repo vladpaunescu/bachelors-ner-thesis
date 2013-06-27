@@ -2,15 +2,23 @@
 
  \nomgroup{A}
 
-  \item [{CS}]\begingroup Computer Science\nomeqref {1.0}\nompageref{2}
-  \item [{eng.}]\begingroup Engleză\nomeqref {1.0}\nompageref{1}
+  \item [{CoNLL}]\begingroup Conference on Natural Language Learning\nomeqref {1.0}
+		\nompageref{3}
+  \item [{CRF}]\begingroup Conditional Random Field\nomeqref {1.0}
+		\nompageref{4}
+  \item [{CS}]\begingroup Computer Science\nomeqref {1.0}\nompageref{1}
+  \item [{eng.}]\begingroup Engleză\nomeqref {1.0}\nompageref{2}
+  \item [{HMM}]\begingroup Hidden Markov Model\nomeqref {1.0}
+		\nompageref{4}
   \item [{IE}]\begingroup Information Extraction\nomeqref {1.0}
 		\nompageref{1}
-  \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{1}
+  \item [{MEMM}]\begingroup Maximum-entropy Markov model\nomeqref {1.0}
+		\nompageref{4}
+  \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{2}
   \item [{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}
-		\nompageref{1}
-  \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{1}
-  \item [{UPB}]\begingroup University Politehnica of Bucharest\nomeqref {1.0}
 		\nompageref{2}
+  \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{2}
+  \item [{NLP}]\begingroup Natural Language Processing\nomeqref {1.0}
+		\nompageref{1}
 
 \end{thenomenclature}
