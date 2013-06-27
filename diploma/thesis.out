@@ -10,11 +10,15 @@
 \BOOKMARK [2][-]{subsection.1.2.1}{1.2.1 Construierea unui set semnificativ de texte - Corpus}{section.1.2}% 10
 \BOOKMARK [2][-]{subsection.1.2.2}{1.2.2 Adnotarea unui subset din corpusul str\342ns}{section.1.2}% 11
 \BOOKMARK [2][-]{subsection.1.2.3}{1.2.3 Antrenarea unui sistem NER pe textele adnotate}{section.1.2}% 12
-\BOOKMARK [1][-]{section.1.3}{1.3 Project Description}{chapter.1}% 13
-\BOOKMARK [2][-]{subsection.1.3.1}{1.3.1 Project Scope}{section.1.3}% 14
-\BOOKMARK [2][-]{subsection.1.3.2}{1.3.2 Project Objectives}{section.1.3}% 15
-\BOOKMARK [2][-]{subsection.1.3.3}{1.3.3 Related Work}{section.1.3}% 16
-\BOOKMARK [2][-]{subsection.1.3.4}{1.3.4 Demo listings}{section.1.3}% 17
-\BOOKMARK [2][-]{subsection.1.3.5}{1.3.5 Tables}{section.1.3}% 18
-\BOOKMARK [0][-]{appendix.A}{A Project Build System Makefiles}{}% 19
-\BOOKMARK [1][-]{section.A.1}{A.1 Makefile.test}{appendix.A}% 20
+\BOOKMARK [1][-]{section.1.3}{1.3 Structura Lucrarii}{chapter.1}% 13
+\BOOKMARK [1][-]{section.1.4}{1.4 Project Description}{chapter.1}% 14
+\BOOKMARK [2][-]{subsection.1.4.1}{1.4.1 Project Scope}{section.1.4}% 15
+\BOOKMARK [2][-]{subsection.1.4.2}{1.4.2 Project Objectives}{section.1.4}% 16
+\BOOKMARK [2][-]{subsection.1.4.3}{1.4.3 Related Work}{section.1.4}% 17
+\BOOKMARK [2][-]{subsection.1.4.4}{1.4.4 Demo listings}{section.1.4}% 18
+\BOOKMARK [2][-]{subsection.1.4.5}{1.4.5 Tables}{section.1.4}% 19
+\BOOKMARK [0][-]{chapter.2}{2 Istoric si Cercetari Similare}{}% 20
+\BOOKMARK [1][-]{section.2.1}{2.1 Definirea formala}{chapter.2}% 21
+\BOOKMARK [2][-]{subsection.2.1.1}{2.1.1 Tipuri de Entitati}{section.2.1}% 22
+\BOOKMARK [0][-]{appendix.A}{A Project Build System Makefiles}{}% 23
+\BOOKMARK [1][-]{section.A.1}{A.1 Makefile.test}{appendix.A}% 24

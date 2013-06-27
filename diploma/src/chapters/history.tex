@@ -1,0 +1,65 @@
+\chapter{Istoric si Cercetări Similare}
+\label{chapter:history}
+
+În acest capitol vom descrie mai în detaliu task-ul NER și vom prezenta un istoric al cercetărilor din ultimii 20 de ani
+
+\section{Definirea formală}
+
+Identificaera Entităților cu nume consta in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arata pe un exemplu din Mikheev et al. (1999), care a fost adnotat cu 4 tipuri de entități:\\
+
+\textbf{<Date>}, \textbf{<Person>}, \textbf{<Organization>} și \textbf{<Location>}.\\
+
+
+On \textbf{<Date>}Jan $13^{th}$\textbf{</Date>}, \textbf{<Person>}John Briggs Jr\textbf{</Person>} contacted
+\textbf{<Organization}>Wonderful Stockbrockers Inc\textbf{</Organization>} in\textbf{ <Location>}New
+York\textbf{</Location>} and instructed them to sell all his shares in
+\textbf{<Organization>}Acme\textbf{</Organization>}.\\
+
+In expresia "Entitate cu nume", cuvântul "nume" rastrange entitățile doar la acelea pentru care exista indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți include numele proprii, precum și anumiți termeni natural, cum ar fi unele specii biologice sau substanțe.
+
+O extindere general agreată este să se includă și expresii temporale (\texttt{TIMEX}) si expresii numerice (\texttt{NUMEX}.
+
+\subsection{Tipuri de Entități}
+
+Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce voi prezenta este o împărțire realizata cu o granularitate mare. Se pot realiza împărțiri cu granlurități mult mai fine, adica de exemplu categoria \texttt{PERSON} poate fi impărțită în mai multe subtipuri, de exemplu:
+
+\begin{itemize}
+\item politician;
+\item sportiv;
+\item actor;
+\item celbritate.
+\end{itemize}
+
+
+Împărțirea clasică nu împarte categoriile în subcategorii de granularitate mai fină. Ea este următoarea:
+
+\begin{enumerate}
+	\item Entități de tip \texttt{ENAMEX} (4 clase, cele clasice)\index{ENAMEX}
+	\begin{enumerate}
+		\item PERSON;
+		\item ORGANIZATION;
+		\item LOCATION;
+		\item MISC. (alte entităti care nu se încadrează in nicio categorie)
+	\end{enumerate}
+
+
+	\item Entități de tip \texttt{NUMEX} \index{NUMEX};
+
+	\begin{enumerate}
+		\item NUMBER (numeral cardinal, număr);
+		\item ORDINAL (numeral ordinal, al doilea, primul etc);
+		\item PERCENT (procent, de exemplu 25\% 30 procente);
+		\item MONEY (de exemplu \$20,000).
+	\end{enumerate}
+	
+		\item Entități de tip \texttt{TIMEX} \index{TIMEX};
+	
+		\begin{enumerate}
+			\item DATE (Dată calendaristică, de exemplu 12.09.2012);
+			\item DARATION (de exemplu, seven days, a week);
+			\item TIME (de exemplu, 9:00 AM);
+			\item SET (de exemplu, daily, weekly, anually).
+		\end{enumerate}
+
+
+\end{enumerate}
