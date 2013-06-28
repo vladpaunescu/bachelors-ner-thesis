@@ -20,5 +20,9 @@
 \BOOKMARK [0][-]{chapter.2}{2 Istoric si Cercetari Similare}{}% 20
 \BOOKMARK [1][-]{section.2.1}{2.1 Definirea formala}{chapter.2}% 21
 \BOOKMARK [2][-]{subsection.2.1.1}{2.1.1 Tipuri de Entitati}{section.2.1}% 22
-\BOOKMARK [0][-]{appendix.A}{A Project Build System Makefiles}{}% 23
-\BOOKMARK [1][-]{section.A.1}{A.1 Makefile.test}{appendix.A}% 24
+\BOOKMARK [2][-]{subsection.2.1.2}{2.1.2 Entitati \356n alte tipuri de texte}{section.2.1}% 23
+\BOOKMARK [1][-]{section.2.2}{2.2 Domenii \316nrudite si Aplicatii NER}{chapter.2}% 24
+\BOOKMARK [2][-]{subsection.2.2.1}{2.2.1 Cercetari Similare}{section.2.2}% 25
+\BOOKMARK [2][-]{subsection.2.2.2}{2.2.2 Aplicatii NER}{section.2.2}% 26
+\BOOKMARK [0][-]{appendix.A}{A Project Build System Makefiles}{}% 27
+\BOOKMARK [1][-]{section.A.1}{A.1 Makefile.test}{appendix.A}% 28

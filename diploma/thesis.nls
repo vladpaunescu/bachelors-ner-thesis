@@ -2,6 +2,8 @@
 
  \nomgroup{A}
 
+  \item [{ASR}]\begingroup Automatic Speech Recognition\nomeqref {2.0}
+		\nompageref{8}
   \item [{CoNLL}]\begingroup Conference on Natural Language Learning\nomeqref {1.0}
 		\nompageref{3}
   \item [{CRF}]\begingroup Conditional Random Field\nomeqref {1.0}
@@ -18,7 +20,13 @@
   \item [{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}
 		\nompageref{2}
   \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{2}
+  \item [{NER}]\begingroup Named Entity Recognition\nomeqref {1.0}
+		\nompageref{2}
   \item [{NLP}]\begingroup Natural Language Processing\nomeqref {1.0}
 		\nompageref{1}
+  \item [{OCR}]\begingroup Optical Character Recognition\nomeqref {2.0}
+		\nompageref{8}
+  \item [{TREC}]\begingroup Text REtrieval Competion\nomeqref {1.0}
+		\nompageref{3}
 
 \end{thenomenclature}

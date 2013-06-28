@@ -25,13 +25,13 @@ Chiar și cu timpii săi de reacție de ordinul milisecundelor, de milioane de o
 
  
 Formal, termenul de Entitate cu Nume (eng. Named Entity - NE \abbrev{NE}{Named Entity}) \abbrev{eng.}{Engleză} este des întâlnit în Extragerea de Informații (eng. Information Extraction - IE). El a fost inventat la a șasea Conferință pentru Înțelegerea Mesajelor (eng. Message Understanding Conference - MUC)
-\abbrev{MUC}{Message Understanding Conference}, MUC-6. \cite{grishman1996}. Aceste conferințe au influențat cercetarea in domeniul IE în anii 90. La acel moment, MUC se concentra pe task-uri de IE în care informație structurată trebuia extrasă din articole din ziar din domeniul militar sau terorist.
+\abbrev{MUC}{Message Understanding Conference}, MUC-6. (Grishman \& Sundheim, 1996) \cite{grishman1996}. Aceste conferințe au influențat cercetarea in domeniul IE în anii '90. La acel moment, MUC se concentra pe task-uri de IE în care informația structurată trebuia extrasă din articole din ziar din domeniul militar sau antiterorist.
 
 
 În definiera sarcinilor IE, oamenii au observat că era esențial sa se recunoască unități de informație precum \textbf{nume proprii} ce includeau persoane, organizații și locații. Dacă în fazele inițiale ale formularii problemei, alte entităti (nume proprii) erau considerate ca fiind Amestecate (eng. Misc.), mai târziu, alte unități informaționale au fost introduse, entități care nu mai se identificau cu conceptul de nume propriu (substantiv propriu), ci aveau o corelare cu \textbf{expresiile numerice}, cum ar fi: data calendaristica, numeral cardinal, numeral ordinal, timp, unități monetare și procente.
 
 
-Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre task-urile importante la IE și a fost denumită \textit{Named Entity Recognition} (NER).
+Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre task-urile importante la IE și a fost denumită \textbf{Identificarea Entităților cu Nume} (eng. \textit{Named Entity Recognition} - NER).\abbrev{NER}{Named Entity Recognition}
 
 
 Înainte ca domeniul NER să fie oficial recunoscut la MUC-6 în 1996, cercetări înrudite au fost făcute pentru identificarea numelor proprii. O lucrare publicată în 1991 de Lisa F. Rau este adesea citată ca punctul de naștere al domeniului.\cite{rau1991}
@@ -57,8 +57,10 @@ Vasta majoritate a sistemelor propuse până în prezent se împart în două ca
 Așa cum am precizat, este important să putem recunoaște într-un text dat referințele la aceste entități din mai multe motive:
 
 \begin{itemize}
-\item constituie un prim pas în extragerea informației structurată. De exemplu, în extragerea relatiilor, din propoziția "Ion lucrează la McDonald's." Trubie sa putem extrage mai intâi Ion - \textit{PERSOANĂ} și McDonald's \textit{ORGANIZAȚIE}, ca mai apoi să extragem relația \texttt{worksFor(Ion, McDonald's)}.
-\item putem asocia sentimente (pozitive/negative) unui text. Insă și mai bine este dacă aceste sentimente fac referire la o persoana, un produs etc. De aceea este necesar sa le identificăm în text.
+\item Constituie un prim pas în extragerea informației structurată. De exemplu, în extragerea relatiilor, din propoziția "Ion lucrează la McDonald's." Trubie sa putem extrage mai intâi Ion - \textit{PERSOANĂ} și McDonald's \textit{ORGANIZAȚIE}, ca mai apoi să extragem relația \texttt{worksFor(Ion, McDonald's)}.
+\item Putem asocia sentimente (pozitive/negative) unui text. Adesea aceste sentimente sunt cu privire la un produs, o persoană etc. De aceea este necesar sa le identificăm în text;
+\item Răspunsul la întrebări. Adesea, în a formula un răspuns la întrebări se apelează la NER. De exemplu, la competiția TREC-8 (eng. Text REtrieaval Competition - TREC)\abbrev{TREC}{Text REtrieval Competion}, 80\% din cele 200 de întrebări aveau ca răspuns o entitate cu nume, adică Cine? (persoană), Când? (timp sau dată calendaristică), Unde? (locație).\cite{trec8}
+\item Traducerea Entitităților cu nume dintr-o limbă în alta este recunoscută ca fiind o problemă majoră în Machine Translation, deoarece poate contribui cu până la 10 \% din erorile de traducere (Vilar et al. 2006).\cite{vilar2006}
 \end{itemize}
 
 \section{Contribuția în Domeniu}

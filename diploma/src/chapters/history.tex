@@ -1,11 +1,11 @@
 \chapter{Istoric si Cercetări Similare}
 \label{chapter:history}
 
-În acest capitol vom descrie mai în detaliu task-ul NER și vom prezenta un istoric al cercetărilor din ultimii 20 de ani
+În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații și vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu.
 
 \section{Definirea formală}
 
-Identificaera Entităților cu nume consta in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arata pe un exemplu din Mikheev et al. (1999), care a fost adnotat cu 4 tipuri de entități:\\
+Identificaera Entităților cu nume consta in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arata pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
 
 \textbf{<Date>}, \textbf{<Person>}, \textbf{<Organization>} și \textbf{<Location>}.\\
 
@@ -63,3 +63,97 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 
 
 \end{enumerate}
+
+\subsection{Entități în alte tipuri de texte}
+
+Majoritatea cercetarii pe NER s-a făcut și se face pe texte scrise. Acest lucru a fost ales pentru a nu introduce și mai multe surse de erori decât sistemul NER le poate comite. Așa cum am precizat, problema poate fi modelată matematic ca \textit{Sequence labeling}. Deoarece scrierea cu majusculă și alte elemente de morfologia și forma cuvintelor sunt folosite ca \textit{feature-uri} pentru identificarea candidaților la entități cu nume, textele scrise au fost studiate extensiv. Ele pastrează informații despre scrierea cuvintelor.
+
+\begin{description}
+\item[O primă] primă alternativă a task-ului NER este folosirea vorbirii ca input(Favre et al, 2005).\cite{favre2005} Task-ul este considerat mai dificil deoarece scrierea cu majusculă a cuvintelor este pierdută. De asemenea, cuvintele sunt aproximate de tehnologii de recunaoștere a vorbirii(eng. Automatic Speech Recognition - ASR)\abbrev{ASR}{Automatic Speech Recognition}, care sunt predispuse la erori. Astfel apare propagarea eroriror. Input-ul pentru sistemul NER este astfel degradat din start.
+
+\item[O a doua] alternativă de formulare a problemei NER este folosirea unor pagini scanate ca input. Aceste pagini sunt trecute prin sistemde de recunoaștere a caracterelor (eng. Optical Character Recognition - OCR)\abbrev{OCR}{Optical Character Recognition}. Cum și aceste sisteme introduc erori, problema degradarii input-ului se mainfestă și aici.(Maynard et al., 2002)\cite{maynard2002}
+
+\item[O a treia] alternativă este să se utilizeze documente care au o oarecare sutructura, documente semistrucutrate, de exemplu documente HTML. Se pot extrage informații suplimentare din aceste tipuri de documente. De exemplu, delimitarea entităților poate fi extrasă mai precis pentru că ele pot fi demarcate de tag-ui html, cum ar fi \texttt{<span>}European Union\texttt{</span>}.(Kushmerick, 1997)\cite{kushmerick1997}
+
+\end{description}
+
+
+\section{Domenii Înrudite și Aplicații NER}
+
+\subsection{Cercetări Similare}
+
+În această secțiune, vom prezenta unele task-uri care au legătură cu NER și pentru care Identificarea Entităților cu Nume are un impact direct. Pentru aceste tak-uri scopul principal nu este identificarea entităților, dar reprezintă un pas intermediar, esențial.
+
+\paragraph{Eliminarea ambiguității numelor (de persoane)}
+
+reprezintă problema identificării corecte a referinței unui identificator dat. De exemplu, Neil Armstrong poate fi:
+
+\begin{itemize}
+\item Neil Armstrong (1930–2012), un astronaut American si prima persoană care a pus piciorul pe Lună;
+\item Neil Armstrong, jucător canadian de hockey pe gheață;
+\item Neil J. Armstrong, aviator.
+\end{itemize}
+
+Eliminarea ambiguității este folosită pentru generarea de biografii automate dintr-un corpus de documente. Documentele sunt clusterizate, pentru a elimina ambiguitatea.(Mann \& Yarowski, 2003)\cite{Mann03unsupervisedpersonal}
+
+\paragraph{Traducerea entităților cu nume}
+
+reprezintă sarcina de a traduce entitățile în mode automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților genereaza până la 10\% din erorile de traducere automată(Vilar et al, 2006) \cite{vilar2006}.
+
+\paragraph{Identificarea acronimelor}
+
+este sarcina de a putea identifica in mod corespunzător definiția corectă a unui acronim. De exemplu, "CS" poate însemna "Computer Science", dar si "Counter-Strike". Rezolvarea  acronimelor este utilă în construirea rețeleore de coreferință. Poate imbunătăți recall-ul informației (procentul de entitați corecte identificate din totalul entităților corecte), prin exapandarea acronimului la semnificația sa originală. Problema este legată de NER deoarece foarte multe nume de organizații sunt date prin acronime: IBM, GE EU etc. (Nadeau \& Tourney, 2005)\cite{Nadeau05asupervised}
+
+\paragraph{Identificarea descrierilor entităților}
+
+este identificarea pasajelor din text care descriu o entitate dată. De exemplu, Traian Băsescu este descris ca "președintele Românieie", sau "șeful de stat al României", ori "liderul de la Cotroceni", în funcție de document. Informațiile din descriere pot fi folosite ca sugestii în eliminarea ambiguităților numelore de persoane.(Radev, 1998)\cite{Radev98learningcorrelations}
+
+\paragraph{Eliminarea coreferințelor pronomiale}
+
+constă în rezolvarea coreferințelor pronomiale prin descoperirea entității la care face referire un pronume. Entitatea a apărut înaintea pronumelui. De exemplu, în textul "Ion este un elev silitor. El studiază la Stanford." , pronumele "El" se referă la "Ion". Are aplicații diverse, de la extinderea identificării descrierilor entităților până la Question Answering - Răspunderea la Întrebări, de exemplu: "Cine a spart geamul?" (Dimitrov et al, 2002)\cite{Dimitrov02alight-weight}
+
+\paragraph{Restauraea capitalizării}
+
+se referă la stabilirea corectă a scrierii cu majusculă sau nu a cuvintelor dintr-un text. De foarte multe ori, în textele din Web-ul social\index{Web Social}, cum ar fi forum-uri, chat-uri, facebook, sau twitter, utilizatorii scriu cu literă mică numele de persoane. De asemenea, acest task este util în Machine Translation, unde o propoziție este tradusă de obicei, fără a ține cont de capitalizare. Totodată, în textele procesate din vorbire, capitalizarea nu este disponibilă. Dându-se o propoziție în care toate cuvintele sunt scrise cu literă mică, scopul este să se restaureze cuvintele care erau scrise cu literă mare.(Agbago et al., 2006)\cite{Agbago06}
+
+
+
+\subsection{Aplicații NER}
+
+În această secțiune vom enumera câteva aplicații ale identificării entităților cu nume.
+
+\paragraph{Detecția evenimentelor}
+
+constă în detectarea unor entități temporale alăturate unor alte tipuri de entități. De exemplu, data de naștere a unei persoane și numele ei apar în pereche. Mai mult, deseori apare și locul nașterii, de exemplu: Traian Băsescu (n. 4 noiembrie 1951, Murfatlar). Astfel, se poate extrage informație semantică cum ar fi \texttt{BornAt("Traian Băsescu", "4 noiembrie 1951", "Murfatlar")} (Smith, 2002).\cite{Smith02detectingand}
+
+\paragraph{Răspunderea automată la întrebări}
+
+adesea implică folosirea unor siteme NER in capabilitățile de formulare a răspunsurilor. Foarte multe întrebări sunt formulate astfel încât răspunsul lor să fie o entitate cu nume. De exemplu, "Cine este președintele SUA?". De exemplu, la TREC-8 (Text REtrieval Conference), 80\% din cele 200 de întrebări aveau ca răspuns o entitate cu nume, adică Cine? (persoană), Când? (timp sau dată calendaristică), Unde? (locație).\cite{trec8}
+
+\paragraph{Căutarea semantică de informații}
+
+returnează mai mult decât un răspuns la o întrebare, sau o listă de documente Web. Pentru o interogare (query) dat, sistemul poate întoarce o listă de elemente atunci când query-ul este o categorie de entităti. De exemplu: pentru Mărci telefoane, ar întoarce Nokia, Samsung, HTC, Apple, Sony etc. Sau pentru o entitate concretă va întoarce frații săi apropiați semantic (siblings). De exemplu: pentru query-ul "Facebook", sistemul va întoarce "hi5", "Friendster", "myspace". (Pașca et al., 2004)\cite{pasca2004}
+
+\paragraph{Extragerea de relații}
+
+reprezintă detecția și clasificarea relațiilor semnatice între entități. Are ca prim pas și ca sistem central un sistem de recunoaștere și clasificare a entităților. Este folosită cu precădere în domeniul biomedicinei, cum ar fi relații între:
+
+\begin{itemize}
+\item relații între gene și boli; (Chun et. al, 2006)\cite{Chun06extractionof}
+\item relații de interactiune între proteine.
+\end{itemize}
+
+De asemenea, are și alte aplicații mai puțin specifice. De exemplu, din textul "Bill Gates lucrează la Microsoft" putem extrage relația \texttt{Person-Affiliation(Bill Gates, Microsoft)}.
+
+\paragraph{Text/Web mining}
+
+urmărește extragerea informației dintr-un depozit imens de documente. Are ca scop extragerea de cunoștințe dintr-o cantitate de informații care nu este disponibilă în documente luate în mod izolat, ci in întregul ansamblu de de documente. In lucrarea lui Sanchez și Moreno, entitățile cu nume din domeniul medical sunt extrase dintr-un corpus mare pentru a construi o ontologie\index{Ontologie}. Aceste ontologii pot fi folosite mai departe pentru clasificare de entități și de relații între entități.\cite{sanchez2005}
+
+
+
+
+
+
+
+
+
