@@ -14,9 +14,13 @@
 		\nompageref{4}
   \item [{IE}]\begingroup Information Extraction\nomeqref {1.0}
 		\nompageref{1}
+  \item [{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}
+		\nompageref{14}
   \item [{MEMM}]\begingroup Maximum-entropy Markov model\nomeqref {1.0}
 		\nompageref{4}
   \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{2}
+  \item [{MT}]\begingroup Machine Translation\nomeqref {2.0}
+		\nompageref{13}
   \item [{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}
 		\nompageref{2}
   \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{2}

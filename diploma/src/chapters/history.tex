@@ -1,4 +1,4 @@
-\chapter{Istoric si Cercetări Similare}
+\chapter{Descriere în Detaliu si Cercetări Similare}
 \label{chapter:history}
 
 În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații și vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu.
@@ -96,6 +96,8 @@ reprezintă problema identificării corecte a referinței unui identificator dat
 
 Eliminarea ambiguității este folosită pentru generarea de biografii automate dintr-un corpus de documente. Documentele sunt clusterizate, pentru a elimina ambiguitatea.(Mann \& Yarowski, 2003)\cite{Mann03unsupervisedpersonal}
 
+De asemenea, cercetări ample s-au făcut folosind Wikipedia ca sursă de cunosțințe enciclopedice pentru eliminarea ambiguității. Wikipedia este o enciclopedie liberă online scrisă în mod colaborativ de voluntari. Este o resursă multilimbă. Printre primii care folosesc Wikipedia ca metodă de identificare de entități și de eliminare a ambiguității sunt doi români: Bunescu și Pașca, 2006 \cite{Bunescu06usingencyclopedic}. De atunci, cercetarea în această direcție a continuat să crească și multe lucrări științifice au fost publicate pe această temă, a folosirii Wikipedia pentru eliminarea ambiguității.
+
 \paragraph{Traducerea entităților cu nume}
 
 reprezintă sarcina de a traduce entitățile în mode automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților genereaza până la 10\% din erorile de traducere automată(Vilar et al, 2006) \cite{vilar2006}.
@@ -135,6 +137,7 @@ adesea implică folosirea unor siteme NER in capabilitățile de formulare a ră
 returnează mai mult decât un răspuns la o întrebare, sau o listă de documente Web. Pentru o interogare (query) dat, sistemul poate întoarce o listă de elemente atunci când query-ul este o categorie de entităti. De exemplu: pentru Mărci telefoane, ar întoarce Nokia, Samsung, HTC, Apple, Sony etc. Sau pentru o entitate concretă va întoarce frații săi apropiați semantic (siblings). De exemplu: pentru query-ul "Facebook", sistemul va întoarce "hi5", "Friendster", "myspace". (Pașca et al., 2004)\cite{pasca2004}
 
 \paragraph{Extragerea de relații}
+\label{paragraph:relation}
 
 reprezintă detecția și clasificarea relațiilor semnatice între entități. Are ca prim pas și ca sistem central un sistem de recunoaștere și clasificare a entităților. Este folosită cu precădere în domeniul biomedicinei, cum ar fi relații între:
 
@@ -148,6 +151,154 @@ De asemenea, are și alte aplicații mai puțin specifice. De exemplu, din textu
 \paragraph{Text/Web mining}
 
 urmărește extragerea informației dintr-un depozit imens de documente. Are ca scop extragerea de cunoștințe dintr-o cantitate de informații care nu este disponibilă în documente luate în mod izolat, ci in întregul ansamblu de de documente. In lucrarea lui Sanchez și Moreno, entitățile cu nume din domeniul medical sunt extrase dintr-un corpus mare pentru a construi o ontologie\index{Ontologie}. Aceste ontologii pot fi folosite mai departe pentru clasificare de entități și de relații între entități.\cite{sanchez2005}
+
+\section{Provocări ale NER. Factori de Influență}
+
+În această secțiune vom prezenta factorii care influențează performanța unui sistem NER, provocările și obstacolele care fac această sarcină, care la început, sau pentru un neinițiat, ar parea ceva trivial, o sarcină care nu poate fi rezolvata 100\% corect de niciun sistem.
+
+
+Caracterul intrinsec al problemei NER, care face parte din Procesarea Limbajului Natural (NLP) o face dificilă. Acest lucru are loc deoarece limbajul natural este un limbaj care nu este definit de reguli stricte, este un limbaj care deseori poate fi interpretat în mai multe moduri, care lasă loc de ambiguitate.
+
+În unele limbi cum ar fi chineza, chiar și segmentarea unui text în cuvinte este dificilă pentru că limbajul a fost creat fără separatori de cuvinte. În alte limbi, de exemplu engleza, acest lucru nu constituie un impediment și este aproape 100 \% rezolvabil, asta dacă utilizatorul sau cel care a creat textul nu face greșeli in text. Totuși problema identificării entităților cu nume rămâne una netrivială.
+
+\subsection{Evoluția NER. Scurt Istoric}
+
+Multe strategii au fost propuse de-a lungul scurtei istorii a acestui domeniu, de cam 20 de ani. Este și a fost o istorie scurtă, dar tumultoasă.
+
+Una dintre primele lucrări de cercetare din acest domeniu a fost prezentată de Lisa F. Rau(1991) la a șaptea Conferință IEEE de Aplicații ale Inteligenței Artificiale.\cite{rau1991}. Lucrarea lui Rau descrie un sistem capabil "să extragă și să recunoască nume de companii". Acest sistem a reprezentat pionieratul. El se baza totuși pe reguli făcute de mână și pe euristici. Nu avea nimic care să folosească tehnici de ML, de exemplu.
+
+Din 1991 până în 1995, rata de publicări a râmas relativ scăzută, chiar și în limba engleză. Am reușit să găsesc doar 8 publicații în engleză în acest interval de timp.
+
+Anul 1996 a constituit un punct major de cotitură în istoria NER. Atunci a avut loc primul eveniment major dedicat acestui task, \textbf{MUC-6}(Grishman \& Sundheim, 1996)\footnote{\url{http://cs.nyu.edu/faculty/grishman/muc6.html}}\cite{grishman1996} La această conferința au fost propuse 20 de sisteme de identifacare a entităților cu nume.
+
+Din anul 1996 până în prezent, cercetarea în domeniu s-a accelerat continuu. Nu a existat nicio perioadă în care interesul pentru acest domeniu să scadă. S-a cercetat constant și s-au căutat neîntrerupt soluții inovatoare pentru această problemă netrivială. Au avut loc foarte multe evenimente științifice dedicate acestui domeniu, printre care amintesc CoNLL-2003.\cite{conll2003}
+
+Putem observa, folosind Google books Ngram Viewer \footnote{\url{http://books.google.com/ngrams}}, evoluția de-a lungul timpului a referirilor în literatura de specialitate la cele două denumiri: \textit{named entity} și \textit{named entity recognition} Ea este prezentată în \labelindexref{Figura}{img:ner-evolution}. Se observă că termenii au un caracter accentuat de utilizare și încep să fie folosiți din ce în ce mai mult dupa anii 2000. De asemenea, din grafic reiese ceea ce era și de așteptat, ca termenul \textit{named entity} a apărut în literatura de specialitate înaintea termenului \textit{named entity recognition}.
+
+Acest lucru era de așteptat, deoarece Saul Kripke a introdus noțiunea de indicator rigid (eng. rigid designator) în 1982, iar termenul de "Named Entity Recognition" a fost introdus în literatură mai târziu, la conferința MUC-6 din 1996.\cite{grishman1996}
+
+\fig[scale=0.5]{src/img/ner-evolution.png}{img:ner-evolution}{Evoluția termenilor \textit{named entity} și \textit{named entity recognition} în timp}
+
+Treptat, tehnici de Inteligență Artificială si-au făcut apariția în acest domeniu. Astfel, modelarea matematica ca o problemă de sequence tagging a indreptat cercetarea catre studiul ei folosind Modele Markov Ascunse, într-o primă instanță. Lucrarea lui Bickel, An Algorithm that Learns What's in A Name a fost printre primele lucrări influente care folosesc această abordare. (Bickel et al, 1999)\cite{Bikel99analgorithm}
+
+Apoi, lucrările lu McCallum, Lafferty și Pereira care propuneau nișțe metode pentru evitarea limitărilor HMMM (care este un model generativ) au reprezentat din nou momente cheie. Aceste două lucrări prezentau Maximum Entropy Markov Models (MEMM)(McCallum et al. 2000)\cite{Mccallum00maximumentropy}, respectiv Conditional Random Fields(CRFs)(Lafferty et. al, 2001).\cite{Lafferty01conditionalrandom}. Au folosit multor aplicații din NLP, cum ar fi identificarea părților de vorbire într-un text (eng. Part of Speech Tagging - POS tagging) dar și identificării entităților cu nume. Asta deoarece erau metode pentru sequnce labeling.
+
+
+\subsection{Influența Limbii}
+
+O proporție covârșitoare din cercetarea în domeniul NER este dedicată studiului limbii engleze. Se întâmplă acest lucru deoarce:
+
+\begin{itemize}
+	\item Studiul general NLP este puternic axat pe limba engleză;
+	\item Necesitatea identificării entităților cu nume a fost descoperită la MUC(Message Understanding Conferences), conferințe care erau sprijinite de Departamentul de Aparare American. Ele au avut ca scop inițial extragerea de informații din texte din domeniul militar, în care erau relatate crime, atentate etc, cu scopul îmbunătățirii securității SUA;
+	\item Limba engleză este o limbă destul de simplă în comparație cu alte limbi. Nu are acord între subiect și predicat, nu are gen pentru substantive și adjective, are reguli bine definite de generare a limbajului în comparație cu alte limbi. Setul de caractere este restrâns la cele 26 de caractere latine standard, etc.;
+	\item Corpusurile adnotate cu entități cu nume au fost făcute mai întâi pe articole de știri în limba engleză, Wall Street Journal și Reuters. Deci, pentru algoritmii de ML utilizați în studiul NER, avem un set de date de antrenament de pornire pe această limbă;
+	\item Este o limbă de circulație internațională. Chiar și în studiul NER folosind Wikipedia, cele mai multe articole sunt scrise în engleză.
+\end{itemize}
+
+
+O posibilă direcție de cercetare care a apărut în ultimii ani este studiul sistemelor NER independente de limbă (eng. Language Independent NER), sau adresarea problemelor multilingvistice. Cum sistemele de Machine Translation \abbrev{MT}{Machine Translation} sunt și ele departe de a fi perfecte, această problemă a studiului NER pe mai multe limbi, sau în mod independent de limbă nu poate să se bazeze într-un mod robust pe Traducere Automată.
+
+Cu toate acestea, limba germană este studiată la CoNLL-2003\cite{conll2003}. De asemenea, limba franceză beneficiază și ea de interes (Petasis et al., 2001 \cite{Petasis01usingmachine} și Poibeau, 2003 \cite{And03themultilingual}). Limba română este studiată de către Silviu Cucerzan și Yarowsky în 1999 \cite{Cucerzan99languageindependent}. Și alte limbi beneficiază de studiu, printre care merită amintite spaniola, italiana și portugheza (limbi latine), rusa și bulgara (limbi chirilice), chineza, limba coreană (limbi altaice) și limba greacă.
+
+O \textit{observație importantă} ce merită făcută aici este ca ceea ce într-o limbă poate fi considerată entitate cu nume, în altă limba ea nu mai poate fi entitate cu nume, în accepțiunea strictă a \textit{numelor proprii}. Un exemplu ar fi naționalitatea. În limba engleză, naționalitatea este entitate cu nume (clasificată de obicei în categoriea Misc. - Miscellaneous, altele), pentru că se scrie cu majusculă: Dutch, English, American, Canadian, Romanian, etc. În limba română, pe de altă parte, naționalitatea este substantiv comun, iar un sistem NER \textit{clasic} o va ignora, nu o va considera entitate cu nume.
+
+În concluzie, un sistem "language independent", independent de limbă, este dificil de făcut, dându-se diversitatea lingvistică si regulile diferite de sintaxă, morfologie din fiecare limbă. Traducerea automată nu poate rezolva problema deoarece ea însăși este predispusă la erori și este departe de a fi perfectă.
+
+
+\subsection{Influența Domeniului și a Tipului de Text}
+
+Acești doi factori contribuie semnificativ la limitarea sistemelor NER actuale. 
+
+Un exmplu de împărțire în \textbf{domenii} poate fi dat așa:
+\begin{itemize}
+	\item domeniu științific, care la rândul lui poate fi divizat în
+	\begin{itemize}
+		\item fizică;
+		\item astronomie;
+		\item biomedicină;
+		\item știința calculatoarelor;
+		\item științe socio-umane etc.
+		
+	\end{itemize}
+	\item afaceri;
+	\item sport, etc.	
+\end{itemize}
+
+\textbf{Genul} textului poate fi:
+
+\begin{itemize}
+	\item gen \textit{formal}. In cadrul acestui tip de text, putem avea alte genuri mai de o granularitate mai mică.  Nu există o diferențiere clară aici între domeniu și gen, aceste două concepte putând să se intersecteze:
+	\begin{itemize}
+		\item text jurnalistic;
+		\item text științific, etc.
+	\end{itemize}
+	\item gen \textit{informal}. În categoria de text informal putem include textul din:
+	\begin{itemize}
+		\item discuțiile de e-mail;
+		\item discuții de pe forumuri;
+		\item discuții de pe chat;
+		\item \textit{tweet-uri}.\index{Tweet}
+	\end{itemize}
+\end{itemize}
+
+În general, se observă că textul \textit{informal} este textul generat de utilizatorii din Web-ul Social\index{Web Social}. Acest tip de text, este dificil de analizat de sistemele NER pentru că adesea nu respectă convențiile limbii în care este scris. De exemplu, numele proprii sunt scrise fără majusculă, se mănâncă des litere, se fac greșeli de ortografie și nu se respectă semnele de punctuație. Există chiar un limbaj propriu, plin de prescurtări și alte notații, caracteristic acestui domeniu de exemplu, cuvântul \texttt{wait} poate fi scris ca \texttt{w8}. Există și o titulatură pentru acest tip de text informal. Ea se numește \textit{Netiquette}. \footnote{\url{http://en.wikipedia.org/wiki/Etiquette_(technology)}}
+
+Împărțirea textului în genuri și domenii, la grade diferite de granularitate, așa cum am văzut că se poate face, complică mult problema NER. Probleme apar din cauza \textit{transferului de vocabular} (eng. Vocabulary Transfer\index{Vocabulary Transfer}. Aceasta câte cuvinte din textul pe care un sistem NER a fost antrenat (și le-a vazut) apar și în textul ce trebuie analizat. De exemplu, dacă antrenăm un sistem NER pe articole din domeniul sportiv și apoi îl punem să analizeze texte din domeniul astronomic, sau biomedical, este foarte probabil ca el să dea peste cuvinte pe care nu le-a văzut deloc. Astfel, el va merge foarte prost. De asemenea, genul joacă un rol important. De pildă, în articolele sțiințifice persoanele apar foarte des ca referințe, de forma (Mayer, S. 2001). Pe de altă parte, în articolele de știri ele apar ca subiect în propoziții, de exemplu "Traian Băsescu a afirmat că...". Un sistem antrenat să recunoască astfel de entitați de tip persoană din articole de știri nu va identifica bine persoanele care apar sub formă de referințe în articolele de cercetare. Această problemă am tratat-o și eu și voi arăta într-un capitol ulterior, cum antrenarea pe un corpus adecvat crește performanțele sistemului NER.
+
+
+De exemplu, Poibeau și Kosseim, (2001) \cite{Poibeau01propername} au testat unele sisteme de identificare a entităților cu nume pe colectia MUC-6 ce cuprindea articole din ziar (jurnalistice) și pe un corpus propriu făcut din conversații telefonice scrise manual (text \textit{informal}), și pe e-mail-uri tehnice. Ei au raportat o scădere drastică în performanța a sistemelor cuprinsă între 20\% și chiar 40\%, atât în \textit{precizie (eng. precision)} (numărul de entități  găsite și clasificate corect raportat la numărul total de entități) și în \textit{recall}(numarul de entități gasite și clasificate corect raportat la numărul total de entități corecte). Mai multe detalii despre \textit{preczie} și \textit{recall} voi da într-o secțiune ulterioară.
+
+
+Problema recunoașterii entităților în texte \textit{informale} este abordată recent pe texte din \textit{tweet-uri} prin metode de învățare nesupervizata (K-Nearest Neighbors - KNN \abbrev{KNN}{K-Nearest Neighbors}). Acest clasificator este apoi combinat cu un clasificator supervizat CRF. Această manieră de abordare se numește \textit{semi-supervised} - semisupervizată. Problema clasificatoarelor care folosesc metode nesupervizate este urmatoarea. Chiar dacă la final sunt identificate anumite clase de entități sistemul este incapabil să atribuie nume cu înțeles acestor clase. El va da nume generice, de exemplu C1, C2 etc. Un om trebuie să decidă dacă o clasă este specifică Persoanelor de exemplu.(Liu et al., 2009)\cite{Liu_recognizingnamed}
+
+
+\subsection{Influența Tipurilor de Entități}
+
+Tipurile de entități pot influența în mai multe moduri performanțele unui sistem de identificare a entitătilor. 
+
+\paragraph{Numărul tipurilori de entități}
+
+influențează sistemele bazate pe ML. Asta deoarece crescând numărul, un calcul matematic simplu arată următorul lucru. Voi calcula probabilitatea medie ca o entitate să fie intr-o anumită clasă. De exemplu, pentru 3 clase, probabilitatea medie este $ P_1 = \frac{1}{3} \simeq 0.33 $. Acest lucru înseamnă că putem foarte ușor să depășim probabiliatea de 50\% ($ \frac{1}{2} $). Adică, putem fi siguri că o entitate cu nume are o apartenență majoritară la clasa respecitvă, aparține cu o certitudine destul de mare. Pe de altă parte, dacă vom crește numărul de clase, de exemplu, la 10 clase, probabilitatea medie va deveni $ P_2 = \frac{1}{10} \simeq 0.1 $. Acest lucru semnifică faptul că este dificil să fim siguri că o entitate aparține cu certitudine (50 \%) la o clasă anume. Sistemul nostru va întoarece un răspuns, cu probabilități, cel mai adesea, sub 0.5 toate. O vom alege pe cea maximă, dar nu va fi majoritară. 
+
+O altă problemă ce apare când creștem numărul de clase este cauzată de creșterea timpului de antrenare al modelului. Cu această problema m-am confruntat de multe ori. Funcția ce trebuie optimizată de algoritmul de ML devine foarte complexă, cu multe variabile, iar costul computațional cresțe cu minim $ O(n^k) $ în funcție de numărul de clase ($n = C)$ pentru că vom vedea că trebuie să ridicăm numărul de clase la puterea ordinului $k$ al modelului secvenței, care este minim 2, adică, în cel ma bun caz vom avea $ O(n^2) $.
+
+Așa cum vom vedea într-o secțiune ulterioară, matematic, în mod concret, dacă avem 3 clase de entități, de exemplu, \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, problema se modelează cu $3 + 1  = 4$ clase. În secvența de cuvinte, fiecarui cuvânt (token)\index{token} i se va asocia o clasă. Cuvintele care nu vor fi entități cu nume, vor avea asociata clasa \texttt{O} - Out, Other. Deci, vom avea practic 4 clase. În general, la $C$ tipuri de entități corespunde un număr de $C + 1$ tipuri de clase. Deci, algortimul nostru, mai rău, va avea de decis între mai multe clase. 
+
+În concluzie, creșterea numărului de tipuri de entități \textit{scade} certitudinea cu care o entitate poate fi prezisă. În practică, această problemă este adresată prin mai multe metode. Una dintre cele mai răspandite metode este ca algoritmul de Învățare Automată să fie antrenat doar pe un număr restrâns de tipuri de entități, pentru restul de tipuri urmând să fie folosite alte tehnici de detecție și clasificare (reguli făcute de mână, cu expresii regulate, cel mai adesea).
+
+\paragraph{Tipurile de Entități} sunt formulate în primele lucrări științifice din domeniul NER ca recunoașterea "numelor proprii" în general. În ansamblu, cele mai  studiate tipuri de entități sunt nume proprii specifice: \texttt{PERSOANE}, \texttt{ORGANIZAȚII}, \texttt{LOCAȚII}. Aceste trei tipuri sunt cunoscute sub titulatura de \texttt{ENAMEX} înca de la competiția MUC-6\cite{grishman1996}.
+
+Se pot face divizări ulterioare la aceste trei tipuri de entități, cu o granularitate din ce în ce mai fină. Spre exemplu, \texttt{LOCATION} poate fi subdivizat în:
+
+\begin{itemize}
+\item Oraș;
+\item Țară;
+\item Continent;
+\item Mare;
+\item Râu
+\item Regiune, etc.
+\end{itemize}
+
+Similar, și celelalte două tipuri de entități pot fi divizate astfel. Vom avea persoane la granularitate fină, precum \texttt{Politician}, \texttt{Actor}, etc.
+
+Tipul \texttt{MISC - Miscellaneous - Altele} este introdus la conferințele CoNLL-2002 și CoNLL-2003 \cite{conll2003}. El include tot nume proprii, dar care nu pot fi încadrate in clasicele categorii din standardul \texttt{ENAMEX}, de exemplu naționalități.
+
+\texttt{TIMEX}, care cuprinde categoriile \texttt{TIME} și \texttt{DATE}, printre altele, este de asemenea introdus la MUC-6. Nu în ultimul rând, \texttt{NUMEX} care cuprinde \texttt{NUMBER}, \texttt{MONEY} și \texttt{PERCENT}, printre altele a fost introdus tot la conferința MUC-6.
+
+Deseori, tipurile amintite mai sus din categoriile \texttt{TIMEX} și \texttt{NUMEX} nu sunt incluse în algoritmii de Învățare Automată pentru antrenament. Pentru aceste tipuri sunt create reguli de mână, formate cel mai frecvent din expresii regulate.
+
+
+Interesul recent din bioinformatică și disponibilitatea corpusului GENIA (Ohta et al., 2002) \cite{Ohta02thegenia}, care curpinde texte adnotate din domeniul biologiei moleculare a condus la multe studii dedicate unor tipuri specifice de entități, cum ar fi \texttt{Protein}, \texttt{Gene} etc. S-au făcut studii exclusiv în acest domeniu pentru identificarea de proteine și de gene noi. De asemenea, așa cum am zis în \labelindexref{Paragraful din Secțiunea}{paragraph:relation}, s-au extras mai departe relații între aceste tipuri de entități.
+
+
+De remarcat este și lucrul în care nu se limtează tipurile posibile de entități. Astfel, Sekine și Nobata (2004) au definit o ierarhie impresionantă de tipuri de entități cu nume. Această ierarhie include multe subcategorii de granularitate fină, cum ar fi \texttt{Râu}, \texttt{Aeroport} și adaugă de asememenea un număr mare de categorii cum ar fi \texttt{Produs}, \texttt{Substanță}, \texttt{Eveniment}, \texttt{Animal}, \texttt{Culoare} etc. Se încearcă acoperirea celor mai frecvente categorii de tipuri de nume care apar în ziare. Numărul de catgorii ajunge aproape de 200, iar fiecărei categorii i se asociază atribute pentru o construi o ontologie. \index{Ontologie}\cite{sekine2004}
+
+\section{State of The Art}
+
+
+
+
 
 
 
