@@ -1,0 +1,13 @@
+Autori = cauta_top_autori(categorie)
+salveza_autor_in_baza_de_date()
+
+foreach autor in Autori executa:
+	lista_publicatii = obtine_publicatii_dupa(autor.ID)
+	foreach publicatie in lista_publicatii executa:
+		if publicate.are_pdf_public():
+			download_pdf()
+			salveaza_pdf_pe_disk()
+			scrie_in_baza_de_date_pdf(autor, publicatie)
+		end if
+	end foreach
+end foreach

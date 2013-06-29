@@ -64,8 +64,11 @@ Așa cum am precizat, este important să putem recunoaște într-un text dat ref
 \end{itemize}
 
 \section{Contribuția în Domeniu}
+\label{sec:contribution}
 
 \subsection{Construierea unui set semnificativ de texte - Corpus}
+\label{sub-sec:corpus-building}
+
 Am studiat diferitele tehnici deja existente de extragere din text a entităților cu nume. Întrucât limba engleză a fost cel mai extensiv studiată, am decis să incep cu ea. Deoarece vasta majoritate a sistemelor NER actuale folosesc tehnici de Machine Learning, m-am axat pe aceasta tehnica de și eu.
 
 Din păcate, așa cum am spus pentru a putea antrena un algoritm de ML este nevoie de o cantiate semnificativă de text adnotat de mână de un lingvist expert. Aceste colecții de texte se numesc în literatura de specialitate \textit{Corpusuri}.\index{Corpus} În prezent, există mai multe corpsuri pentru limba engleză, adnotate pentru NER, cum ar fi cel cu știrile Reuters din perioada 20-08-1996, 19-08-1997.\cite{rcv1} Acest corpus conține peste 800,000 de articole de știri. Adnotarea a fost facută pe un subset din aceste știri și a fost prezentată la CoNLL-2003\cite{conll2003} (eng. Conference on Natural Language Learning \abbrev{CoNLL}{Conference on Natural Language Learning}). Primul corpus adnotat cu entități cu nume este cel al conferinței MUC-6 (eng. Message Understanding Conference) și constă în articole din Wall Street Journal din perioada Ianuarie 1993 - Iunie 1994.  Există și alte corpusuri adnotate, însă aproape toate (cel puțin tot ce am găsit eu) sunt cu bani, iar altele nu sunt publice. Așa că eu nu am avut acces la un astfel de corpus adnotat. Cercetări importante au loc și în domeniul biomedical și există si corpusuri adnotate pentru acest domeniu. Dar, este un domeniu mult mai specializat și nu voi insista pe el.
@@ -79,7 +82,7 @@ Prin urmare, prima sarcină a fost strângerea unui corpus din domeniul Științ
 \item Microsoft Academic Search. \footnote{\url{http://academic.research.microsoft.com/}}
 \end{itemize}
 
-Voi descrie ulterior cum am făcut strângerea automată a unui număr semnificativ de documente in format PDF.
+Voi descrie în \labelindexref{Secțiunea}{sec:web-module} cum am făcut strângerea automată a unui număr semnificativ de documente în format PDF.
 
 \subsection{Adnotarea unui subset din corpusul strâns}
 
@@ -87,7 +90,7 @@ După ce au fost strânse, pdf-urile au fost prelucrate. S-a extras textul din e
 
 \subsection{Antrenarea unui sistem NER pe textele adnotate}
 
-Folosind corpusul adnotat, am antrenat un sistem de recunoaștere a entităților cu nume pe el. Am folosit mai multe tipuri de feature-uri pentru algoritmul de Învățare Automată. Textul natural vine in secvență (cuvând după cuvânt), așa ca am folosit algoritmi de ML bazate pe sequence labeling (tagging), cum ar fii Modele Markov Ascunse, (eng. Hidden Markov Models - HMM) \abbrev{HMM}{Hidden Markov Model}, care este un model generativ, dar și modele discriminative, mai eficiente, cum ar fi Maximum Entropy Markov Models(MEMM)\abbrev{MEMM}{Maximum-entropy Markov model}, dar si Conditional Random Fields(CRF)\abbrev{CRF}{Conditional Random Field}.
+Folosind corpusul adnotat, am antrenat un sistem de recunoaștere a entităților cu nume pe el. Am folosit mai multe tipuri de feature-uri pentru algoritmul de Învățare Automată. Textul natural vine in secvență (cuvânt după cuvânt), așa ca am folosit algoritmi de ML bazate pe sequence labeling (tagging), cum ar fii Modele Markov Ascunse, (eng. Hidden Markov Models - HMM) \abbrev{HMM}{Hidden Markov Model}, care este un model generativ, dar și modele discriminative, mai eficiente, cum ar fi Maximum Entropy Markov Models(MEMM)\abbrev{MEMM}{Maximum-entropy Markov model}, dar si Conditional Random Fields(CRF)\abbrev{CRF}{Conditional Random Field}.
 
 
 Deoarece corpusul adnotat de mine este de dimensiuni relativ mici și are doar un format destul de restrâns, algoritmii testați au tendința de a memora ceea ce văd și nu prea generalizază. Astfel, ca pe texte din setul de antrenament, algoritmul se comportă foarte bine - identifică si clasifică cu un scor foarte bun. Dar, pe texte pe care nu le-a văzut, chiar și din același domeniu (set de PDF-uri), acuratețea scade. Mai mult, pe texte din domenii diferite, așa cum era de așteptat, se observă o degradare destul de drastică a performanțelor. Voi prezenta mai multe detalii în secțiunea dedicată.
@@ -99,7 +102,7 @@ Lucrarea este structurată in următoarele capitole:
 \begin{enumerate}
 
 \item Descriere în detaliu și Cercetări similare (State of The Art)  \labelindexref{Capitolul}{chapter:history};
-\item Descrierea Arhitecturii Sistemului \labelindexref{Capitolul 3}{sub-sec:proj-objectives};
+\item Descrierea Arhitecturii Sistemului \labelindexref{Capitolul}{chapter:architecture};
 \item Implementarea Sistemului \labelindexref{Capitolul 4}{sub-sec:proj-objectives};
 \item Concluzii, Observații și Direcții Ulterioare \labelindexref{Capitolul 5}{sub-sec:proj-objectives}.
 

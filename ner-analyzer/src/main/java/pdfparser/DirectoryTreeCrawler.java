@@ -85,6 +85,11 @@ public class DirectoryTreeCrawler {
         return FileUtils.listFiles(_root, new SuffixFileFilter(PROPER_FILES),
                 TrueFileFilter.INSTANCE);
     }
+    
+    public Collection<File> getGenericFiles(){
+        return FileUtils.listFiles(_root, new SuffixFileFilter(".txt"),
+                TrueFileFilter.INSTANCE);
+    }
 
     public Collection<File> getGenericFileSplitFiles() {
         return FileUtils.listFiles(_root, new AndFileFilter(new WildcardFileFilter(GENERIC_FILE_SPLIT),

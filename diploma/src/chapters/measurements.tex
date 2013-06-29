@@ -1,0 +1,97 @@
+\chapter{Statistici si Rezultate Obținute}
+
+\section{Statistici Corpus Obținut cu Microsoft Academic Search}
+
+În această secțiune vom pune în evidență statisticile corpusului obținut folosind Microsoft Academic Search. Este bine cunoscut faptul că \textit{Vocabularul} $V$ și numărul de cuvinte $N$ sunt reprezentative pentru un corpus.
+
+\index{Corpus}
+\index{Vocabular}
+
+\textit{Vocabularul} reprezintă numărul de cuvinte unice pe care le conține un text.
+
+\index{Științe Sociale}
+
+\subsection{Statistici Documente PDF Download-ate}
+
+În \labelindexref{Tabelul}{table:downloaded-pdf-summary}, avem rezultatele procesului de download pentru domeniul Științe Sociale. Putem observa că aproximativ 10\% din publicațiile găsite reprezintă documente PDF ce au putut fi efectiv download-ate. Ulterior, vom vedea că acest corpus este totuși absolut suficient pentru ceea ce avem noi nevoie.
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Rezultatele download-ului documentelor din Științe Sociale}
+  \begin{tabular}{|l|r|}
+    \hline
+    Număr total autori & 99 \\
+    \hline
+    Număr total publicații & 8498 \\
+     \hline
+    Număr total PDF-uri download-ate & 962  \\
+     \hline
+  \end{tabular}
+  \label{table:downloaded-pdf-summary}
+\end{table}
+\end{center}
+
+\subsection{Statistici Cuvinte din Corpus}
+
+După ce am download-at documentele, am folosit un parser de PDF, Apache Tika, pentru a extrage textul din ele. Apoi, am efectuat mai multe prelucrări asupra textului. Vor fi descirse ulterior.
+
+Documentele text obținute au fost analizate pentru a determina dimensiunea vocabuluarului $|V|$ și numărul total de cuvinte.
+
+Mai întâi, folosit câteva programe drăguțe din \texttt{Unix}, precum \texttt{tr}, \texttt{sort} și \texttt{wc}. Codul poate fi văzut în \labelindexref{Listingul}{lst:vocabulary-size-bash}, Ele au raportat următoarele date:
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Dimensiunea vocabularului și numărul de cuvinte ale corpusului folosind programe Unix}
+  \begin{tabular}{|l|r|}
+    \hline
+    Dimensiune Vocabular |V| & 122 457\\
+    \hline
+    Număr total cuvinte & 9 249 223 \\
+     \hline
+  \end{tabular}
+  \label{table:vocabulary-size-bash}
+\end{table}
+\end{center}
+
+
+\lstset{language=bash}
+\lstset{caption=Funcționarea downloader-ului pt MS Academic Search, label=lst:vocabulary-size-bash}
+\lstinputlisting{src/code/build/vocabulary-size-bash.txt}
+
+Este suprinzător numărul mare de cuvinte și vom vedea și de ce. În \labelindexref{Listingul}{lst:top-words-bash.txt}, avem cele mai utilizate cuvinte din corpusul obținut. Primele cuvinte "the", "of", "and" era de așteptat să apară primele, deoarece sunt foarte folosite în limba engleză. În această statistică nu am ținut cont de capitalizare, de exemplu, "The" și "the" același lucru. Dar observăm că apar foarte des cuvinte \textit{token-uri} care nu sunt cuvinte din limba engleză, cum ar fi "s", "m", sau "e". Acest lucru este cauzat de faptul ce în engleză, posesia este construită cu John's, iar noi am considerat \textit{token-uri} separate "John" și "s". De aceea "s apare de peste 50 000 de ori.
+
+\lstset{language=make}
+\lstset{caption=Cele mai folosite cuvinte din limba engleză pentru corpusul obținut folosind programe Unix, label=lst:top-word-bash}
+\lstinputlisting{src/code/build/top-words-bash.txt}
+
+Observând acest lucru, am decis să implementez în Java un algoritm mai robust pentru a determina statistici referitoare la corpus. Programele din Unix au oferit doar rezultate orientative.
+
+Astfel, am implementat în Java un algoritm mai robust pentru a calcula dimensiunea vocabuluarului. Rezultatele pot fi observate în \labelindexref{Listingul}{lst:top-words-java}.
+
+Folosind Java, am obținut următoarele dimensiuni ale corpusului, prezentate în \labelindexref{Tabelul}{table:vocabulary-size-java}:
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Dimensiunea vocabularului și numărul de cuvinte ale corpusului folosind Java}
+  \begin{tabular}{|l|r|}
+    \hline
+    Dimensiune Vocabular |V| & 110 834\\
+    \hline
+    Număr total cuvinte & 9 703 480 \\
+     \hline
+  \end{tabular}
+  \label{table:vocabulary-size-java}
+\end{table}
+\end{center}
+
+\lstset{language=make}
+\lstset{caption=Cele mai folosite cuvinte din limba engleza pentru corpusul obținut folosind Java, label=lst:top-words-java}
+\lstinputlisting{src/code/build/top-words-java.txt}
+
+De asemenea, am ignorat scrierea cu majusculă. Și aici "The" și "the" reprezintă același cuvânt.
+
+\begin{description}
+	\item[O primă observație] ce se poate face este că dimensiunile vocabularului și ale numărului total de cuvinte raportate de cele două metode de calcul sunt apropiate, de același ordin de mărime. Avem un \textbf{vocabular} de aproximativ \textbf{110 000 de cuvinte distincte} și în un\textbf{ număr total de peste 9 milioane de cuvinte}.
+	\item [O a doua observație] ce se poate face este ca în statisticile raportate de Java au dispărut \textit{token-urile} bizare precum "s", "e", "m", "d" sau "onghaul".
+\end{description}
+

@@ -1,0 +1,153 @@
+\chapter{Descrierea Arhitecturii Sistemului}
+\label{chapter:architecture}
+
+În acest capitol vom prezenta arhitectura sistemului. Capitolul este împărțit în componentele ce alcătuiesc arhitectura sistemului. Aplicația a fost scrisă modular. Pentru fiecare task in parte, am creat module. Modulul care este destinat strângerii de date (PDF-uri) pentru construierea unui corpus a fost scris în limbajul Python. Modulele care au preluat aceste PDF-uri și au făcut diferite prelucrări pe ele și modulul NER sunt scrie in limbajul de programare Java. De asemenea, am reținut diferite aspecte considerate importante în baza de date, MySQL.
+
+
+\section{Modulul de Web Scraping}
+\label{sec:web-module}
+
+Acest modul are ca principal scop strângerea de PDF-uri folosind diferite servicii Web. Așa cum am precizat în \labelindexref{Secțiunea}{sub-sec:corpus-building}, pentru a putea aplica algoritmi de ML avem nevoie de un corpus adnotat cu entități, care să îi spună algoritmului \textit{the right answers}. Din păcate, nu am dispus de un astfel de corpus liber pe limba engleză, așa că o bună parte din munca depusă în elaborarea acestui proiect a fost alocată strângerii și prelucrării corpsului, apoi adnotării \textit{manuale} a unei porțiuni din corpus.
+
+\index{Scraper Web}
+
+\subsection{Ce este un Scraper Web?}
+
+\textit{Un Scraper Web} este o tehnică software care are ca scop extragerea de informații de pe site-urile web. Este înrudită cu \textit{web crawling-ul}, dar nu are ca scop \textit{indexarea} paginilor we, ci mai degrabă se urmărește obținerea de date structurate din informația de pe Web, de tip HTML.
+
+Modulul meu a foslosit tehnici de web scraping doar atunci când un serviciu web, sau un web API nu era disponibili. Inițial, am folosit această tehnică.
+
+Un server web poate răspunde la o cerere în două moduri. Această împărțire este făcută de mine, în urma observațiilor personale:
+
+\index{XPath}
+\begin{itemize}
+\item modul clasic, \texttt{HTML}. Acest mod este destinat cu precădere vizualizării informației de către oameni, și mai puțin de către calculatoare. Cu toate acestea, documentle HTML sunt structurate și poate fi extrasă informație din ele, folosind de exemplu \texttt{XPath}.
+
+\index{machine readable}
+
+\item modul în care răspunsul este destinat interpretării de către o mașină, \textit{machine readable}. De exemplu, un răspuns poate veni in format \texttt{XML}, sau în format \texttt{JSON}. Acum este mult mai ușor ca un program software să poată extrage informație din datele primite. Trebuie doar să cunoască modul în care aceste date sunt strucutare.
+\end{itemize}
+
+\subsection{Colectarea Documentelor PDF}
+
+Pentru a putea colecta documente PDF din domeniul științelor sociale de pe Web, am folosit două aplicații Web:
+\begin{description}
+\item[ Google Scholar]\footnote{\url{http://scholar.google.ro/}} "Stand on the shoulders of giants". Acest tool a fost folosit inițial pentru download-area de documente PDF. Din cauză ca nu dispunea de un serviciu Web, sau nu avea un API, a trebuit să folosesc Web Scraping-ul și să interpretez documente în format HTML, destinate oamenilor. Într-o fază inițială, am considerat adecvat acest tool, însă ulterior am decis că nu este suficient de robust pentru o utilizare adecvată. De exemplu, structura documentului HTML întoarsă de către Google Scholar putea să se schimbe în timp și căile \texttt{XPath} folosite pentru extragerea de link-uri către PDF-uri sau pentru extragerea de titluri de publicații riscau să devină invalide.
+
+
+\index{h-index}
+În \labelindexref{Figura}{img:google-scholar-publications} se poate observa cum arată răspunsul lui Google Scholar cu cele mai citate publicații după \textbf{h-index}\footnote{\url{http://www.google.com/intl/en/scholar/metrics.html}}. Acest indice încearcă să estimeze atâț \textit{productivitatea} unui cercetător, cât și \textit{impactul} pe care îl au lucrările sale. Astfel, este luat în considerare \textit{numărul} de publicații pe care îl are autorul, dar și de câte ori aceste publicații sunt \textit{referite} (citate) în alte publicații.
+
+\fig[scale=0.4]{src/img/google-scholar-publications.png}{img:google-scholar-publications}{Lista de publicații din domeniul Social Science întoarsă de Google Scholar}
+
+Pe scurt, scraper-ul de Google Scholar funcționa astfel. Lua primele 10 publicații si apoi căuta pe rând fiecare publicație, ca să gasească PDF-uri. De exemplu, pentru prima publicație din top \textit{IZA Discussion Papers}, faceam un query de forma \url{http://scholar.google.ro/scholar?q="iza+discussion+papers"}. Apoi, căutam în pagina HTML rezultatele care aveau PDF-uri publice și le download-am. Deoarece am descoperit un alt tool, pe care il voi prezenta în cele ce urmează, am renunțat la Google Schoolar.
+
+
+\item [Microsoft Academic Search]\footnote{\url{http://academic.research.microsoft.com/}}
+
+\index{Corpus}
+Acest tool pune la dispoziție un API și un serviciu Web care întoarce răspunsul sub forma unui \texttt{JSON}, ușor de citit de un porgram. Tot ce trebuie să faci este să obții un \textit{App Id}, care reprezintă un cod unic de identificare. Limitările sunt constituite de faptul ca nu poți folosi API-ul în scopuri comerciale, ai voie maxim 200 de request-uri pe minut și răspunsul este limitat la doar 100 de \textit{item-uri}. De asemenea, nu poți folosi API-ul pentru a \textit{crawl-a} întregul corpus.
+
+
+Am ales să îmi construiesc corpusul folosind Microsoft Academic Search.
+
+\fig[scale=0.7]{src/img/ms-academic-response.png}{img:ms-acedmic-resposne}{Răspunsul în format JSON întors de Microsoft Academic}
+
+Algoritmul de adunare de documente PDF funcționază în felul următor:
+
+\lstset{language=python}
+\lstset{caption=Funcționarea downloader-ului pt MS Academic Search, label=lst:ms-academic-download}
+\lstinputlisting{src/code/build/ms-academic-pdf-download.txt}
+
+Am ales să folosesc limbajul \textit{Python} pentru construirea corspusului pentru că partea aceasta din proiect nu are o complexitate foarte mare și în Python se scrie ușor cod, cu o sintaxă curată.
+
+\index{JSON}
+
+\textbf{JSON} (eng. JavaScript Object Notation) \abbrev{JSON}{JavaScript Object Notation} reprezintă un mod de a transimite datele între diferite aplicații.
+
+De asemenea, răspunsul în format \texttt{JSON} are un \textit{mapping} natural în Python la tipurile de date \textit{list} și \textit{dicționar}. Cu alte cuvinte, este foarte facil să extragi în Python un element dintr-un document în format JSON. De exemplu, pentru a obține lista de autori din răspunsul JSON, foloseam \texttt{json\_resp['d']['Author']['Result']}.
+
+
+În \labelindexref{Figura}{img:ms-acedmic-resposne} se poate observa răspunul în format JSON interpretat de \url{http://jsonviewer.stack.hu/}. Este răspunsul pentru publicațiile care corespund unui autor. Query-ul la care a fost produs răspunsul este de forma\footnote{\url{http://academic.research.microsoft.com/json.svc/search?AppId=code&ResultObjects=Publication&AuthorID=1759605&StartIdx=0&EndIdx=99}}. Nu toate publicațiile sunt libere, așa că doar cele care au câmpul \texttt{FullVersionURL} nevid vor fi alese. Dintre acestea, aleg doar URL-urile al căror \textit{response type} este de tip \texttt{application/pdf} sau similar. Nu downloadez url-urile după extensia .pdf, pentru că există situații în care URL-ul nu se termină în .pdf, dar răspunsul este de tip pdf.
+
+Ca arhitectură, codul este structurat în felul următor. Am un script care obține topul autorilor în funcție de domeniu. Apoi, am un script care obține topul publicațiilor în funcție de autor. Aceste script-uri sunt apelate de un script top-level pentru a construi corpusul.
+
+\end{description}
+
+\section{Modulul de Procesare a PDF-urilor Download-ate}
+
+În această secțiune voi prezenta arhitectura sistemului care se ocupă de prelucrarea PDF-urilor download-ate de modulul prezentat în  \labelindexref{Secțiunea}{sec:web-module}. Modulul de față extrage textul din PDF-uri și realizează prelucrările necesare pentru a putea avea un text fără multe artefacte. Arhitectura este sub formă de \textit{pipeline}.
+\index{pipeline}
+
+Din acest moment, am trecut pe limbajul Java. Am ales acest lucru deoarece a crescut complexitatea proiectului, iar Java, având \textit{tipare statică}, este mai \textit{type safe}, deci mai sigur în dezvoltarea aplicațiilor mai complexe decât Python.
+
+\index{parsare}
+Prima etapă a fost reprezentată de \textit{parsarea} pdf-urilor obținute pentru a putea extrage textul din ele. Am experimentat cu două parsere, \texttt{PDFBox} și parser-ul de PDF-uri din suita \texttt{Apache Tika}. Observând rezultatele obtinute în procesul de parsare am rămas pe Apache Tika. 
+
+\index{cross-platform}
+Cu toate acestea, au rămas caractere ce nu puteau fi parsate. Am întâmpinat dificultăți la encodarea caracterelor, deoarece Java pe Windows folosește \textit{encoduing-ul} Windows-1252.\footnote{\url{https://en.wikipedia.org/wiki/Windows-1252}} Am avut probleme la deschiderea fișierelor text pe o platformă Linux, care folosește encoding-ul UTF-8.\footnote{\url{https://en.wikipedia.org/wiki/Utf8}} Până la urmă am rezolvat această problemă, forțând Java să scrie și pe Windows fișierele text folosind UTF-8. Astfel, fișierele text au devenit cross-platform.
+
+\index{unicode replacement character}
+După extragerea textului, anumite caractere \textit{netokenizabile}, artefacte rămase în urma procesului de parsare a PDF-urilor au fost eliminate și înlocuite cu ?. În particular, am înlocuit caracterul \texttt{
+Unicode Character 'REPLACEMENT CHARACTER' (U+FFFD)}, cu "?".
+
+Apoi, am observat că multe articole sunt scrise folosind layout-ul de două coloane. Astfel, liniile sunt foarte scurte. Scopul meu era să folosesc aceste texte pentru a le putea adnota. Doream să am linii mai lungi. Așa că am concatenat liniile, înlocuind caracterulu \textit{newline} cu spațiu. Din păcate, existau foarte multe locuri în care era realizată despărțirea în silabe a unor cuvinte în limba engleză. Cum nu toate despărțirile în silabe puteau fi concatentate făra linie, a trebuit să apelez la tehnici bazate pe dicționare engleze pentru a putea vedea când puteam elimina linia și când nu. De exemplu, cuvântul \textit{mis-sion} poate fi concatenat la \textit{mission}, dar \textit{post-9/11} nu poate fi concatenat la \textit{post9/11}.
+
+Pentru aceasta, am implementat un sistem bazat pe 3 dicționare engleze online:
+
+\begin{itemize}
+\item \url{http://dictionary.reference.com};
+\item \url{http://www.merriam-webster.com};
+\item \url{http://www.thefreedictionary.com};
+\end{itemize}
+
+\index{cache}
+De asemenea, pentru a evita request-urile http succesive pentru același cuvânt, am implementat un sistem de \textit{cache}, pe două niveluri:
+
+\begin{enumerate}
+\item \textbf{primul nivel}, în codul Java, un \textit{HashMap} care reținea cuvintele care au fost întâlnite ignorând capitalizarea. Țineam minte atât exemplele pozitive, care puteau fi concatentate (acestea erau cele mai comune, fiind cuvinte din limba engleză), cât și exemplele negative care nu puteau fi concatenate. Oricum, exemplele negative rar erau întâlnite din nou;
+\item \textbf{al doilea nivel}, în baza de date, era activat doar dacă programul nu gasea cuvântul în HashMap-ul din cod. Era util atunci când programul era întrerupt înainte de procesarea întregului corpus. Am folosit acest sistem de \textit{persistență}, deoarece eliminarea despărțirii în silabe a fost o sarcină care a durat mult timp, implicând request-uri succesive \textit{http}. 
+
+\end{enumerate}
+
+Dacă nu era găsit în cache, cuvântul concatenat era căutat pe cele trei dicționare în ordinea în care am dat-o. Primul dicționar care răspundea afirmativ, spunând că acel cuvânt există oprea procesul și cuvântul era considerat corect. El era înlocuit în text cu varianta fără linie de despărțire în silabe, era salvat în cache și în baza de date. Dacă niciun dicționar nu îl găsea, liniuța de despărțire în silabe era păstrată, eliminându-se doar cracterul \textit{newline}.
+
+\textit{În urma acestui proces}, am obțiunut o serie de fișiere text pe care le-am considerat suficient de "curate" pentru a putea fi procesate mai departe de către algoritmi. A fost un proces lung, care a necesitat timp și a fost destul de anevoios.
+
+Ceea ce am descris mai sus este rezumat într-un mod intuitiv în \labelindexref{Figura}{img:pipeline-corpus}. 
+
+
+\fig[scale=0.7]{src/img/pipeline-corpus.png}{img:pipeline-corpus}{Procesul de obținere a corpusului modelat sub forma de pipeline}
+
+\section{Modulul de Adnotare Provizorie}
+
+Am adnotat provizioriu întregul folosind Stanford NER cele 962 de fișiere text obținute anterior. Corpusul a fost adnotat cu modelul antrenat pe corpusul Retures propus de ConLL-2003. Adică, a avut cele 4 tipuri de entități clasice: PERSON, ORGANIZATION, LOCATION, MISC. Suplimentar, Stanford NER a identificat fără a folosi modele statistice și următoarele tipuri de entități: \texttt{TIMEX} adică DATE, DURATION, TIME, SET și \texttt{NUMEX} adică NUMBR, PERCENT, ORDINAL, MONEY, în total 12 tipuri de entități cu nume.
+
+Evident că adnotarea nu a fost perfectă. Am folosit un tool foarte util pentru modificarea adnotărilor în mod vizual. El se numește BRAT(brat rapid annotation tool)\footnote{\url{http://brat.nlplab.org}}.
+
+Am convertit fișierele din formatul în encodarea IO scoasă de Stanford NER în format-ul specific BRAT. Dar, când am ajuns la adnotarea efectivă am observat că aplicația răspundea extrem de greu. Durau secunde bune de la selectarea unui text și până când aplicația brat răspundea. Am testat pe exemplele lor și am observat ca aplicația răspunde destul de rapid. Imediat am ipotezat faptul ca explicația trebuie să fie dimensiunea foarte mare a fișierelor text și numărul mare de entități.
+
+Așa că m-am întors înapoi la corpusul inițial de 962 de documente. Am decis să îl împart în bucățele mai mici după câteva reguli simple: după maxim 4000 de caractere sau după 5 linii noi consecutive. Astfel am obținut peste 20 000 de \textit{split-uri}, fișiere mai mici de cam 50 de linii. Le-am procesat din nou cu Stanford NER și apoi ele au fost transformate din nou în formatul acceptat de brat, pentru a corecta adnotările greșite de Stanford NER.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

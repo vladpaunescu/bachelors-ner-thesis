@@ -1,0 +1,15 @@
+vlad@linux-mint:generic$ cat vocabulary_size.sh 
+
+#!/bin/bash
+tr 'A-Z' 'a-z' < $1 | tr -sc 'A-Za-z' '\n' | sort | uniq -c | sort -n -r | wc -l
+
+vlad@linux-mint:generic$ cat token_size.sh 
+
+#!/bin/bash
+tr 'A-Z' 'a-z' < $1 | tr -sc 'A-Za-z' '\n' | sort | wc -l
+
+vlad@linux-mint:generic$ ./vocabulary_size.sh all.txt
+122457
+
+vlad@linux-mint:generic$ ./token_size.sh all.txt
+9249223

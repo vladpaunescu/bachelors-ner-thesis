@@ -14,6 +14,8 @@
 		\nompageref{4}
   \item [{IE}]\begingroup Information Extraction\nomeqref {1.0}
 		\nompageref{1}
+  \item [{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}
+		\nompageref{24}
   \item [{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}
 		\nompageref{15}
   \item [{MEMM}]\begingroup Maximum-entropy Markov model\nomeqref {1.0}

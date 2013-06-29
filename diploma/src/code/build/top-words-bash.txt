@@ -1,0 +1,41 @@
+#!/bin/bash
+tr 'A-Z' 'a-z' < $1 | tr -sc 'A-Za-z' '\n' | sort | uniq -c | sort -n -r | less
+
+ 467132 the
+ 348635 of
+ 291586 and
+ 213971 in
+ 190300 to
+ 159157 a
+  97133 for
+  92570 that
+  87256 is
+  60304 on
+  59869 are
+  57237 as
+  55972 with
+  50830 s
+  43664 by
+  43505 or
+  43116 this
+  41345 be
+  37278 from
+  34915 not
+  34831 we
+  32229 at
+  29339 have
+  29257 it
+  29099 an
+  28076 more
+  27602 their
+  26542 were
+  25879 e
+  25100 these
+  24145 onghaul
+  22843 was
+  21627 than
+  21475 they
+  20535 which
+  20227 m
+  19604 d
+  19269 students
