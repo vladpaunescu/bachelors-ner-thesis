@@ -1,11 +1,18 @@
-\chapter{Descriere în Detaliu si Cercetări Similare}
+\chapter{Descriere în Detaliu și Cercetări Similare}
 \label{chapter:history}
 
-În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații și vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu.
+În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații, vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu, vom prezenta provoacările NER și factorii care influențează un sistem NER și vom expune produsele software existente cu tehnologia actuală în prezent - \textit{vârful de lance} - State of the Art.
 
 \section{Definirea formală}
 
-Identificaera Entităților cu nume consta in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arata pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
+În comunitatea științifică, nu există in momentul de față un acrod clar în definirea unei entități cu nume. Totuși se pot da câteva definiții destul de bune.
+
+Entitățile cu nume sunt expresii care conțin nume de presoane, organizații, locații, timpi și cantități. (eng. "Named entities are phrases that contain the names of persons, organizations, locations, times, and quantities.") (CoNLL-2002)
+
+Definiția dată de CoNLL-2002 este pragmatică în sensul că poate clarifică sarcina NER, a identificării entităților cu nume. Ea limitează entitățile cu nume la conceptele de \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, \texttt{TIMP} și \texttt{CANTITATE}.
+
+
+\textit{Identificarea Entităților cu Nume} constă in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arăta pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
 
 \textbf{<Date>}, \textbf{<Person>}, \textbf{<Organization>} și \textbf{<Location>}.\\
 
@@ -15,11 +22,18 @@ On \textbf{<Date>}Jan $13^{th}$\textbf{</Date>}, \textbf{<Person>}John Briggs Jr
 York\textbf{</Location>} and instructed them to sell all his shares in
 \textbf{<Organization>}Acme\textbf{</Organization>}.\\
 
-In expresia "Entitate cu nume", cuvântul "nume" rastrange entitățile doar la acelea pentru care exista indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți include numele proprii, precum și anumiți termeni natural, cum ar fi unele specii biologice sau substanțe.
+In expresia "Entitate cu nume", cuvântul "nume" rastrânge entitățile doar la acelea pentru care exista indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți include numele proprii, precum și anumiți termeni natural, cum ar fi unele specii biologice sau substanțe.
 
 O extindere general agreată este să se includă și expresii temporale (\texttt{TIMEX}) si expresii numerice (\texttt{NUMEX}.
 
+În continuare, vom utiliza cuvintele entiate și entitate cu nume, alternativ. Ele vor semnfica același lucru în contextul de față.
+
 \subsection{Tipuri de Entități}
+
+Vom începe cu un exemplu ilustrativ, care arată legătura între entități si categorii, concepte. \labelindexref{Figura}{img:entity-concept} de mai jos arată relația intre concepte și entități.\footnote{\url{http://webknox.com/p/named-entity-definition}}
+
+
+\fig[scale=0.5]{src/img/entity-concept.png}{img:entity-concept}{Relația între concepte și entități}
 
 Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce voi prezenta este o împărțire realizata cu o granularitate mare. Se pot realiza împărțiri cu granlurități mult mai fine, adica de exemplu categoria \texttt{PERSON} poate fi impărțită în mai multe subtipuri, de exemplu:
 
@@ -73,9 +87,15 @@ Majoritatea cercetarii pe NER s-a făcut și se face pe texte scrise. Acest lucr
 
 \item[O a doua] alternativă de formulare a problemei NER este folosirea unor pagini scanate ca input. Aceste pagini sunt trecute prin sistemde de recunoaștere a caracterelor (eng. Optical Character Recognition - OCR)\abbrev{OCR}{Optical Character Recognition}. Cum și aceste sisteme introduc erori, problema degradarii input-ului se mainfestă și aici.(Maynard et al., 2002)\cite{maynard2002}
 
-\item[O a treia] alternativă este să se utilizeze documente care au o oarecare sutructura, documente semistrucutrate, de exemplu documente HTML. Se pot extrage informații suplimentare din aceste tipuri de documente. De exemplu, delimitarea entităților poate fi extrasă mai precis pentru că ele pot fi demarcate de tag-ui html, cum ar fi \texttt{<span>}European Union\texttt{</span>}.(Kushmerick, 1997)\cite{kushmerick1997}
+\item[O a treia] alternativă este să se utilizeze documente care au o oarecare sutructură, documente semistrucutrate, de exemplu documente HTML. Se pot extrage informații suplimentare din aceste tipuri de documente. De exemplu, delimitarea entităților poate fi extrasă mai precis pentru că ele pot fi demarcate de tag-ui html, cum ar fi \texttt{<span>}European Union\texttt{</span>}.(Kushmerick, 1997)\cite{kushmerick1997}
 
 \end{description}
+
+\subsection{Tehnici și Algoritmi folosiți în problema NER}
+
+Abilitatea de a reunoaște entități pe care sistemul nu le-a văzut înainte este esențială în preformanța unui sistem NER. O astfel de abilitate se bazează pe recunoașterea și clasificarea de reguli declanșate de diferite feature-uri asocitate atât cu exemple pozitive cât și cu exemple negative. Dacă la început, sistemele NER erau bazate pe reguli acum majoritatea folosesc tehnici avansate de Machine Learning supervizat. 
+
+\todo{Da adugat aici}
 
 
 \section{Domenii Înrudite și Aplicații NER}
@@ -292,9 +312,135 @@ Deseori, tipurile amintite mai sus din categoriile \texttt{TIMEX} și \texttt{NU
 Interesul recent din bioinformatică și disponibilitatea corpusului GENIA (Ohta et al., 2002) \cite{Ohta02thegenia}, care curpinde texte adnotate din domeniul biologiei moleculare a condus la multe studii dedicate unor tipuri specifice de entități, cum ar fi \texttt{Protein}, \texttt{Gene} etc. S-au făcut studii exclusiv în acest domeniu pentru identificarea de proteine și de gene noi. De asemenea, așa cum am zis în \labelindexref{Paragraful din Secțiunea}{paragraph:relation}, s-au extras mai departe relații între aceste tipuri de entități.
 
 
-De remarcat este și lucrul în care nu se limtează tipurile posibile de entități. Astfel, Sekine și Nobata (2004) au definit o ierarhie impresionantă de tipuri de entități cu nume. Această ierarhie include multe subcategorii de granularitate fină, cum ar fi \texttt{Râu}, \texttt{Aeroport} și adaugă de asememenea un număr mare de categorii cum ar fi \texttt{Produs}, \texttt{Substanță}, \texttt{Eveniment}, \texttt{Animal}, \texttt{Culoare} etc. Se încearcă acoperirea celor mai frecvente categorii de tipuri de nume care apar în ziare. Numărul de catgorii ajunge aproape de 200, iar fiecărei categorii i se asociază atribute pentru o construi o ontologie. \index{Ontologie}\cite{sekine2004}
+De remarcat este și lucrul în care nu se limitează tipurile posibile de entități. Astfel, Sekine și Nobata (2004) au definit o ierarhie impresionantă de tipuri de entități cu nume. Această ierarhie include multe subcategorii de granularitate fină, cum ar fi \texttt{Râu}, \texttt{Aeroport} și adaugă de asememenea un număr mare de categorii cum ar fi \texttt{Produs}, \texttt{Substanță}, \texttt{Eveniment}, \texttt{Animal}, \texttt{Culoare} etc. Se încearcă acoperirea celor mai frecvente categorii de tipuri de nume care apar în ziare. Numărul de catgorii ajunge aproape de 200, iar fiecărei categorii i se asociază atribute pentru o construi o ontologie. \index{Ontologie}\cite{sekine2004}
 
 \section{State of The Art}
+
+În această secțiune voi prezenta produsele software și sistemle de recunoaștere a entităților cu nume care există în prezent, atât \textit{open source}\index{open source} și \textit{free}, cât și sistemele comerciale. Acestea reprezintă \textit{vârful de lance} a ceea ce există în momentul de față în domeniu. 
+
+Totuși, chiar și aceste sisteme sunt departe de a fi perfecte. Sistemele \textit{vârf de lance} actuale sunt fragile. Acest lucru este valabil pentru ambele abordări, atât pentru cele bazate pe reguli, cât și pentru cele bazate pe modele statistice. Un sistem NER dezvoltat pentru un domeniu nu se comportă în general bine pe alte domenii.
+
+\subsection{Stanford Named Entity Recognizer}
+
+\index{Stanford Named Entity Recognizer}
+
+Stanford Named Entity  Recognizer\footnote{\url{http://nlp.stanford.edu/software/CRF-NER.shtml}} este poate cel mai cunoscut sistem de recunoaștere a entităților, datorită renumelui pe care îl poartă Stanford și datorită vechimii pe care o are în domeniu. Standord NER face parte din proiectul mai amplu, Stanford NLP \footnote{\url{http://nlp.stanford.edu/}}. Este dezvolat de Stanford Natural Language Processing Group, departament al Universității Stanford. 
+
+Reprezintă o implementare a unui sistem NER în limbajul de programare Java. Este un produs software \textit{open source}.
+
+Are o vechime de aproape șapte ani, având Inital release-ul pe 18 septembrie 2006. La data scrierii articolului, Stanford NLP este la versiunea 3.2.0 (20-06-2013). Din păcate, dependențele Apache Maven nu au fost updat-ate în repository cu versiunea curentă. Astfel, eu am folosit o versiune mai veche a Stanford NLP.
+
+\index{Apache Maven}
+
+Stanford NER folesesțe pentru identificarea entităților cu nume un Conditional Random Field (CRF) antrenat pe diferite corpusuri. Miodelele CRF au fost inventate de Lafferty, McCallum și Pereira în 2001.\cite{Lafferty01conditionalrandom} Modelele generate de antrenarea CRF-ului pe diferitele corpusuri sunt serializate și arhivate. Ele pot fi download-ate separat sau folosite împreuna cu arhiva\textit{.jar} pusă la dispoziție.
+
+\index{Corpus}
+
+Modelele incluse cu care a fost antrenat Stanford NER pentru \textbf{limba engleză} sunt:
+
+\begin{itemize}
+\item un model de 4 clase (Location, Person, Organization, Misc) antrenat pentru CoNLL (Retures Corpora);
+\item un model de 7 clase (	Time, Location, Organization, Person, Money, Percent, Date) antrenat pentru MUC-6 (Wall Street Journal corpora);
+\item un model de 3 clase  (Location, Person, Organization) antrenat atât pe CoNLL cât și pe MUC pentru intersecția dintre cele 2 tipuri de clase.
+\end{itemize}
+
+Există modele și pentru alte limbi, cum ar fi limba germană, cât și limba chineză.
+
+De remarcat este faptul că Stanford CRF Classifier poate fi antrenat pe un alt corpus adnotat cu un număr arbitrar de categorii de entități cu nume. Apoi acest model statistic obținut poate fi \textit{serializat} și arhivat pe disc și poate fi folosit de Stanford NER ca și celelalte modele puse la dispoziție in distribuția oficială.
+
+Din păcate, am dorit să obțin scoririle F1 pe care Stanford NER le face pe corpusurile pe care a fost antrenat, dar nu am găsit pe niciunde. Deoarece sistemul a apărut dupa Conferința CoNLL-2003, el nu a participat la competiție. Dacă aș fi avut corpusul, aș fi putut calcula eu scorul F1, dar pentru că nu am avut acces la corpus, nu am avut cum.
+
+
+\subsection{Apache OpenNLP}
+
+Apache OpenNLP este o librărie de machine learning specializată pe pe procesarea limbajului natural, scrisă în Java. Este de asemenea \textit{open source}.
+
+
+\index{Apache OpenNLP}
+OpenNLP suportă cele mai uzuale task-uri de NLP, cum ar fi token-izarea, segmentarea în propoziții, POS tagging, NER, chunking, parsing și rezolvarea coreferințelor. OpenNLP de asemenea include tool-uri de ML precum Maximum Entropy și Perceptron.\footnote{\url{http://opennlp.apache.org/}}
+
+\index{one-vs-all classification}
+
+Sistemul NER pus la dispoziție de OpenNLP este bazat pe \textit{one-vs-all classification}. Cu alte cuvinte, există câte un model statistic antrenat pentru fiecare clasă în parte. Celelalte clase sunt ignorate în acest model statistic. Adică, modelul care este antrenat să identifice de exemplu \texttt{PERSOANE} va ignora complet celelate categorii de entități, cum ar fi \texttt{LOCAȚII} și \texttt{ORGANIZAȚII}. Le va considera pe toate \texttt{O, Other, Out sau None}.
+
+Astfel, există modele diferite pentru Persoane, Organizații, Locații și Misc.\footnote{\url{http://opennlp.sourceforge.net/models-1.5/}}.
+
+Pentru limba engleză avem 7 modele antrenate fiecare pe câte o clasă din MUC.:
+
+\begin{itemize}
+\item model pentru Date, en-ner-date.bin
+\item model pentru Location, en-ner-location.bin
+\item model pentru Money,	en-ner-money.bin
+\item model pentru Organization,	en-ner-organization.bin
+\item model pentru Percentage,	en-ner-percentage.bin
+\item model pentru Person,	en-ner-person.bin
+\item model pentru Time, en-ner-time.bin
+\end{itemize}
+
+Această abordare are cu mai mulți clasificatori are avantaje și dezavantaje.
+
+\textit{Avantajele} antrenării mai multor clasificatori sunt următoarele:
+
+\begin{itemize}
+	\item Având doar un tip de entitate de recunoscut, avem practic două clase de decis tipul și \texttt{O - None}. Prin urmare, probabiltatea medie este de $P = \frac{1}{2} $. Deci, sistemul nostru poate spune cu certitudine mare apartenența la clasa respectivă, sau nu. Poate foarte ușor să ajungă la o probabilitate de 50\%;
+	\item Un singur tip de entitate scade timpul de antrenare a modelului, deoarece funcția ce trebuie optimizată are un număr redus de variabile, având doar o două clase.
+\end{itemize}
+
+\textit{Dezavantajul} major al antrenării mai multor clasificatori este reprezentat de distribuția nesimetrică a claselor. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON} \texttt{LOCATIO}, etc. Acum, având doar o singură categorie această asimetrie a cauzată de faptul ca numărul de exemple negative este mult mai mare decât numarul de exemple pozitive este și mai pronunțată. Asta deoarece, de exemplu, pentru modelul antrenat pe persoane, toate exemplele pozitive de tip locație, organizație etc, care înainte mai contrabalansau asimetria, vor deveni exemple negative de tip \texttt{O}. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}.
+
+De asemenea, Apache OpenNLP pune la dispoziție NER multimbă. Pe lângă engleză, avem modele antrenate pe limba spaniolă și pe limba olandeză, pe 4 clase de la CoNLL-2002.
+
+\subsection{Python NLTK}
+
+\index{Python NLTK}
+\index{Corpus}
+Python Natural Language Toolkit\footnote{\url{http://nltk.org/}} este platforma de vârf pentru scrierea de programe în limbajul Python care lucrează cu date din limbajul uman. Pune la dispoziție  o colecție impresionantă de peste 50 de corpusuri su resurse de NL{. Are un chiar și un GUI de download pentru modele și corpusuri. În \labelindexref{listing-ul}{lst:python-nltk} de mai jos avem un exemplu de cât de simplu se poate lansa NLTK download-manager-ul. El arată ca în \labelindexref{Figura}{img:nltk-downloader} de mai jos.
+
+% Inline Listing example
+\lstset{language=python,caption=Python NLTK,label=lst:python-nltk}
+\begin{lstlisting}
+>>> import nltk
+>>> nltk.download()
+\end{lstlisting}
+
+\fig[scale=0.8]{src/img/nltk-downloader.png}{img:nltk-downloader}{GUI-ul pus la dispoziție de Python NLTK}
+
+Din păcate, deși are o colecție impresionantă de corpsuuri, printe ele nu se regăsește și un corpus pe engleză de NER. Putem download-a doar modelele deja antrenate pentru limba engleză. Este pus la dispoziție doar corpusul de antrenament de pe limba olandeză de la CoNLL-2002.
+
+\index{IOB encoding}
+\index {IO encoding}
+Din ce am putut citi pe site-ul lor, este de remarcat faptul că ei au antrenat modelele pe encodarea de tip \textit{IOB}, nu cea clasică, \textit{IO}. Encoding-ul IOB,  aduce un plus de complexitate. Inseamnă să marchezi diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje.
+
+
+De exemplu, pentru textul "Is John Doe here?", encodările IO și IOB vor fi următoarele:
+
+\begin{center}
+\begin{tabular}{ |l | r | r |}
+\hline
+  Token & Encodare IO & Encodare IOB \\
+\hline
+  Is & O & O \\
+  John & PER & B-PER  \\
+  Doe & PER & I-PER \\
+  here & O & O \\
+  ? & O & O \\
+  \hline
+\end{tabular}
+\end{center}
+
+
+\textit{Avantajul} pe care îl aduce în plus față de encodarea clasică este că putem delimita  \textit{entitățile consecutive de același tip}. De exemplu, două persoane pot fi delimiate corect. Însă, în practică, delimtarea persoanelor este marcată în text cu virgulă de exemplu, token care va fi etichetat ca exemplu negativ \texttt{O}. Deci delimitarea va fi posibilă fără probleme. Cazurile în care două entități conescutive din aceeși categorie se referă la două obiecte ditincte sunt foarte rare.
+
+\textit{Dezavantajul} este reprezentat de dublarea numărului de clase pentru antrenarea modelului. Adică, dacă înainte pentru $C$ categorii de entități aveam $C + 1 $ clase (trebuia să adaugăm si clasa \txttt{O}, acum numărul lor se dublează pentru fiecare cateogrie de entitate in parte. Asta deoarece avem două clase disincte pentru fiecare categorie \texttt{X}, \texttt{B-X} și \texttt{I-X}, de exemplu pentru \texttt{PERSON} vom avea \texttt{B-PERSON} si \texttt{I-PERSON}. Același lucru e valabil pentru toate cele C categorii, mai puțin pentru clasa \texttt{O}, pentru care nu se va dubla numărul. Deci în encodarea IOB, pentru un număr de $C$ categorii de entități vom avea $2C + 1 $ clase în antrenarea modelului. Astfel, antrenarea modelului va si semnficativ mai lentă, iar probabilitățile mai mici.
+
+\subsection{Alte aplicații}
+
+Există o serie de aplicații comerciale pentru diferite task-uri de Information Extraction. O aplicație interesantă cu care am lucrat, care are și un sistem NER destul de robust, este \textit{AlchemyAPI}.\footnote{\url{http://www.alchemyapi.com/}}.
+
+
+
+
+
 
 
 
