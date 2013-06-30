@@ -14,6 +14,7 @@ import edu.stanford.nlp.util.CoreMap;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
@@ -84,6 +85,37 @@ public class StanfordNerAnnotator {
         return null;
     }
 
+    public List<NerAnnotation> annotateFileNoWrite(File textFile) {
+        try {
+
+            String text = FileUtils.readFileToString(textFile, "UTF-8");
+            List<NerAnnotation> annotations = new LinkedList<>();
+
+            log.info("Annotating file " + textFile.getAbsolutePath());
+
+            // create an empty Annotation just with the given text
+            Annotation document = new Annotation(text);
+
+            // run all Annotators on this text
+            _snlp.annotate(document);
+
+            // these are all the sentences in this document
+            // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+
+            for (CoreMap sentence : sentences) {
+                annotateSentence(sentence, annotations);
+            }
+
+            return annotations;
+        } catch (IOException ex) {
+            log.error("Annotating file " + textFile.getAbsolutePath()
+                    + " failed with exception " + ex);
+        }
+
+        return null;
+    }
+
     public NamedEntities annotateText(String text) {
         NamedEntities namedEntities = new NamedEntities();
 
@@ -125,7 +157,22 @@ public class StanfordNerAnnotator {
             collector.append(ne).append(TAB).append(pos).append("\r\n");
         }
     }
+    
+    private void annotateSentence(CoreMap sentence, List<NerAnnotation> annotations){
+        // a CoreLabel is a CoreMap with additional token-specific methods
+        for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+            // this is the text of the token
+            String originalText = token.originalText();
+            String word = token.word();
 
+            // this is the NER label of the token
+            String ne = token.ner();
+
+            NerAnnotation annotation = new NerAnnotation(originalText, word, ne);
+            annotations.add(annotation);
+        }
+    }
+            
     private void annotateSentence(CoreMap sentence, NamedEntities namedEntities) {
         // a CoreLabel is a CoreMap with additional token-specific methods
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -137,8 +184,8 @@ public class StanfordNerAnnotator {
 
             // this is the NER label of the token
             String ne = token.ner();
-            
-            if(ne.equals("O")){
+
+            if (ne.equals("O")) {
                 continue;
             }
 
@@ -150,6 +197,8 @@ public class StanfordNerAnnotator {
             namedEntities.addEntityToCategory(entity, ne);
         }
     }
+    
+    
 
     private void writeAnnotationOutput(File textFile, StringBuilder collector) {
 

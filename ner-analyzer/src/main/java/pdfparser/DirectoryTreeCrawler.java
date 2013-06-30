@@ -32,6 +32,7 @@ public class DirectoryTreeCrawler {
     private static final String PROPER_FILES = "_proper.txt";
     private static final String GENERIC_FILE_SPLIT = "*_*.txt";
     private static final String DONE_ANN_FILE_SUFFIX = "_done.ann";
+    private static final String DONE_TXT_FILE_SUFFIX = "done.txt";
     private String _rootdir;
     private File _root;
 
@@ -85,8 +86,8 @@ public class DirectoryTreeCrawler {
         return FileUtils.listFiles(_root, new SuffixFileFilter(PROPER_FILES),
                 TrueFileFilter.INSTANCE);
     }
-    
-    public Collection<File> getGenericFiles(){
+
+    public Collection<File> getGenericFiles() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(".txt"),
                 TrueFileFilter.INSTANCE);
     }
@@ -99,6 +100,11 @@ public class DirectoryTreeCrawler {
 
     public Collection<File> getAnnotationFiles() {
         return FileUtils.listFiles(_root, new SuffixFileFilter(DONE_ANN_FILE_SUFFIX),
+                TrueFileFilter.INSTANCE);
+    }
+
+    public Collection<File> getTrainingTextFiles() {
+        return FileUtils.listFiles(_root, new SuffixFileFilter(DONE_TXT_FILE_SUFFIX),
                 TrueFileFilter.INSTANCE);
     }
 

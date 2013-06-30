@@ -4,6 +4,8 @@
  */
 package annotators;
 
+import edu.stanford.nlp.ie.NERClassifierCombiner;
+import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
 import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
@@ -17,7 +19,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import pdfparser.DirectoryTreeCrawler;
-import pdfparser.HyphenationChecker;
 
 /**
  *
@@ -28,25 +29,41 @@ public class StanfordTextFilesAnnotator {
     static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
             StanfordTextFilesAnnotator.class.getName());
     private static final int TIMEOUT_SECONDS = 360;
-    
     private DirectoryTreeCrawler _crawler;
     private boolean _genericEnabled;
+    private static final String CONLL_MODEL = DefaultPaths.DEFAULT_NER_CONLL_MODEL;
+    private static final String MODEL_5_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz";
+    private static final String MODEL_14_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/14-class.ser.gz";
+    private String _modelToUse;
+    private boolean _numericClassifierEnabled;
+    private boolean _timeClassfierEnabled;
 
-     public StanfordTextFilesAnnotator(DirectoryTreeCrawler crawler) {
+    public StanfordTextFilesAnnotator(DirectoryTreeCrawler crawler) {
         _crawler = crawler;
         _genericEnabled = false;
+        _modelToUse = CONLL_MODEL;
+        _numericClassifierEnabled = true;
+        _timeClassfierEnabled = true;
     }
-    
+
     public void annotateProperUnicodTikaNoHyphen() throws InterruptedException {
         log.info("Annotating tika parsed text files");
         Collection<File> textFiles = _crawler.getTikaProperUnicodeNoHyphenFiles();
         annotateTextFiles(textFiles);
     }
-    
-    public void annotateSplitFiles(){
+
+    public void annotateSplitFiles() {
         log.info("Annotating file-split files files");
         _genericEnabled = true;
         Collection<File> textFiles = _crawler.getGenericFileSplitFiles();
+        annotateTextFiles(textFiles);
+    }
+    
+    public void annotateTrainingFiles(){
+        _modelToUse = MODEL_14_CLASS;
+        _numericClassifierEnabled = false;
+        _timeClassfierEnabled = false;
+        Collection<File> textFiles = _crawler.getTrainingTextFiles();
         annotateTextFiles(textFiles);
     }
 
@@ -101,9 +118,13 @@ public class StanfordTextFilesAnnotator {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", DefaultPaths.DEFAULT_NER_CONLL_MODEL);
-        //props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
-        //props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
+        props.put("ner.model", _modelToUse);
+        if (_numericClassifierEnabled == false) {
+            props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        }
+        if (_timeClassfierEnabled == false) {
+            props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
+        }
 
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
@@ -126,7 +147,6 @@ class AnnotationTask implements Callable<String> {
     public AnnotationTask(StanfordNerAnnotator annotator, File textFile) {
         _annotator = annotator;
         _textFile = textFile;
-
     }
 
     @Override

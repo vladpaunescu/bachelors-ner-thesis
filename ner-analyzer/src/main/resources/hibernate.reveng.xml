@@ -6,4 +6,5 @@
   <table-filter match-name="ms_academic_domains"/>
   <table-filter match-name="ms_academic_publications"/>
   <table-filter match-name="hyphenated_words"/>
+  <table-filter match-name="entities"/>
 </hibernate-reverse-engineering>

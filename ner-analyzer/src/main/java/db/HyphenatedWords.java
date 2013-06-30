@@ -1,5 +1,5 @@
 package db;
-// Generated Jun 19, 2013 5:59:56 AM by Hibernate Tools 3.2.1.GA
+// Generated Jun 30, 2013 3:06:12 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,28 +9,23 @@ package db;
 public class HyphenatedWords  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private String hyphenatedWord;
      private String normalWord;
 
     public HyphenatedWords() {
     }
 
-	
-    public HyphenatedWords(int id) {
-        this.id = id;
-    }
-    public HyphenatedWords(int id, String hyphenatedWord, String normalWord) {
-       this.id = id;
+    public HyphenatedWords(String hyphenatedWord, String normalWord) {
        this.hyphenatedWord = hyphenatedWord;
        this.normalWord = normalWord;
     }
    
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getHyphenatedWord() {

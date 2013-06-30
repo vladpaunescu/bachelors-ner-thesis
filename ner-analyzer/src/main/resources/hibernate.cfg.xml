@@ -11,5 +11,6 @@
     <mapping resource="db/MsAcademicDomains.hbm.xml"/>
     <mapping resource="db/HyphenatedWords.hbm.xml"/>
     <mapping resource="db/MsAcademicPublications.hbm.xml"/>
+    <mapping resource="db/Entities.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
