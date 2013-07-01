@@ -32,7 +32,7 @@
 		\nompageref{4}
   \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{2}
   \item [{MT}]\begingroup Machine Translation\nomeqref {2.0}
-		\nompageref{14}
+		\nompageref{13}
   \item [{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}
 		\nompageref{2}
   \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{2}

@@ -14,7 +14,7 @@
 \nomenclatureentry{aCRF@[{CRF}]\begingroup Conditional Random Field\nomeqref {1.0}|nompageref}{4}
 \nomenclatureentry{aASR@[{ASR}]\begingroup Automatic Speech Recognition\nomeqref {2.0}|nompageref}{9}
 \nomenclatureentry{aOCR@[{OCR}]\begingroup Optical Character Recognition\nomeqref {2.0}|nompageref}{9}
-\nomenclatureentry{aMT@[{MT}]\begingroup Machine Translation\nomeqref {2.0}|nompageref}{14}
+\nomenclatureentry{aMT@[{MT}]\begingroup Machine Translation\nomeqref {2.0}|nompageref}{13}
 \nomenclatureentry{aKNN@[{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}|nompageref}{15}
 \nomenclatureentry{aJSON@[{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}|nompageref}{24}
 \nomenclatureentry{aBRAT@[{BRAT}]\begingroup Brat Rapid Annotation Tool\nomeqref {3.0}|nompageref}{27}
