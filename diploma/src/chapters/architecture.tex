@@ -129,6 +129,176 @@ Am convertit fișierele din formatul în encodarea IO scoasă de Stanford NER î
 
 Așa că m-am întors înapoi la corpusul inițial de 962 de documente. Am decis să îl împart în bucățele mai mici după câteva reguli simple: după maxim 4000 de caractere sau după 5 linii noi consecutive. Astfel am obținut peste 20 000 de \textit{split-uri}, fișiere mai mici de cam 50 de linii. Le-am procesat din nou cu Stanford NER și apoi ele au fost transformate din nou în formatul acceptat de brat, pentru a corecta adnotările greșite de Stanford NER.
 
+\section{Corectarea Manuală a Adnotării folosind BRAT}
+
+\index{BRAT}
+\abbrev{BRAT}{Brat Rapid Annotation Tool}
+Apoi am folosit Brat Rapid Adnotation Tool pentru a corecta \textit{manual} adnotarea realizată de către Stanford NER.
+
+Am adnotat pentru 13 categorii de entități, 12 deja disponibile din Stanford NER, la care am considerat necesară adăugarea uneia noi, \texttt{NATIONALITY}. În limba engleză, naționalitățile sunt nume proprii. Erau clasificate de sistemul NER de la Stanford în categoria \texttt{MISC}. Mai potrivit ar fi fost ca de exemplu \textit{Canadian} să fie clasificat ca \texttt{LOCATION}, consider eu. Dar, din cercetările făcute de mine, există un acord general ca \textit{naționalitățile} să fie clasificate în categoria \texttt{MISC}. Întrucât am dorit să experimentez ceva diferit, nou, am adaugat o nouă categorie, \texttt{NATIONALITY}.
+
+În \labelindexref{Figura}{img:brat-image}, se poate observa modul în care a decurs adnotarea manuală a textelor. 
+
+\fig[scale=0.5]{src/img/brat-image.png}{img:brat-image}{Intefață grafică a BRAT}
+
+Procedeul a implicat un volum mare de muncă și un efort substanțial, consumând destul timp. În total, am reușit să adnotez aproximativ 200 de split-uri, creând un mic corpus, din care să pot \textit{bootstrap-a} un algoritm de ML. Am încercat să creez un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți. Într-o proporție covârșitoare, foarte multe nume de persoane se află în referințe în acest tip de texte, documente PDF din domeniul Științelor Sociale, de exempl (E. Mayer \& R. Silva, 2001). Adesea, sistemul NER de la Stanford greșea când întâlnea o astfel de construcție cu \&, clasificând-o greșit ca \texttt{ORGANIZATION}.
+
+Această etapă nu pot spune ca este gata. Ar fi fost aproape imposibil, chiar dacă mi-aș fi dedicat 12 ore pe zi, timp de 3 luni, să termin de corectat adnotarea a celor peste 20 000 de split-uri. Adnotând 200 de split-uri, înseamnă că am adnotat aproximativ 1 \% din corpusul inițial.
+
+\section {Modulul de Antrenare a Modelului Statistic}
+
+În această secțiune voi prezenta modulul cu care a fost folosit pentru a antrena pe corpusul obținut anterior a unui model statistic adecvat acestui corpus. Voi prezenta detalii tehnice și librăriile existente folosite de mine.
+
+\subsection{Motivarea Alegerii Modelării cu Conditional Random Field}
+
+\index{sequence labeling}
+Folosind corpusul adnotat corect, am antrenat un model statistic pe el. Problema de față face parte din ceea ce se numește \textit{sequence labeling}. Cu alte cuvinte, la un moment de timp, clasificatorul are de luat o singură decizie, \textit{condiționat} de dovezile din observațiile anterioare, de exemplu cuvintele, și de \textit{deciziile anterioare}. Acest lucru poate fi ilustrat mai bine în \labelindexref{Figura}{img:sequence-labeling} de mai jos. 
+
+
+\fig[scale=0.3]{src/img/sequence-labeling.png}{img:sequence-labeling}{Ilustrare a procesului de decizie pe o secvență}
+
+În acest modul a trebuit să adaptez algoritmii la ordinea naturală în care veneau datele, aceea de secvență. Pentru aceste tipuri de problemă s-au studiat extensiv modele și algoritmi de ML, care pot fi aplicați pe secvența. Ei pot fi împărțiti în două categorii:
+
+\index{Hidden Markov Model}
+\index{Maximum Entropy Markov Model}
+\index{Conditional Random Field}
+\begin{itemize}
+\item modele \textit{generative}, care pun o probabilitate atât pe datele observate cât și pe clasa ce trebuie "ghicită" (starea asunsă). Ele generează datele observate din clasa ascunsă, și aleg clasa care se potrivește cel mai bine cu datele observate. Din categoria acestor modele fac parte Modele Hidden Markov Models (HMM), Naive Bayes etc. Un astfel de model HMM este folosit în lucrarea lui Bikel, 1999, lucare de pionierat în domeniul NER, prima abordează NER ca o problemă de \textit{sequence labeling}\cite{Bikel99analgorithm};
+\item modele \textit{discriminative}, care iau datele observate și pun o porabilite pe structura ascunsă, dându-se observațiile - probabilite condiționtă. Din această, categorie fac parte Maximum Entropy Markov Models și Conditional Random Fields.\cite{Mccallum00maximumentropy}\cite{Lafferty01conditionalrandom}
+\end{itemize}
+
+Aceste modele au fost folosite cu succes în alte task-uri de \textit{sequence labeling}, cum ar fi POS tagging. La fel și în NER, contează foarte mult secvența continuă de cuvinte dintr-o vecinătate, la un anumit moment de decizie, cu alte cuvinte, contează contextul local.
+
+Modelele \textit{discriminative} obțin scoruri mai bune atât pe datele de antrenament cât si pe datele de test. Modelele generative având acea probabilitate \textit{joint} (legată) între datele observate și clasa ce trebuie modelată tind să crească probabilitatea în mode exagerat, să numere de mai multe ori aceeași dovadă, atunci când \textit{feature-urile} (caracteristicle) nu sunt \textit{independente} una de alta. Așa cum vom vedea, feature-urile alese în problemele de NLP \textit{nu sunt independente}. Deci un model generativ va exagera practic în momentul în care avem astfel de feature-uri. Modelele \textit{discriminative} propuse ulterior, ca MEMM, sau CRF, sunt acum folosite pe scară largă în sistemele NER.
+
+\subsection{Utilizarea Software a Conditinal Random Field}
+
+Așa că și eu am decis să folosesc un Conditional Random Field. Am avut de ales în a implementa eu singur un CRF sau să folosesc o implementare deja făcută într-o librările de ML disponibilă. Am ales a doua variantă din cauză ca implementarea ar fi necesitat un timp considerabil și probabil nu aș fi putut să o fac mai bine decât ceea ce există deja. De asemenea, puteam să am \textit{bug-uri} în implementarea mea. Am ales o implementare care a fost deja testată și în care probabilitatea ca ea să aibă bug-uri era mică.
+
+\index{MALLET}
+\abbrev{MALLET}{MAchine Learning for LanguagE Toolkit}
+\index{Apache Maven}
+
+În urma cercetării tool-urilor deja existente, am descoperit MALLET(MAchine Learning for LanguagE Toolkit)\footnote{\url{http://mallet.cs.umass.edu/}} și Stanford CRFClassifier. M-am oprit asupra acestor două tool-uri deoarece ele erau destinate special oferirii de algoritmi de Învățare Automată pentru Procesarea Limbajului Natural și puteau fi folosite direct din Java - erau implementate în Java. De asemenea erau disponibile în repository-ul central Maven. Este interesant de observat că celebrul tool de Machine Learning  Am experimentat mai întâi cu MALLET, încercând să mă prind cum pot antrena un model statistic CRF. 
+
+Din păcate, documentația disponibilă pentru MALLET este destul de puțină. De asemenea, lucrul făcut până în prezent și formatul datelor erau mai adecvate folosirii CRF-ului de la Stanford.
+
+Stanford CRFClassifier\footnote{\url{http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/ie/crf/CRFClassifier.html}} acceptă ca input un set de documente de antrenament, in forma implicită, pe 3 coloane. Ele trebuie să conțină cuvântul, tag-ul POS (partea de vorbire) și clasa lui (PERSOANĂ, ORGANIZAȚIE, etc.). Puteți vedea un exemplu ilustrativ în \labelindexref{Tabelul}{table:input-crf}.
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Formatul datelor de intrare acceptat de Stanford CRFClassfier}
+  \begin{tabular}{l l l}
+   University & NNP & ORGANIZATION \\
+   of & IN & ORGANIZATION \\
+   Montreal & NNP & ORGANIZATION \\
+   ,& , & O \\
+   Montreal & NNP & LOCATION\\
+   ,& ,& O\\
+  \end{tabular}
+  \label{table:input-crf}
+\end{table}
+\end{center}
+
+Așa că am antrenat modelul și l-am salvat pe disc folosind Stanford CRFClassifier. Antrenarea unui model cu 5 clase a durat puțin în comparație cu antrenarea unui model cu 14 clase (includem aici nu doar categoriile de entități, ci și clasa O). Asta deoarece la 14 clase, funcția ce trebuia optimizata avea peste 100 000 de variabile. Se poate demonstra că funcția ce trebuie optimizată depinde de numărul de clase și de numărul de feature-uri ales. De fapt, dacă avem de exemplu 15 feature-uri, vom combina aceste 15 feature-uri  cu fiecare clasă, deci având mai multe clase creșțem numărul de parametrii ce trebuie calculați pentru ca modelul nostru să aproximeze cât mai bine datele de antrenament.
+
+
+\section{Modulul de Efectuare a Statisticilor}
+
+\index{multithreading}
+Este bine cunoscut faptul că performanțele unui un model statistic pot fi măsurate prin mai multe metrici, cum ar fi \textit{viteza} cu care algoritmul clasifică un text dat, dar și \textit{acuratețea} cu care furnizează răspunsurile corecte. De o importanță majoră este ultimul element. Dacă timpii de rulare pot fi imbunătățiți folosind \textit{multithreading}, de exemplu, calitatea pe care o oferă algoritmul bazat pe acel model nu poate fi îmbunătățita schimbând arhitectura sofware sau hardware.
+
+\index{precision}
+\index{recall}
+\index{F1-Score}
+Astfel, am implementat programe speciale care s-au ocupat de măsurarea performanțelor, de cât de bine răspundea corect sistemul meu. În acest modul, am folosit metrici speciale din statistică, \textit{precision} și \textit{recall}. Cele două metrici înglobează două concepte importante:
+
+\begin{itemize}
+\item \textit{precision} măsoară câte dintre răspunsurile furnizate de sistem sunt curecte din totalul răspunsurilor. Cu alte cuvinte, stabilește procentul de răspunsuri corecte, relevante;
+
+\item \textit{recall} măsoară câte dintre răspunsuri corecte a întors sistemul din \textit{totalul} de răpsunsuri corecte pe care trebuia sale întoarcă.
+\end{itemize}
+
+De obicei sistemele NER au un \textit{recall} mai mic. Adică, atunci când identifică o entitate, o identifică în mod corect (au \textit{precision bun}), dar nu reușesc să găsească toate entitățile dintr-un text. Vom vedea într-o secțiune ulterioară de ce se are loc acest lucru.
+
+Am calculat apoi scorul F1 (F1-Score) pentru setul de date. Am obținut performanțe destul de bune pe setul de date cu un scor F1 de aproximativ 92\%. Acest modul a fost esențial în a îmi da o confirmare exactă că sistemul făcea ce trebuie, pe lângă confirmarea dată de interfața grafică.
+
+\section{Interfața Grafică}
+
+\abbrev{GUI}{Graphical User Interface}
+\abbrev{CLI}{Command Line Interface}
+\index{Graphical User Interface}
+\index{Command Line Interface}
+În ziua de astăzi, pentru a ne adresa unei categorii cât mai vaste de utilizatori orice program modern trebuie să aibă o interfață grafică. Degeaba ai implementat tu un lucru spectaculos, dacă la sfâșitul programului, tot ce face el, este să afișeze un număr. Deși acest mod de lucru poate prezenta interes pentru o categorie restrânsă de cercetători în domeniu, el nu poate fi prezentat unui public larg, arătând doar un \textit{Command Line Interface} - CLI.
+
+Deși marea majoaritate a produsului software scris de mine citește din fișiere text și afișează informații la consolă, am decis să implementez și \textit{Interfață Grafică} pentru a putea vedea rezultatele într-un mod mult mai intuitiv. O imagine face cât 1000 
+de cuvinte, este o vorbă din popor.
+
+Interfața grafică permite utilizatorului să introducă un text pentru care deorește identificarea entităților cu nume. De asemenea, pentru că uneori este mai convenabil, utilizatorul are posibiliatea să încarce un fișier text. De asemenea, utilizatorul poate să aleagă între 3 modele puse la dispoziție în momentul de față:
+\begin{itemize}
+\item  cel care recunoaște 4 tipuri de entități "clasice" - persoane, organizații, locații și alte;
+\item cel care poate recunoaște 13 categorii de entități;
+\item modelul default de la Stanford antrenat pe CoNLL-2003.
+\end{itemize}
+
+Apoi, după ce a încărcat textul, la apăsarea butonului "Identifică Entități", procesul de NER începe. În final sunt evidențiate folosind culori, entitățile cu nume identificate de sistem. De asemenea, sunt afișate informații referitoare la statisticile documentului, cum ar fi număul de caractere, numărul de cuvinte, sau numărul de propoziții. Sunt afișate și informații referitoare la numărul de entități total identificate, dar și numarul de entități identificate pentru fiecare tip. Dacă o categorie de entitate nu a fost identificată, culoarea ei este gri (e dezactivată). Un exemplu ilustrativ poate fi consultat in \labelindexref{Figura}{img:gui-13-categories}.
+
+\fig[scale=0.43]{src/img/gui-13-categories.png}{img:gui-13-categories}{Interfața grafică după identificarea a 13 categorii de entități}
+
+\section{Tehnologii Software Folosite în Implementare}
+
+În cadrul acestei secțiuni voi descrie pe scurt tehnologiile software pe care le-am folosit în elaborarea produsului software.
+
+\subsection{Apache Maven}
+
+\index{Apache Maven}
+
+Întrucât am lucrat în limbajul de programare Java, când aveam nevoie de biblioteci puteam să download-ez fișierele .jar și să le includ în proiect. Acest mod de a include manual jar-urile în proiect are mai multe inconveniente:
+
+\index{Project Object Model}
+\abbrev{POM}{Project Object Model}
+
+\begin{description}
+\item[Problema Dependențelor de alte librării] apare foarte multe ori într-un proiect complex, când te poți lovi de faptul ca un jar are pe care îl folosești are nevoie de alte jar-uri ca să funcționeze. Întreținerea manuală a acestor \textit{dependențe} poate da foarte multe bătăi de cap. Apache Maven, prin al său POM(Project Object Model) rezolvă această problemă.
+
+\index{Central Point of Control}
+\item[Problema Duplicării Librăriilor jar] apare în momentul în care pe un calculator ai mai multe proiecte care folosesc aceeași librarie, de exemplu, guava.jar. De foarte multe ori, ea va fi copiată și duplicată pentru fiecare proiect în parte. Va ocupa de mai multe ori spațiu inutil pe hard disk. De asemenenea, librăria dacă va fi updatat-a cu o nouă versiune, de la 1.2 la 1.3, va fi greu de menținută sincronizarea. Acest lucru încalcă un principiu software important, numit \textit{Central Point of Control}. Apache Maven rezolvă această problemă, salvând \textit{într-un singur loc} pe HDD într-un \textit{repository} local librăriile jar. El se ocupă de crearea ierarhiei de directoare care corespunde ierarhiei de pachete. De exemplu pentru pachetul Java \texttt{org.apache.commons} se va crea pe dis o ierarhive \texttt{/usrname/.m2/org/apache/commons/commons.jar}.
+\end{description}
+
+Sunt și alte avantaje pe care le aduce folosirea Apache Maven, care stau în spatele filosofiei sale. Nu le voi descrie aici.
+
+\subsection{Object-Relational Mapping}
+
+\index{Object-Relational Mapping}
+\abbrev{ORM}{Object-Relational Mapping}
+
+
+Object Relational Mapping furnizează un mod convenabil de a asigura independența de baza de date folosită. În loc să accesezi direct baza de date prin cereri SQL, care depind direct de tipul de bază de date folosit, de exemplu MySQL, Oracle, etc. Folosești clase \textit{adaptor} care encapsulează în obiecte și abstractizeaza accesul la baza de date. Astfel, codul sursă devine independent de baza de date folosită. Dacă în viitor, se trece, de exemplu de la MySQL la Oracle DB, codul sursă nu trebuie modificat. Acest ORM-uri mai sunt denumite și sub titulatura de \textit{relational persistance}.
+
+Am folosit atât pentru Python, cât și pentru Java ORM-uri pentru aces la baza de date:
+\index{Hibernate}
+\index{SQLAlchemy}
+\begin{itemize}
+\item pentru Java am folosit \textit{Hibernate} de la JBoss.\footnote{\url{http://www.hibernate.org/}}. Deși are o curbă de învățare mai abruptă, de îndată ce ai prins ideea, este foarte ușor de lucrat cu el. În plus, IDE-ul NetBeans generează cod automat pentru \textit{mapping-ul} între tabelele din baza de date și clasele din Java;
+
+\item pentru Python am folosit SQLAlchemy\footnote{\url{http://www.sqlalchemy.org/}}. Acest toolkit este un adaptor pentru SQL cât și un Object Relational Mapper.
+
+\end{itemize}
+
+
+\subsection{Apache Log4J}
+
+\index{logging}
+Este binecunoscut faptul că foarte multă lume foloște \texttt{printf} sau \texttt{System.out.println} pentru a afișa mesaje de debugging în aplicație. Acest lucru nu reprezintă ceva bun. Este un lucru bine de evitat, mai ales într-o aplicație \textit{enterprise}, profesională.
+
+O practică bună este să folosim un librările de \textit{logging} pentru a afișa diferitele mesaje pe care aplicația le dă pe parcurs. Foarte important este că aceste mesaje pot avea niveluri de severitate (info, debug, warning, error) și că sursa lor poate fi identificată precis la clasa și linia de unde a fost emis mesajul. Fiecare clasă are un logger. De asemenea, afișarea mesajolor poate să nu fie făcută la consolă ci într-un fișier. Un exemplu a ceea ce am explicat poate fi urmărit în \labelindexref{Listingg-ul}{lst:logging}.
+
+
+\lstset{language=make}
+\lstset{caption=Exemplu de logging realizat de Apache Log4j,  label=lst:logging}
+\lstinputlisting{src/code/build/logging.txt}
+
+Afișarea cu \texttt{System.out.println} trebuie limitată doar la cazurile în care acest lucru face parte din comportamentul programului.
 
 
 

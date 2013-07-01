@@ -1,6 +1,7 @@
 \nomenclatureentry{aNLP@[{NLP}]\begingroup Natural Language Processing\nomeqref {1.0}|nompageref}{1}
 \nomenclatureentry{aCS@[{CS}]\begingroup Computer Science\nomeqref {1.0}|nompageref}{1}
 \nomenclatureentry{aIE@[{IE}]\begingroup Information Extraction\nomeqref {1.0}|nompageref}{1}
+\nomenclatureentry{aHIT@[{HIT}]\begingroup Human Intelligence Task\nomeqref {1.0}|nompageref}{1}
 \nomenclatureentry{aNE@[{NE}]\begingroup Named Entity\nomeqref {1.0}|nompageref}{2}
 \nomenclatureentry{aeng.@[{eng.}]\begingroup Engleză\nomeqref {1.0}|nompageref}{2}
 \nomenclatureentry{aMUC@[{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}|nompageref}{2}
@@ -16,3 +17,9 @@
 \nomenclatureentry{aMT@[{MT}]\begingroup Machine Translation\nomeqref {2.0}|nompageref}{14}
 \nomenclatureentry{aKNN@[{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}|nompageref}{15}
 \nomenclatureentry{aJSON@[{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}|nompageref}{24}
+\nomenclatureentry{aBRAT@[{BRAT}]\begingroup Brat Rapid Annotation Tool\nomeqref {3.0}|nompageref}{27}
+\nomenclatureentry{aMALLET@[{MALLET}]\begingroup MAchine Learning for LanguagE Toolkit\nomeqref {3.0}|nompageref}{29}
+\nomenclatureentry{aGUI@[{GUI}]\begingroup Graphical User Interface\nomeqref {3.0}|nompageref}{30}
+\nomenclatureentry{aCLI@[{CLI}]\begingroup Command Line Interface\nomeqref {3.0}|nompageref}{30}
+\nomenclatureentry{aPOM@[{POM}]\begingroup Project Object Model\nomeqref {3.0}|nompageref}{32}
+\nomenclatureentry{aORM@[{ORM}]\begingroup Object-Relational Mapping\nomeqref {3.0}|nompageref}{32}

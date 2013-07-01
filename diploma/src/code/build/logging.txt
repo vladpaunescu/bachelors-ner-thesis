@@ -1,0 +1,12 @@
+2013-7-01 03:01:56 INFO  NerF1Scorer:104 - Io validation file is D:\Work\NLP\corpuses\ms_academic\train-io\10_12_done_io.txt
+2013-07-01 03:01:56 INFO  NerF1Scorer:113 - Annotation, validation size: 298 298
+2013-07-01 03:01:56 INFO  NerF1Scorer:132 - Entity found, class mistake: Argyle PERSON instead of ORGANIZATION
+2013-07-01 03:01:56 INFO  NerF1Scorer:132 - Entity found, class mistake: Argyle PERSON instead of ORGANIZATION
+2013-07-01 03:01:56 INFO  NerF1Scorer:132 - Entity found, class mistake: Williams PERSON instead of ORGANIZATION
+2013-07-01 03:01:56 INFO  NerF1Scorer:132 - Entity found, class mistake: Christie PERSON instead of ORGANIZATION
+2013-07-01 03:01:56 INFO  NerF1Scorer:132 - Entity found, class mistake: Soussignan LOCATION instead of MISC
+2013-07-01 03:01:56 INFO  NerF1Scorer:61 - Processing file 4 of 216, D:\Work\NLP\corpuses\ms_academic\train-io\10_13_done.txt
+2013-07-01 03:01:56 INFO  StanfordNerAnnotator:94 - Annotating file D:\Work\NLP\corpuses\ms_academic\train-io\10_13_done.txt
+2013-07-01 03:01:58 INFO  NerF1Scorer:104 - Io validation file is D:\Work\NLP\corpuses\ms_academic\train-io\10_13_done_io.txt
+2013-07-01 03:01:58 INFO  NerF1Scorer:113 - Annotation, validation size: 579 579
+2013-07-01 03:01:58 INFO  NerF1Scorer:61 - Processing file 5 of 216, D:\Work\NLP\corpuses\ms_academic\train-io\10_14_done.txt

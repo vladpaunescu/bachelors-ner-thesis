@@ -9,6 +9,7 @@ import annotators.NamedEntities;
 import annotators.StanfordNerAnnotator;
 import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import static gui.VisualNer.log;
 import java.awt.Color;
@@ -34,6 +35,7 @@ public class VisualNer extends javax.swing.JFrame {
     /**
      * Creates new form VisuaNer
      */
+    private static final String CONLL_MODEL = DefaultPaths.DEFAULT_NER_CONLL_MODEL;
     private static final String MODEL_5_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz";
     private static final String MODEL_14_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/14-class.ser.gz";
     private boolean _allClassesEnabled;
@@ -41,17 +43,19 @@ public class VisualNer extends javax.swing.JFrame {
     private File _textFile;
     private String _rawText;
     private String _annotatedText;
-    private StanfordNerAnnotator _annotator;
+    private String _usedModel;
 
     public VisualNer() {
 
         initComponents();
         _allClassesEnabled = false;
         initalizeEntitiesLegend();
-        _annotator = initializeStanfordAnnotator();
+        _usedModel = MODEL_5_CLASS;
+    
         nerTextPane.setContentType("text/html");
         nerTextPane.setPreferredSize(new Dimension(550, 578));
         nerTextPane.setMaximumSize(new Dimension(550, 578));
+
 
     }
 
@@ -63,6 +67,7 @@ public class VisualNer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        modelGroup = new javax.swing.ButtonGroup();
         nerScrollPane = new javax.swing.JScrollPane();
         nerTextPane = new javax.swing.JTextPane();
         annotateEntitiesButton = new javax.swing.JButton();
@@ -117,6 +122,10 @@ public class VisualNer extends javax.swing.JFrame {
         charactersCount = new javax.swing.JLabel();
         wordsCount = new javax.swing.JLabel();
         sentenceCount = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        model5ClassRadio = new javax.swing.JRadioButton();
+        model14ClassRadio = new javax.swing.JRadioButton();
+        modelConllRadio = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -402,6 +411,59 @@ public class VisualNer extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Model Folosit"));
+
+        modelGroup.add(model5ClassRadio);
+        model5ClassRadio.setSelected(true);
+        model5ClassRadio.setText("4 categorii");
+        model5ClassRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model5ClassRadioActionPerformed(evt);
+            }
+        });
+
+        modelGroup.add(model14ClassRadio);
+        model14ClassRadio.setText("13 categorii");
+        model14ClassRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model14ClassRadioActionPerformed(evt);
+            }
+        });
+
+        modelGroup.add(modelConllRadio);
+        modelConllRadio.setText("CoNLL Stanford");
+        modelConllRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modelConllRadioActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(model14ClassRadio, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(model5ClassRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(modelConllRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(model5ClassRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(model14ClassRadio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(modelConllRadio))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -421,9 +483,12 @@ public class VisualNer extends javax.swing.JFrame {
                             .addComponent(annotateEntitiesButton)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                 .addGap(139, 139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -436,7 +501,9 @@ public class VisualNer extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -451,9 +518,9 @@ public class VisualNer extends javax.swing.JFrame {
     private void annotateEntitiesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annotateEntitiesButtonActionPerformed
 
         _rawText = nerTextPane.getText();
-        NerTask task = new NerTask(_rawText, _annotator, this);
+        NerTask task = new NerTask(_rawText, _usedModel, this);
         task.execute();
-       
+
     }//GEN-LAST:event_annotateEntitiesButtonActionPerformed
 
     private void loadTextFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTextFileButtonActionPerformed
@@ -476,6 +543,18 @@ public class VisualNer extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_loadTextFileButtonActionPerformed
+
+    private void model5ClassRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_model5ClassRadioActionPerformed
+        _usedModel = MODEL_5_CLASS;
+    }//GEN-LAST:event_model5ClassRadioActionPerformed
+
+    private void model14ClassRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_model14ClassRadioActionPerformed
+        _usedModel = MODEL_14_CLASS;
+    }//GEN-LAST:event_model14ClassRadioActionPerformed
+
+    private void modelConllRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelConllRadioActionPerformed
+        _usedModel = CONLL_MODEL;
+    }//GEN-LAST:event_modelConllRadioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,6 +621,7 @@ public class VisualNer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JButton loadTextFileButton;
     private java.awt.Canvas locationCanvas;
     private javax.swing.JLabel locationLabel;
@@ -549,6 +629,10 @@ public class VisualNer extends javax.swing.JFrame {
     private java.awt.Canvas miscCanvas;
     private javax.swing.JLabel miscLabel;
     private javax.swing.JLabel miscTotal;
+    private javax.swing.JRadioButton model14ClassRadio;
+    private javax.swing.JRadioButton model5ClassRadio;
+    private javax.swing.JRadioButton modelConllRadio;
+    private javax.swing.ButtonGroup modelGroup;
     private java.awt.Canvas moneyCanvas;
     private javax.swing.JLabel moneyLabel;
     private javax.swing.JLabel moneyTotal;
@@ -596,18 +680,7 @@ public class VisualNer extends javax.swing.JFrame {
         annotateEntitiesButton.setEnabled(true);
     }
 
-    private StanfordNerAnnotator initializeStanfordAnnotator() {
-        log.info("Initializing Stanford Annotator");
-        Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", MODEL_14_CLASS);
-        props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
-        props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
-
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-
-        return new StanfordNerAnnotator(pipeline);
-    }
+   
 
     /**
      * @return the _annotatedText
@@ -766,19 +839,21 @@ class NerTask extends SwingWorker<String, Integer> {
             NerTask.class.getName());
     private String _text;
     private VisualNer _visualNer;
-    private StanfordNerAnnotator _anntoator;
+    private StanfordNerAnnotator _annotator;
+    private String _usedModel;
+    
 
-    NerTask(String text, StanfordNerAnnotator annotator, VisualNer visualNer) {
+    NerTask(String text, String usedModel, VisualNer visualNer) {
         _text = text;
         _visualNer = visualNer;
-        _anntoator = annotator;
-
+        _usedModel = usedModel;
+        _annotator = initializeStanfordAnnotator();
     }
 
     @Override
     public String doInBackground() {
 
-        NamedEntities entities = _anntoator.annotateText(_text);
+        NamedEntities entities = _annotator.annotateText(_text);
 
         Set<String> categories = entities.getAllCategories();
         log.info("Categories count " + categories.size());
@@ -791,9 +866,22 @@ class NerTask extends SwingWorker<String, Integer> {
         log.info("Ann text " + annotatedText);
         _visualNer.setAnnotatedText(annotatedText);
         _visualNer.getNerTextPane().setText(annotatedText);
-        
+
         return annotatedText;
 
+    }
+    
+     private StanfordNerAnnotator initializeStanfordAnnotator() {
+        log.info("Initializing Stanford Annotator");
+        Properties props = new Properties();
+        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("ner.model", _usedModel);
+        props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
+        props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
+
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+        return new StanfordNerAnnotator(pipeline);
     }
 
     private String annotateHtml(NamedEntities entities) {
@@ -889,6 +977,6 @@ class NerTask extends SwingWorker<String, Integer> {
         String words[] = _text.split("\\s");
         _visualNer.setCharactersTotal(_text.length());
         _visualNer.setWordsTotal(words.length);
-        _visualNer.setSentenceTotal(_anntoator.getTotalSentences());
+        _visualNer.setSentenceTotal(_annotator.getTotalSentences());
     }
 }
