@@ -32,7 +32,7 @@ public class DirectoryTreeCrawler {
     private static final String PROPER_FILES = "_proper.txt";
     private static final String GENERIC_FILE_SPLIT = "*_*.txt";
     private static final String DONE_ANN_FILE_SUFFIX = "_done.ann";
-    private static final String DONE_TXT_FILE_SUFFIX = "done.txt";
+    private static final String DONE_TXT_FILE_SUFFIX = "_done.txt";
     private String _rootdir;
     private File _root;
 

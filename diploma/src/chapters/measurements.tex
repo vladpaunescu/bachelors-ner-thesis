@@ -1,5 +1,6 @@
 \chapter{Statistici si Rezultate Obținute}
 
+
 \section{Statistici Corpus Obținut cu Microsoft Academic Search}
 
 În această secțiune vom pune în evidență statisticile corpusului obținut folosind Microsoft Academic Search. Este bine cunoscut faptul că \textit{Vocabularul} $V$ și numărul de cuvinte $N$ sunt reprezentative pentru un corpus.
@@ -55,7 +56,7 @@ Mai întâi, folosit câteva programe drăguțe din \texttt{Unix}, precum \textt
 
 
 \lstset{language=bash}
-\lstset{caption=Funcționarea downloader-ului pt MS Academic Search, label=lst:vocabulary-size-bash}
+\lstset{caption=Comenzile Unix folosite pentru determinarea vocabularului, label=lst:vocabulary-size-bash}
 \lstinputlisting{src/code/build/vocabulary-size-bash.txt}
 
 Este suprinzător numărul mare de cuvinte și vom vedea și de ce. În \labelindexref{Listingul}{lst:top-words-bash}, avem cele mai utilizate cuvinte din corpusul obținut. Primele cuvinte "the", "of", "and" era de așteptat să apară primele, deoarece sunt foarte folosite în limba engleză. În această statistică nu am ținut cont de capitalizare, de exemplu, "The" și "the" același lucru. Dar observăm că apar foarte des cuvinte \textit{token-uri} care nu sunt cuvinte din limba engleză, cum ar fi "s", "m", sau "e". Acest lucru este cauzat de faptul ce în engleză, posesia este construită cu John's, iar noi am considerat \textit{token-uri} separate "John" și "s". De aceea "s" apare de peste 50 000 de ori.
@@ -94,4 +95,57 @@ De asemenea, am ignorat scrierea cu majusculă. Și aici "The" și "the" reprezi
 	\item[O primă observație] ce se poate face este că dimensiunile vocabularului și ale numărului total de cuvinte raportate de cele două metode de calcul sunt apropiate, de același ordin de mărime. Avem un \textbf{vocabular} de aproximativ \textbf{110 000 de cuvinte distincte} și în un\textbf{ număr total de peste 9 milioane de cuvinte}.
 	\item [O a doua observație] ce se poate face este ca în statisticile raportate de Java au dispărut \textit{token-urile} bizare precum "s", "e", "m", "d" sau "onghaul".
 \end{description}
+
+\section{Statistici Cuvinte din Corpusul Adnotat}
+
+În urma procesului de corectare manuală a adnotării, au rezultat 216 documente text. La fel ca întreg corpusul și aceste documente text au fost analizate pentru a determina dimensiunea vocabularuluiui $|V|$, dar și numărul total de cuvinte. Am analizat subsetul adnotat din corpus folosind atât programe din \texttt{Unix}, cât și modulul de statistici din Java.
+
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Dimensiunea vocabularului și numărul de cuvinte ale setului adnotat din corpus folosind programe Unix}
+  \begin{tabular}{|l|r|}
+    \hline
+    Dimensiune Vocabular |V| & 9 556\\
+    \hline
+    Număr total cuvinte & 109 949 \\
+     \hline
+  \end{tabular}
+  \label{table:annotated-corpus-vocab-size}
+\end{table}
+\end{center}
+
+În labelindexref{Listingul}{lst:top-words-bash-annotated} este sunt evidențiate cele utilizate cuvinte din corpusul adnotat potrivit instrumentelor din Unix.
+
+\lstset{language=make}
+\lstset{caption=Cele mai folosite cuvinte din limba engleză pentru subsetul adnotat din corpus folosind programe Unix, label=lst:top-words-bash-annotated}
+\lstinputlisting{src/code/build/top-words-bash-annotated.txt}
+
+De asemenea, am generat statistici folosind programul scris în Java. Am obținut următoarele dimensiuni ale subsetului adnotat manual din corpus, prezentate în \labelindexref{Tabelul}{table:vocabulary-size-java-annotated}:
+
+\begin{center}
+\begin{table}[htb]
+  \caption{Dimensiunea vocabularului și numărul de cuvinte ale subsetului adnotat manual din corpus folosind Java}
+  \begin{tabular}{|l|r|}
+    \hline
+    Dimensiune Vocabular |V| & 8 630\\
+    \hline
+    Număr total cuvinte & 113 601 \\
+     \hline
+  \end{tabular}
+  \label{table:vocabulary-size-java-annotated}
+\end{table}
+\end{center}
+
+\lstset{language=make}
+\lstset{caption=Cele mai folosite cuvinte din limba engleză pentru subsetul adnotat din corpus obținut folosind Java, label=lst:top-words-java-annotated}
+\lstinputlisting{src/code/build/top-words-java-annotated.txt}
+
+Observăm ca valorile raportate de cele doua programe sunt apropiate în limita unei marje de eroare, de aproximativ 9 000 de cuvinte unice în vocabular și de aproximativ 110 000 de cuvinte în total. De asmemenea, topul celor mai frecvente cuvinte este asemănător atât la corpusul mare cât și la subsetul adnotat.
+
+\textbf{În concluzie}, eu am adnotat 216 din peste 20 000 de documente, însemnând cam 1\% din total. Numărul total de cuvinte a scăzut de la peste 9 milioane de cuvinte la puțin peste 110,000 de cuvinte, deci aproximativ 1.15\% din total. Numărul de cuvinte a scăzut proporțional cu numărul de documente. Pe de altă parte vocabularul s-a redus de la 110,000 de cuvinte la 9,000 de cuvinte. Aceasta reprzintă 8.1\% din vocabularul inițial. Reducerea nu a fost liniară, ceea ce era de așteptat.
+
+
+
+
 

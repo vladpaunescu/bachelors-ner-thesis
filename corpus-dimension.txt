@@ -1,5 +1,6 @@
 Vocabulary size: 110834
 Total words count: 9703480
+
 Top 100 words in corpus by frequency:
 
 461574 the

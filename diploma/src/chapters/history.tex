@@ -438,7 +438,7 @@ De exemplu, pentru textul "Is John Doe here?", encodările IO și IOB vor fi urm
 
 \textit{Dezavantajul} este reprezentat de dublarea numărului de clase pentru antrenarea modelului. Adică, dacă înainte pentru $C$ categorii de entități aveam $C + 1 $ clase (trebuia să adaugăm si clasa \texttt{O}, acum numărul lor se dublează pentru fiecare cateogrie de entitate in parte. Asta deoarece avem două clase disincte pentru fiecare categorie \texttt{X}, \texttt{B-X} și \texttt{I-X}, de exemplu pentru \texttt{PERSON} vom avea \texttt{B-PERSON} si \texttt{I-PERSON}. Același lucru e valabil pentru toate cele C categorii, mai puțin pentru clasa \texttt{O}, pentru care nu se va dubla numărul. Deci în encodarea IOB, pentru un număr de $C$ categorii de entități vom avea $2C + 1 $ clase în antrenarea modelului. Astfel, antrenarea modelului va si semnficativ mai lentă, iar probabilitățile mai mici.
 
-\subsection{Alte aplicații}
+\subsection{Alte Aplicații}
 
 Există o serie de aplicații comerciale pentru diferite task-uri de Information Extraction. O aplicație interesantă cu care am lucrat, care are și un sistem NER destul de robust, este \textit{AlchemyAPI}.\footnote{\url{http://www.alchemyapi.com/}}.
 

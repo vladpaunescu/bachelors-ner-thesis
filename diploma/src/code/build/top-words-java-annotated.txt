@@ -1,0 +1,39 @@
+Vocabulary size: 8630
+Total words count: 113601
+
+Top words by frequency:
+
+6552 the
+4984 of
+3821 and
+2620 in
+2604 to
+1728 a
+1165 is
+1137 that
+1060 for
+842 as
+821 on
+796 are
+730 with
+601 by
+551 this
+535 social
+525 be
+500 or
+490 from
+400 we
+397 not
+391 their
+378 more
+378 an
+366 it
+344 was
+338 at
+330 economic
+317 have
+307 which
+303 these
+302 they
+288 other
+280 were

@@ -34,27 +34,37 @@ public class WordCountStatistics {
         _toatalWordsCount = 0;
 
     }
-
-    public void countWords() {
+    
+    public void countAllCorpusWords(){
         Collection<File> properFiles = _crawler.getGenericFiles();
-        int total = properFiles.size();
+        countWords(properFiles);
+    }
+    
+    public void countAnnotatedCorpusWords(){
+        Collection<File> textFiles = _crawler.getTrainingTextFiles();
+        countWords(textFiles);
+    }
+
+    private void countWords(Collection<File> textFiles) {
+        
+        int total = textFiles.size();
         log.info(String.format("Total files to process %s", total));
         int count = 1;
         log.info("Total files to process " + total);
-        for (File properFile : properFiles) {
+        for (File textFile : textFiles) {
 
-            log.info(String.format("Processing file %d of %d : %s", count, total, properFile.getAbsolutePath()));
-            countWordsForFile(properFile);
+            log.info(String.format("Processing file %d of %d : %s", count, total, textFile.getAbsolutePath()));
+            countWordsForFile(textFile);
             count++;
         }
 
         showStatistics();
     }
 
-    private void countWordsForFile(File properFile) {
+    private void countWordsForFile(File textFile) {
         String text = "";
         try {
-            text = FileUtils.readFileToString(properFile, "UTF-8");
+            text = FileUtils.readFileToString(textFile, "UTF-8");
         } catch (IOException ex) {
             log.error(ex);
         }
@@ -100,7 +110,8 @@ public class WordCountStatistics {
 
     public static void main(String[] args) {
         String rootDir = "D:/Work/NLP/corpuses/ms_academic/brat-data/generic";
+        rootDir = "D:/Work/NLP/corpuses/ms_academic/train-io";
         WordCountStatistics stats = new WordCountStatistics(rootDir);
-        stats.countWords();
+        stats.countAnnotatedCorpusWords();
     }
 }

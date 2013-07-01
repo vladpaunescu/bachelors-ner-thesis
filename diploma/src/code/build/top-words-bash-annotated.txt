@@ -1,0 +1,31 @@
+#!/bin/bash
+tr 'A-Z' 'a-z' < $1 | tr -sc 'A-Za-z' '\n' | sort | uniq -c | sort -n -r | less
+  
+   6593 the
+   4999 of
+   3911 and
+   2643 in
+   2634 to
+   1810 a
+   1201 is
+   1155 that
+   1080 for
+    856 as
+    828 on
+    802 are
+    739 with
+    608 by
+    565 or
+    561 this
+    551 social
+    531 be
+    492 from
+    419 not
+    413 we
+    394 their
+    389 it
+    388 more
+    388 economic
+    383 s
+    382 an
+    351 at
