@@ -182,8 +182,8 @@ public class IoEncodingCreatorfromAnnFile {
 
             String[] subtokens = originalText.split("\\s");
             for (String subtoken : subtokens) {
-                collector.append(subtoken).append(TAB).append(pos).
-                        append(TAB).append(namedEntityClass).append("\r\n");
+                collector.append(subtoken).append(" ").append(pos).
+                        append(" ").append(namedEntityClass).append("\n");
             }
         }
     }
@@ -195,13 +195,13 @@ public class IoEncodingCreatorfromAnnFile {
                     log.warn(String.format("Named entity %s does not contain %s",
                             entity.getNamedEntityText(), text));
                 }
-                return entity.getType();
-//                if (NAMED_ENTITIES.contains(entity.getType())) {
-//                    return entity.getType();
-//                }
-//                else {
-//                    return "O";
-//                }
+//                return entity.getType();
+                if (NAMED_ENTITIES.contains(entity.getType())) {
+                    return entity.getType();
+                }
+                else {
+                    return "O";
+                }
             }
         }
         return "O";
@@ -218,7 +218,7 @@ public class IoEncodingCreatorfromAnnFile {
     public static void main(String[] args) {
 
         String rootSrcDir = "D:/Work/NLP/corpuses/ms_academic/brat-data/ann-splits/done";
-        String rootOutputDir = "D:/Work/NLP/corpuses/ms_academic/train-io/";
+        String rootOutputDir = "D:/Work/NLP/corpuses/ms_academic/train-io-4-class/";
 
         IoEncodingCreatorfromAnnFile creator = new IoEncodingCreatorfromAnnFile(rootSrcDir, rootOutputDir);
         creator.convertFiles();

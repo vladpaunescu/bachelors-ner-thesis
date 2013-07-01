@@ -1,0 +1,16 @@
+True positives: 6313.5
+True negatives: 115214.0
+False positives: 1382.0
+False negatives: 587.0
+Precision: 0.8204145279708921
+Recall 0.9149337004564887
+F1-score: 0.8651000274047685
+
+// no credit for class mistake
+True positives: 5906.0
+True negatives: 115214.0
+False positives: 1382.0
+False negatives: 1402.0
+Precision: 0.8103732162458837
+Recall 0.8081554460864806
+F1-score: 0.809262811729241

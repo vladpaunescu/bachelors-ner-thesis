@@ -8,6 +8,7 @@ import annotators.NerAnnotation;
 import annotators.StanfordNerAnnotator;
 import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
+import edu.stanford.nlp.pipeline.DefaultPaths;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class NerF1Scorer {
             NerF1Scorer.class.getName());
     private static final String MODEL_5_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/5-class.ser.gz";
     private static final String MODEL_14_CLASS = "D:/Work/NLP/corpuses/ms_academic/models/14-class.ser.gz";
+      private static final String CONLL_MODEL = DefaultPaths.DEFAULT_NER_CONLL_MODEL;
     private String _dirname;
     private DirectoryTreeCrawler _crawler;
     private StanfordNerAnnotator _annotator;
@@ -75,7 +77,7 @@ public class NerF1Scorer {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", MODEL_14_CLASS);
+        props.put("ner.model", MODEL_5_CLASS);
         props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
         props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
 
@@ -131,7 +133,9 @@ public class NerF1Scorer {
                 else if(!annotation.getNeLabel().equals("O")){
                     log.info(String.format("Entity found, class mistake: %s %s instead of %s",
                            validationText, annotation.getNeLabel(), validationClass));
-                    _truePositives += 0.5;
+                    //_truePositives += 0.5;
+                    _falseNegatives++;
+                    
                 }
                 else {
                     // it was an entity, but the system missed it
@@ -165,7 +169,7 @@ public class NerF1Scorer {
     
     
     public static void main(String[] args){
-        String dirname = "D:/Work/NLP/corpuses/ms_academic/train-io";
+        String dirname = "D:/Work/NLP/corpuses/ms_academic/train-io-4-class";
         NerF1Scorer scorer = new NerF1Scorer(dirname);
         scorer.computeScores();
     }
