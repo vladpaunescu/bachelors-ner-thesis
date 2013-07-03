@@ -89,23 +89,42 @@ Voi descrie în \labelindexref{Secțiunea}{sec:web-module} cum am făcut strâng
 
 \subsection{Adnotarea unui subset din corpusul strâns}
 
-După ce au fost strânse, pdf-urile au fost prelucrate. S-a extras textul din ele, au fost eliminate anumite caractere neparsabile și au fost eliminate despărțirile în silabe de la sfârșit de linie, acolo unde bineințeles se putea. Apoi, au fost amestecate și împărțite în bucăți mici de text (50- 100 de linii). Un număr de câteva sute de astfel de split-uri a fost adnotat folosind BRAT(Brat Rapid Adnotation Tool)\footnote{\url{http://brat.nlplab.org/}} Mai multe detalii voi da în secțiunea dedicată acestei etape.
+După ce au fost strânse, pdf-urile au fost prelucrate. S-a extras textul din ele, au fost eliminate anumite caractere neparsabile și au fost eliminate despărțirile în silabe de la sfârșit de linie, acolo unde bineințeles se putea. Apoi, au fost amestecate și împărțite în bucăți mici de text (50- 100 de linii). Un număr de câteva sute de astfel de split-uri a fost adnotat folosind BRAT(Brat Rapid Adnotation Tool)\footnote{\url{http://brat.nlplab.org/}}
+
+Este cunsocut faptul ca procedeul de adnotatare manuală implică un volum mare de muncă și un efort substanțial, consumând destul timp. Am încercat să creez un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți.
+
+Mai multe detalii voi da în \labelindexref{Secțiunea}{section:brat-annotation}, dedicată acestei etape.
 
 \subsection{Antrenarea unui sistem NER pe textele adnotate}
 
 Folosind corpusul adnotat, am antrenat un sistem de recunoaștere a entităților cu nume pe el. Am folosit mai multe tipuri de feature-uri pentru algoritmul de Învățare Automată. Textul natural vine in secvență (cuvânt după cuvânt), așa ca am folosit algoritmi de ML bazate pe sequence labeling (tagging), cum ar fii Modele Markov Ascunse, (eng. Hidden Markov Models - HMM) \abbrev{HMM}{Hidden Markov Model}, care este un model generativ, dar și modele discriminative, mai eficiente, cum ar fi Maximum Entropy Markov Models(MEMM)\abbrev{MEMM}{Maximum-entropy Markov model}, dar si Conditional Random Fields(CRF)\abbrev{CRF}{Conditional Random Field}.
 
-Deoarece corpusul adnotat de mine este de dimensiuni relativ mici și are doar un format destul de restrâns, algoritmii testați au tendința de a memora ceea ce văd și nu prea generalizază. Astfel, ca pe texte din setul de antrenament, algoritmul se comportă foarte bine - identifică si clasifică cu un scor foarte bun. Dar, pe texte pe care nu le-a văzut, chiar și din același domeniu (set de PDF-uri), acuratețea scade. Mai mult, pe texte din domenii diferite, așa cum era de așteptat, se observă o degradare destul de drastică a performanțelor. Voi prezenta mai multe detalii în secțiunea dedicată.
+Am antrenat mai multe modele folsoind două librării care implementează Conditional Random Fields (CRFs):
+\begin{itemize}
+\item Stanford CRFClassfier;
+\item MALLET(MAchine Learning for LanguagE Toolkit).
+\end{itemize}
+
+Mai multe detalii privitoare la antrenarea modelelor pot fi consultate la \labelindexref{Secținea}{sub-sec:crf-software}.
+
+
+Deoarece corpusul adnotat de mine este de dimensiuni relativ mici și are doar un format destul de restrâns, algoritmii testați au tendința de a memora ceea ce văd și nu prea generalizază. Astfel, că pe texte din setul de antrenament, algoritmul se comportă foarte bine - identifică si clasifică cu un scor foarte bun. Dar, pe texte pe care nu le-a văzut, chiar și din același domeniu (set de PDF-uri), acuratețea scade. Mai mult, pe texte din domenii diferite, așa cum era de așteptat, se observă o degradare destul de drastică a performanțelor. Voi prezenta mai multe detalii în secțiunea dedicată.
+
+
+Mai multe detalii privitoare la performanțele modeleloror și și explicarea arhitecturii sistemului vor fi prezentate în secțiunile corespunzătore.
+
 
 \section{Structura Lucrării}
 
-Lucrarea este structurată in următoarele capitole:
+În continuare, lucrarea este structurată în următoarele capitole:
 
 \begin{enumerate}
 
-\item Descriere în detaliu și Cercetări similare (State of The Art)  \labelindexref{Capitolul}{chapter:history};
+\item Descriere în Detaliu și Cercetări Similare \labelindexref{Capitolul}{chapter:history};
 \item Descrierea Arhitecturii Sistemului \labelindexref{Capitolul}{chapter:architecture};
-\item Implementarea Sistemului \labelindexref{Capitolul 4}{sub-sec:proj-objectives};
-\item Concluzii, Observații și Direcții Ulterioare \labelindexref{Capitolul 5}{sub-sec:proj-objectives}.
+\item Tehnici și Algoritmi Folosiți în implementarea Sistemului \labelindexref{Capitolul}{chapter:algorithms};
+\item Statistici și Rezultate Obținute \labelindexref{Capitolul}{chapter:measurements};
+\item Concluzii și Cercetări Ulterioare \labelindexref{Capitolul}{chapter:conclusions};
+\item Studiu de caz (extindere): Coapariția Entităților cu Nume \labelindexref{Anexa}{chap:entities-cooccurrence}.
 
 \end{enumerate}

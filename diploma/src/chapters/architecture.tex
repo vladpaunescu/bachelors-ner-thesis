@@ -130,6 +130,7 @@ Am convertit fișierele din formatul în encodarea IO scoasă de Stanford NER î
 Așa că m-am întors înapoi la corpusul inițial de 962 de documente. Am decis să îl împart în bucățele mai mici după câteva reguli simple: după maxim 4000 de caractere sau după 5 linii noi consecutive. Astfel am obținut peste 20 000 de \textit{split-uri}, fișiere mai mici de cam 50 de linii. Le-am procesat din nou cu Stanford NER și apoi ele au fost transformate din nou în formatul acceptat de brat, pentru a corecta adnotările greșite de Stanford NER.
 
 \section{Corectarea Manuală a Adnotării folosind BRAT}
+\label{section:brat-annotation}
 
 \index{BRAT}
 \abbrev{BRAT}{Brat Rapid Annotation Tool}
@@ -172,6 +173,7 @@ Aceste modele au fost folosite cu succes în alte task-uri de \textit{sequence l
 Modelele \textit{discriminative} obțin scoruri mai bune atât pe datele de antrenament cât si pe datele de test. Modelele generative având acea probabilitate \textit{joint} (legată) între datele observate și clasa ce trebuie modelată tind să crească probabilitatea în mode exagerat, să numere de mai multe ori aceeași dovadă, atunci când \textit{feature-urile} (caracteristicle) nu sunt \textit{independente} una de alta. Așa cum vom vedea, feature-urile alese în problemele de NLP \textit{nu sunt independente}. Deci un model generativ va exagera practic în momentul în care avem astfel de feature-uri. Modelele \textit{discriminative} propuse ulterior, ca MEMM, sau CRF, sunt acum folosite pe scară largă în sistemele NER.
 
 \subsection{Utilizarea Software a Conditinal Random Field}
+\label{sub-sec:crf-software}
 
 Așa că și eu am decis să folosesc un Conditional Random Field. Am avut de ales în a implementa eu singur un CRF sau să folosesc o implementare deja făcută într-o librările de ML disponibilă. Am ales a doua variantă din cauză ca implementarea ar fi necesitat un timp considerabil și probabil nu aș fi putut să o fac mai bine decât ceea ce există deja. De asemenea, puteam să am \textit{bug-uri} în implementarea mea. Am ales o implementare care a fost deja testată și în care probabilitatea ca ea să aibă bug-uri era mică.
 
