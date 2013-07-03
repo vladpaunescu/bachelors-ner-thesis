@@ -4,6 +4,7 @@
  */
 package ner;
 
+import features.FC;
 import cc.mallet.classify.Classifier;
 import cc.mallet.classify.ClassifierTrainer;
 import cc.mallet.classify.MaxEntTrainer;
@@ -11,28 +12,42 @@ import cc.mallet.classify.Trial;
 import cc.mallet.fst.CRF;
 import cc.mallet.fst.CRFCacheStaleIndicator;
 import cc.mallet.fst.CRFOptimizableByBatchLabelLikelihood;
-import cc.mallet.fst.CRFOptimizableByLabelLikelihood;
 import cc.mallet.fst.CRFTrainerByValueGradients;
 import cc.mallet.fst.CRFWriter;
 import cc.mallet.fst.MultiSegmentationEvaluator;
-import cc.mallet.fst.SimpleTagger.SimpleTaggerSentence2FeatureVectorSequence;
+import cc.mallet.fst.SimpleTagger;
 import cc.mallet.fst.ThreadedOptimizable;
 import cc.mallet.fst.TransducerEvaluator;
 import cc.mallet.fst.TransducerTrainer;
 import cc.mallet.optimize.Optimizable;
 import cc.mallet.pipe.Pipe;
-import cc.mallet.pipe.PrintInputAndTarget;
 import cc.mallet.pipe.SerialPipes;
+import cc.mallet.pipe.SimpleTaggerSentence2TokenSequence;
+import cc.mallet.pipe.TokenSequence2FeatureVectorSequence;
+import cc.mallet.pipe.TokenSequenceLowercase;
 import cc.mallet.pipe.iterator.FileIterator;
 import cc.mallet.pipe.iterator.LineGroupIterator;
+import cc.mallet.pipe.tsf.FeaturesInWindow;
+import cc.mallet.pipe.tsf.OffsetConjunctions;
+import cc.mallet.pipe.tsf.RegexMatches;
+import cc.mallet.pipe.tsf.TokenText;
+import cc.mallet.pipe.tsf.TokenTextCharNGrams;
+import cc.mallet.pipe.tsf.TokenTextCharPrefix;
+import cc.mallet.pipe.tsf.TokenTextCharSuffix;
+import cc.mallet.types.FeatureVector;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 import cc.mallet.types.Sequence;
 import cc.mallet.util.Randoms;
+import features.InBracket;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -46,8 +61,13 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
  */
 public class MalletCrf {
 
+    private Pipe TokenSequence2FeatureVectorSequence;
+    static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(
+            MalletCrf.class.getName());
+
     public Pipe buildPipe() {
         List<Pipe> pipeList = new ArrayList<>();
+
 
         // Tokenize raw strings
         //  pipeList.add(new CharSequence2TokenSequence(tokenPattern));
@@ -55,13 +75,61 @@ public class MalletCrf {
         //  them to integers by looking them up in an alphabet.
         //  pipeList.add(new CharSequence2TokenSequence("\n"));
         //  pipeList.add(tokenSeq);
-        pipeList.add(new SimpleTaggerSentence2FeatureVectorSequence());
+
         // Now convert the sequence of features to a sparse vector,
         //  mapping feature IDs to counts.
         //  pipeList.add(featureVectorSeq);
 
+        pipeList.add(new SimpleTaggerSentence2TokenSequence());
+
+
+        pipeList.addAll(Arrays.asList(new Pipe[]{
+            new RegexMatches("INITCAP", Pattern.compile(FC.CAPS + ".*")),
+            new RegexMatches("CAPITALIZED", Pattern.compile(FC.CAPS + FC.LOW + "*")),
+            new RegexMatches("ALLCAPS", Pattern.compile(FC.CAPS + "+")),
+            new RegexMatches("MIXEDCAPS", Pattern.compile("[A-Z][a-z]+[A-Z][A-Za-z]*")),
+            new RegexMatches("CONTAINSDIGITS", Pattern.compile(".*[0-9].*")),
+//            new RegexMatches("SINGLEDIGITS", Pattern.compile("[0-9]")),
+//            new RegexMatches("DOUBLEDIGITS", Pattern.compile("[0-9][0-9]")),
+//            new RegexMatches("ALLDIGITS", Pattern.compile("[0-9]+")),
+//            new RegexMatches("NUMERICAL", Pattern.compile("[-0-9]+[\\.,]+[0-9\\.,]+")),
+//            new RegexMatches("ALPHNUMERIC", Pattern.compile("[A-Za-z0-9]+")),
+//            new RegexMatches("ROMAN", Pattern.compile("[ivxdlcm]+|[IVXDLCM]+")),
+//            new RegexMatches("MULTIDOTS", Pattern.compile("\\.\\.+")),
+            new RegexMatches("ENDSINDOT", Pattern.compile("[^\\.]+.*\\.")),
+            new RegexMatches("CONTAINSDASH", Pattern.compile(FC.ALPHANUM + "+-" + FC.ALPHANUM + "*")),
+            new RegexMatches("ACRO", Pattern.compile("[A-Z][A-Z\\.]*\\.[A-Z\\.]*")),
+            new RegexMatches("LONELYINITIAL", Pattern.compile(FC.CAPS + "\\.")),
+            new RegexMatches("SINGLECHAR", Pattern.compile(FC.ALPHA)),
+//            new RegexMatches("CAPLETTER", Pattern.compile("[A-Z]")),
+//            new RegexMatches("PUNC", Pattern.compile(FC.PUNT)),
+//            new RegexMatches("QUOTE", Pattern.compile(FC.QUOTE)),
+//            new RegexMatches("STARTDASH", Pattern.compile("-.*")),
+//            new RegexMatches("ENDDASH", Pattern.compile(".*-")),
+//            new RegexMatches("FORWARDSLASH", Pattern.compile("/")),
+//            new RegexMatches("ISBRACKET", Pattern.compile("[()]")),
+            new TokenSequenceLowercase(),
+            /* Make the word a feature. */
+            new TokenText("WORD="),
+            new TokenTextCharSuffix("SUFFIX2=", 2),
+            new TokenTextCharSuffix("SUFFIX3=", 3),
+            new TokenTextCharSuffix("SUFFIX4=", 4),
+            new TokenTextCharPrefix("PREFIX2=", 2),
+            new TokenTextCharPrefix("PREFIX3=", 3),
+            new TokenTextCharPrefix("PREFIX4=", 4),
+//            new InBracket("INBRACKET", true),
+//            new TokenTextCharNGrams("CHARNGRAM=", new int[]{2, 3, 4}),
+            /* FeatureInWindow features. */
+//            new FeaturesInWindow("WINDOW=", -1, 1,
+//            Pattern.compile("WORD=.*|SUFFIX.*|PREFIX.*|[A-Z]+"), true),
+            new OffsetConjunctions(true, Pattern.compile("WORD=.*"),
+            new int[][]{{-1}, {1}, {-1, 0}, {-2, -1}})
+        }));
+
+        pipeList.add(new TokenSequence2FeatureVectorSequence(true, true));
+
         // Print out the features and the label
-        pipeList.add(new PrintInputAndTarget());
+//        pipeList.add(new PrintInputAndTarget());
 
         return new SerialPipes(pipeList);
 
@@ -145,7 +213,7 @@ public class MalletCrf {
 
         InstanceList[] instanceLists =
                 instances.split(new Randoms(),
-                new double[]{0.9, 0.1, 0.0});
+                new double[]{0.7, 0.3, 0.0});
 
         // The third position is for the "validation" set,                                                 
         //  which is a set of instances not used directly                                                  
@@ -159,7 +227,7 @@ public class MalletCrf {
         return new Trial(classifier, instanceLists[TESTING]);
     }
 
-    public CRF run(InstanceList trainingData, InstanceList testingData) {
+    public CRF run(InstanceList trainingData, InstanceList testingData) throws FileNotFoundException, IOException {
         //  SimpleTagger tag // setup:
         //    CRF (model) and the state machine
         //    CRFOptimizableBy* objects (terms in the objective function)
@@ -206,6 +274,7 @@ public class MalletCrf {
         };
         crfTrainer.addEvaluator(evaluator);
 
+
         CRFWriter crfWriter = new CRFWriter("ner_crf.model") {
             @Override
             public boolean precondition(TransducerTrainer tt) {
@@ -213,6 +282,8 @@ public class MalletCrf {
                 return tt.getIteration() % Integer.MAX_VALUE == 0;
             }
         };
+
+
         crfTrainer.addEvaluator(crfWriter);
 
         // all setup done, train until convergence
@@ -220,23 +291,34 @@ public class MalletCrf {
         crfTrainer.train(trainingData, Integer.MAX_VALUE);
         // evaluate
         evaluator.evaluate(crfTrainer);
-
-
-        // save the trained model (if CRFWriter is not used)
-        // FileOutputStream fos = new FileOutputStream("ner_crf.model");
-        // ObjectOutputStream oos = new ObjectOutputStream(fos);
-        // oos.writeObject(crf);
         optLabel.shutdown();
+        try (FileOutputStream fos = new FileOutputStream("ner_crf.model")) {
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(crf);
+        }
+
 
         return crf;
 
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public void process(Sequence input, Sequence output) {
+        // assert input.size() == output.size()
+        for (int i = 0; i < input.size(); i++) {
+            if (output.get(i).equals("O") == false) {
+                System.out.println(output.get(i));
+                FeatureVector fv = (FeatureVector) input.get(i);
+                System.out.println(" " + fv.toString(true));
+            }
+        }
+        System.out.println("");
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
 
         MalletCrf mallet = new MalletCrf();
         InstanceList instances = mallet.readDirectory("D:/Work/NLP/corpuses/ms_academic/train-io-4-class");
-        //InstanceList instances = mallet.readFile("D:/Work/NLP/corpuses/ms_academic/train-io-4-class/1_1_done_io.txt");
+        //      InstanceList instances = mallet.readFile("D:/Work/NLP/corpuses/ms_academic/train-io-4-class/1_1_done_io.txt");
 
         int TRAINING = 0;
         int TESTING = 1;
@@ -249,7 +331,7 @@ public class MalletCrf {
 
         InstanceList[] instanceLists =
                 instances.split(new Randoms(),
-                new double[]{0.8, 0.1, 0.1});
+                new double[]{0.7, 0.3, 0.0});
 
         // The third position is for the "validation" set,                                                 
         //  which is a set of instances not used directly                                                  
@@ -261,17 +343,58 @@ public class MalletCrf {
 
 
 
-        CRF crf = mallet.run(instanceLists[TRAINING], instanceLists[VALIDATION]);
+        CRF crf = mallet.run(instanceLists[TRAINING], instanceLists[TESTING]);
 
         instances = mallet.readFile("D:/Work/NLP/corpuses/ms_academic/train-io-4-class/1_1_done_io.txt");
+        //instances = mallet.readDirectory("D:/Work/NLP/corpuses/ms_academic/train-io-4-class");
+        List<String> lines = FileUtils.readLines(new File("D:/Work/NLP/corpuses/ms_academic/train-io-4-class/1_1_done_io.txt"),
+                "UTF-8");
+
 
         for (Instance input : instances) {
             Sequence seq = (Sequence) input.getData();
             Sequence output = crf.transduce(seq);
             for (int i = 0; i < seq.size(); ++i) {
-                System.out.println(seq.get(i) + "/" + output.get(i));
+                String line = lines.get(i);
+                String words[] = line.split("\\s");
+                mallet.process(seq, output);
+                System.out.println(output.get(i) + " " + words[0]);
             }
         }
+
+        for (int i = 0; i < instances.size(); i++) {
+            Sequence input = (Sequence) instances.get(i).getData();
+            Sequence[] outputs = SimpleTagger.apply(crf, input, 20);
+            int k = outputs.length;
+            boolean error = false;
+            System.out.println("Input size " + input.size());
+            for (int a = 0; a < k; a++) {
+                if (outputs[a].size() != input.size()) {
+                    log.info("Failed to decode input sequence " + i + ", answer " + a);
+                    error = true;
+                }
+            }
+
+            if (!error) {
+
+                for (int j = 0; j < input.size(); j++) {
+                    StringBuilder buf = new StringBuilder();
+
+                    for (int a = 0; a < k; a++) {
+                        buf.append(outputs[a].get(j).toString()).append(" ");
+
+                    }
+                    FeatureVector fv = (FeatureVector) input.get(j);
+                    buf.append(fv.toString(true));
+                    System.out.println(buf.toString());
+                }
+                System.out.println();
+
+
+            }
+        }
+
+
 
 
 

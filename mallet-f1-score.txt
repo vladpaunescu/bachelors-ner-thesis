@@ -1,0 +1,234 @@
+NFO: Evaluator iteration=115 cost=NA (not Optimizable.ByValue)
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: train tokenaccuracy=0.9993
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=2222 pred=2231 correct=2220 misses=2 alarms=11
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9951 recall=0.9991 f1=0.9971
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=886 pred=878 correct=873 misses=13 alarms=5
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9943 recall=0.9853 f1=0.9898
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=1722 pred=1714 correct=1700 misses=22 alarms=14
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9918 recall=0.9872 f1=0.9895
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=579 pred=591 correct=568 misses=11 alarms=23
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9611 recall=0.981 f1=0.9709
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=5409 pred=5414 correct=5361 misses=48 alarms=53
+Jul 02, 2013 6:57:55 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9902 recall=0.9911 f1=0.9907
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: test tokenaccuracy=0.9784
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=1020 pred=1067 correct=807 misses=213 alarms=260
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.7563 recall=0.7912 f1=0.7734
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=365 pred=286 correct=244 misses=121 alarms=42
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.8531 recall=0.6685 f1=0.7496
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=826 pred=761 correct=532 misses=294 alarms=229
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.6991 recall=0.6441 f1=0.6704
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=234 pred=179 correct=84 misses=150 alarms=95
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.4693 recall=0.359 f1=0.4068
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=2445 pred=2293 correct=1667 misses=778 alarms=626
+Jul 02, 2013 6:57:56 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.727 recall=0.6818 f1=0.7037
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INFO: Evaluator iteration=95 cost=NA (not Optimizable.ByValue)
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: train tokenaccuracy=0.9994
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=2179 pred=2187 correct=2174 misses=5 alarms=13
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9941 recall=0.9977 f1=0.9959
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=783 pred=772 correct=770 misses=13 alarms=2
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9974 recall=0.9834 f1=0.9904
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=1694 pred=1695 correct=1678 misses=16 alarms=17
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.99 recall=0.9906 f1=0.9903
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=499 pred=498 correct=488 misses=11 alarms=10
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9799 recall=0.978 f1=0.9789
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=5155 pred=5152 correct=5110 misses=45 alarms=42
+Jul 02, 2013 7:55:06 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9918 recall=0.9913 f1=0.9916
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: test tokenaccuracy=0.977
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=1063 pred=1047 correct=895 misses=168 alarms=152
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.8548 recall=0.842 f1=0.8483
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=468 pred=388 correct=325 misses=143 alarms=63
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.8376 recall=0.6944 f1=0.7593
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=854 pred=753 correct=538 misses=316 alarms=215
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.7145 recall=0.63 f1=0.6696
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=314 pred=179 correct=97 misses=217 alarms=82
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.5419 recall=0.3089 f1=0.3935
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=2699 pred=2367 correct=1855 misses=844 alarms=512
+Jul 02, 2013 7:55:07 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.7837 recall=0.6873 f1=0.7323
+Jul 02, 2013 7:55:08 PM cc.mallet.fst.ThreadedOptimizable getValue
+INFO: getValue() (loglikelihood, optimizable by label likelihood) =-912.5740207023958
+Jul 02, 2013 7:55:08 PM cc.mallet.fst.CRFTrainerByValueGradients$OptimizableCRF getValue
+INFO: getValue() (loglikelihood) = -912.5740207023958
+Jul 02, 2013 7:55:08 PM cc.mallet.optimize.LimitedMemoryBFGS optimize
+INFO: Exiting L-BFGS on termination #1:
+value difference below tolerance (oldValue: -912.6372975804907 newValue: -912.5740207023958
+Jul 02, 2013 7:55:08 PM cc.mallet.fst.CRFTrainerByValueGradients train
+INFO: CRF finished one iteration of maximizer, i=95, 1 secs.
+Jul 02, 2013 7:55:08 PM cc.mallet.fst.CRFTrainerByValueGradients train
+INFO: CRF training has converged, i=95
+
+
+
+INFO: Evaluator iteration=95 cost=NA (not Optimizable.ByValue)
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: train tokenaccuracy=0.9991
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=2469 pred=2476 correct=2451 misses=18 alarms=25
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9899 recall=0.9927 f1=0.9913
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=851 pred=847 correct=843 misses=8 alarms=4
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9953 recall=0.9906 f1=0.9929
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=1764 pred=1762 correct=1737 misses=27 alarms=25
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9858 recall=0.9847 f1=0.9853
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=585 pred=595 correct=572 misses=13 alarms=23
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9613 recall=0.9778 f1=0.9695
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train segments true=5669 pred=5680 correct=5603 misses=66 alarms=77
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  train precision=0.9864 recall=0.9884 f1=0.9874
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: test tokenaccuracy=0.9832
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: PERSON 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=773 pred=839 correct=684 misses=89 alarms=155
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.8153 recall=0.8849 f1=0.8486
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: LOCATION 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=400 pred=327 correct=281 misses=119 alarms=46
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.8593 recall=0.7025 f1=0.773
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: ORGANIZATION 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=784 pred=722 correct=561 misses=223 alarms=161
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.777 recall=0.7156 f1=0.745
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: MISC 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=228 pred=149 correct=92 misses=136 alarms=57
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.6174 recall=0.4035 f1=0.4881
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO: OVERALL 
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test segments true=2185 pred=2037 correct=1618 misses=567 alarms=419
+Jul 02, 2013 8:18:01 PM cc.mallet.fst.MultiSegmentationEvaluator evaluateInstanceList
+INFO:  test precision=0.7943 recall=0.7405 f1=0.7665
+Jul 02, 2013 8:18:02 PM cc.mallet.fst.ThreadedOptimizable getValue
+INFO: getValue() (loglikelihood, optimizable by label likelihood) =-1570.3482629616979
+Jul 02, 2013 8:18:02 PM cc.mallet.fst.CRFTrainerByValueGradients$OptimizableCRF getValue
+INFO: getValue() (loglikelihood) = -1570.3482629616979
+Jul 02, 2013 8:18:02 PM cc.mallet.optimize.LimitedMemoryBFGS optimize
+INFO: Exiting L-BFGS on termination #1:
+value difference below tolerance (oldValue: -1570.4982876261765 newValue: -1570.3482629616979
+Jul 02, 2013 8:18:02 PM cc.mallet.fst.CRFTrainerByValueGradients train
+INFO: CRF finished one iteration of maximizer, i=95, 0 secs.
+Jul 02, 2013 8:18:02 PM cc.mallet.fst.CRFTrainerByValueGradients train
+INFO: CRF training has converged, i=95

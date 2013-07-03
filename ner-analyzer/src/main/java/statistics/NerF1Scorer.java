@@ -77,7 +77,7 @@ public class NerF1Scorer {
         log.info("Initializing Stanford Annotator");
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("ner.model", MODEL_5_CLASS);
+        props.put("ner.model", MODEL_14_CLASS);
         props.put(NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY, "false");
         props.put(NumberSequenceClassifier.USE_SUTIME_PROPERTY, "false");
 
@@ -134,7 +134,7 @@ public class NerF1Scorer {
                     log.info(String.format("Entity found, class mistake: %s %s instead of %s",
                            validationText, annotation.getNeLabel(), validationClass));
                     //_truePositives += 0.5;
-                    _falseNegatives++;
+                   // _falseNegatives++;
                     
                 }
                 else {
@@ -169,7 +169,7 @@ public class NerF1Scorer {
     
     
     public static void main(String[] args){
-        String dirname = "D:/Work/NLP/corpuses/ms_academic/train-io-4-class";
+        String dirname = "D:/Work/NLP/corpuses/ms_academic/train-io";
         NerF1Scorer scorer = new NerF1Scorer(dirname);
         scorer.computeScores();
     }

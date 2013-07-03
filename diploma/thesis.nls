@@ -3,11 +3,11 @@
  \nomgroup{A}
 
   \item [{ASR}]\begingroup Automatic Speech Recognition\nomeqref {2.0}
-		\nompageref{9}
+		\nompageref{7}
   \item [{BRAT}]\begingroup Brat Rapid Annotation Tool\nomeqref {3.0}
-		\nompageref{27}
+		\nompageref{25}
   \item [{CLI}]\begingroup Command Line Interface\nomeqref {3.0}
-		\nompageref{30}
+		\nompageref{29}
   \item [{CoNLL}]\begingroup Conference on Natural Language Learning\nomeqref {1.0}
 		\nompageref{3}
   \item [{CRF}]\begingroup Conditional Random Field\nomeqref {1.0}
@@ -15,7 +15,7 @@
   \item [{CS}]\begingroup Computer Science\nomeqref {1.0}\nompageref{1}
   \item [{eng.}]\begingroup Engleză\nomeqref {1.0}\nompageref{2}
   \item [{GUI}]\begingroup Graphical User Interface\nomeqref {3.0}
-		\nompageref{30}
+		\nompageref{29}
   \item [{HIT}]\begingroup Human Intelligence Task\nomeqref {1.0}
 		\nompageref{1}
   \item [{HMM}]\begingroup Hidden Markov Model\nomeqref {1.0}
@@ -23,16 +23,16 @@
   \item [{IE}]\begingroup Information Extraction\nomeqref {1.0}
 		\nompageref{1}
   \item [{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}
-		\nompageref{24}
+		\nompageref{22}
   \item [{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}
-		\nompageref{15}
+		\nompageref{13}
   \item [{MALLET}]\begingroup MAchine Learning for LanguagE Toolkit\nomeqref {3.0}
-		\nompageref{29}
+		\nompageref{27}
   \item [{MEMM}]\begingroup Maximum-entropy Markov model\nomeqref {1.0}
 		\nompageref{4}
   \item [{ML}]\begingroup Machine Learning\nomeqref {1.0}\nompageref{2}
   \item [{MT}]\begingroup Machine Translation\nomeqref {2.0}
-		\nompageref{13}
+		\nompageref{11}
   \item [{MUC}]\begingroup Message Understanding Conference\nomeqref {1.0}
 		\nompageref{2}
   \item [{NE}]\begingroup Named Entity\nomeqref {1.0}\nompageref{2}
@@ -41,11 +41,11 @@
   \item [{NLP}]\begingroup Natural Language Processing\nomeqref {1.0}
 		\nompageref{1}
   \item [{OCR}]\begingroup Optical Character Recognition\nomeqref {2.0}
-		\nompageref{9}
+		\nompageref{7}
   \item [{ORM}]\begingroup Object-Relational Mapping\nomeqref {3.0}
-		\nompageref{32}
+		\nompageref{30}
   \item [{POM}]\begingroup Project Object Model\nomeqref {3.0}
-		\nompageref{32}
+		\nompageref{29}
   \item [{TREC}]\begingroup Text REtrieval Competion\nomeqref {1.0}
 		\nompageref{3}
 

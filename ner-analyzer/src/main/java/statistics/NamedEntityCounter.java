@@ -56,7 +56,7 @@ public class NamedEntityCounter {
         }
 
         showTopEntities();
-        insertEntitiesIntoDb();
+//        insertEntitiesIntoDb();
     }
 
     private void countNamedEntitiesForFile(File annFile) {

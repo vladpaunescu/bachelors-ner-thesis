@@ -1,0 +1,52 @@
+\chapter{Coapariția Entităților cu Nume}
+\label{chap:entities-cooccurrence}
+
+Așa cum am amintit în \labelindexref{Secțiunea}{paragraph:relation}, identificarea entităților cu nume are ca aplicație directă extragerea de relații între entități.
+
+În acest capitol, voi prezenta o aplicație asemănatoare cu extragerea relațiilor. Aplicația este de această dată bazată pe un sistem NER în limba română, care a identificat și clasificat entități în texte de știri ale publicațiilor românești online - ziare online. De asemenea, eu am preluat entitățile identificate de colegul meu, Adrian Zamfirescu, pe aceste texte. Ceea ce am realizat eu nu ar fi fost posibil fără lucrul colegului meu, Adrian, căruia țin să îi mulțumesc. 
+
+\section{Identificarea Coaparițiilor și Construirea Grafului}
+
+Am decis că două entităti \textit{coapar}, adică apar împreună, dacă ele se găsesc în același articol de ziar. Astfel, am construit o asociere entități - articole, care reprezintă un graf bipartit între cele două mulțimi: entiăți și articole. Este, cu alte cuvinte, \textit{o relație (many to many)} între cele două aspecte: entități și articole. Relația între entități și articole este prezentată în \labelindexref{Figura}{img:entities-articles} de mai jos.
+
+\fig[scale=0.6]{src/img/entities-articles.png}{img:entities-articles}{Modelarea matematică a relației între entități și articolele în care apar}
+
+Ulterior, am creat un alt graf de coapariții în care puneam muchie între două entități, dacă acestea apăreau împreună în același articol. Muchia avea o pondere și graful era neorientat \textit{Ponderea} era crescută cu 1 de fiecare dată când entitățile apăreau împreună într-un articol. În acest grf, avem doar entități conectate între ele de muchii cu pondere mai mare cu cât apar mai des împreună.
+
+\section{Tehnici de Modelare a Grafului}
+
+Graful obținut a fost procesat din mai multe perspective:
+
+\index{modularitate}
+\index{K-Clică}
+\begin{description}
+
+\item[Identificarea Comunităților (Modularitatea)] reprezintă o metrică ce poate fi aplicată pe un graf, astfel încât să îl putem descompune în comunităti diferite, puternic conectate între ele. Problema este NP-Completă (K-clică), dar există algoritmi eurisitici (aproximativi) care rezolvă destul de bine această problemă. Metoda foloisită este propusă de Blondel et al., 2008.\cite{Blondel08fastunfolding} Am folosit acest lucru pentru a vedea dacă utilizând doar informația conținută in ponderea muchiei care lega două noduri, putem extrage ceva semantic.
+
+ Rezultatele au fost spectaculoase. Comunitătile identificate erau foarte apropiate de categoriile reale. Adică au fost identificate țări, orașe, politicieni, scriitori, totul folosind doar gradul ponderat (\textit{weighted degree}), ponderea unei muchii care leaga două entități, cu alte cuvinte, cât de strâns erau legate conceptual acele entități. Exmeplul ilustrator poate fi văzut în \labelindexref{Figura}{img:cooccurrences-graph-2}, in care cu verde sunt marcate tările, cu roșu colorate politicienii si unele orașe. Clasifiarea este aproximativă, dar cu toate acestea este destul de bună.
+ 
+
+ \index{centralitate}
+ \item[Centrarea în jurul unei entități (Centralitate)] Am folosit apoi metrica denumită \textit{centralitate}(eng. \textit{centrality}), pentru a vedea cele mai importante entități din cadrul grafului. La layout, dimensiunea nodurilor a fost făcută proporțional gradul de centralitate al său. Nodurile mai importante erau mai mari, în timp ce nodurile periferice erau mai mici.
+ 
+ \item[Filtrarea nodurilor în funcție de distanță] După ce am centrat graful în jurul unei entități, am filtrat nodurile care se aflau la o distanța mai mare, eliminându-le. Graful era suficient de conectat astfel încât în cele mai multe cazuri, o distanță egală cu 1 deja includea prea multe noduri.
+ 
+ \item[Eliminarea nodurilor slab conectate] Apoi Am eliminat muchiile care nu aveau o pondere suficient de mare (de exemplu, sub 10\% din ponderea maximă). Evident, dacă în urma eliminării muchiilor, nodurile deveneau deconectate de graf, nodurile erau și ele eliminate. Doream ca tot graful să fie conex.
+ 
+ \index{layout(graf)}
+ 
+ \item[Dispunerea Grafică a Grafului(Layout)] Pentru \textit{layout-ul} grafului există mai multe moduri de a-l dispune. Multe dintre acestea sunt bazate pe \textit{forțe de respingire și de atracție} între noduri în funcție de numărul de muchii și de ponderea asociată lor. Am folosit doua moduri de dispunere OpenOrd\footnote{\url{https://marketplace.gephi.org/plugin/openord-layout/}} și Force Atlas, care se bazează pe forțe.\footnote{\url{http://en.wikipedia.org/wiki/Force-directed_graph_drawing}}
+\end{description}
+
+ 
+\section{Vizualizarea Grafului de Coapariții}
+
+Nodurile au fost colorare în funcție de coumunitate din care făcea parte (clasa de modularitate). Dimensiunea nodurilor a fost calculată în funcție de gradul de centralitate a nodului, de cât era de important în graf.
+
+Graful generat astfel a fost vizualizat folodind un program de vizualizare, Gephi\footnote{\url{https://gephi.org/}}. Acest lucru este ilustrat în \labelindexref{Figura}{img:cooccurrences-graph-2}:
+
+
+\fig[scale=0.37]{src/img/cooccurrences-graph-2.png}{img:cooccurrences-graph-2}{Vizualizarea grafului de coapariții folosind Gephi}
+
+În concluzie, identificarea coaparițiilo entităților în articole a constituit un prim pas în extragerea relațiilor între entități.
+

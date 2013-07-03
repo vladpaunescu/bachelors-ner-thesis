@@ -1,6 +1,6 @@
 \chapter{Tehnici și Algoritmi Folosiți}
 
-Abilitatea de a reunoaște entități pe care sistemul nu le-a văzut înainte este esențială în preformanța unui sistem NER. O astfel de abilitate se bazează pe recunoașterea și clasificarea de reguli declanșate de diferite feature-uri asocitate atât cu exemple pozitive cât și cu exemple negative. Dacă la început, sistemele NER erau bazate pe reguli acum majoritatea folosesc tehnici avansate de Machine Learning supervizat. 
+Abilitatea de a reunoaște entități pe care sistemul nu le-a văzut înainte este esențială în preformanța unui sistem NER. O astfel de abilitate se bazează pe recunoașterea și clasificarea de reguli declanșate de diferite feature-uri asocitate atât cu exemple pozitive cât și cu exemple negative. Dacă la început, sistemele NER erau bazate pe reguli, acum majoritatea folosesc tehnici avansate de Machine Learning supervizat sau nesuprevizat. 
 
 În multe probleme din NLP, datele vin într-o secvență de caractere, cuvinte, expresii, linii sau propoziții. Putem să gândim problema ca atribuind o clasă pentru fiecare astfel de element din secvență.
 
@@ -8,5 +8,131 @@ Acest lucru este ilustrat în \labelindexref{Figura}{img:sequence-labeling-appli
 
 \fig[scale=0.3]{src/img/sequence-labeling-applications.png}{img:sequence-labeling-applications}{Aplicații ale Sequence Labeling}
 
-Există mai multe 
+Există mai multe modele matematice care pot rezolva această problemă.
+
+\section{Modele Generative versus Modele Discriminative}
+
+\textbf{Modele generative} pun o probabilitate atât pe datele observate cât și pe clasa ce trebuie "ghicită" (starea ascunsă). Ele generează datele observate din clasa ascunsă, și aleg clasa care se potrivește cel mai bine cu datele observate. Din categoria acestor modele fac parte Modele Hidden Markov Models (HMM), Naive Bayes etc. 
+
+Un astfel de model HMM este folosit în lucrarea lui Bikel, 1999, lucare de pionierat în domeniul NER, prima abordează NER ca o problemă de \textit{sequence labeling}.\cite{Bikel99analgorithm}
+
+Să luăm următorul exemplu. Să presupunem că trebuie să stabilim clasa $C$, dându-ni-se (observând) datele $D$. Deci observăm datele $D$ si trebuie prezisă clasa $C$. În mod normal, un om și-ar pune problem așa: Care este probilitatea ca să fie clasa $C$ dând-use datele observate $D$. Avem deci o probabilitate condiționată. Vome vedea că modelele care modelează așa problema se numesc \textit{modele discrimintative}.
+
+Utilizând regula lui Bayes, putem înversa cauza cu efectul:
+
+
+
+\begin{equation}
+\label{eq:bayes-rule}
+P(C|D) = \frac{P(D|C) \cdot P(C)}{P(D)}
+\end{equation}
+
+Mai departe, folosind definiția lui Kolmogorov, putem prelucra numărătorul \labelindexref{ecuației}{eq:bayes-rule}:
+
+
+\begin{equation}
+P(D|C) \cdot P(C) = P(C\cap D) = P(C,D)
+\end{equation}
+
+
+Modele generative modelează probabilitatea $P(C,D)$. Încearcă să maximizeze această probabilitate, apoi evident clasa care maximizează cel mai mult va fi aleasă. Din categoria acestor modele fac parte Naive Bayes, Hidden Markov Models, n-gram models etc.
+
+De exemplu ilustrăm pentru clasificatoru Naive Bayes acest proces în \labelindexref{Figura}{img:naive-bayes}:
+
+\fig[scale=0.3]{src/img/naive-bayes.png}{img:naive-bayes}{Clasificatorul Naive Bayes}
+
+
+\textbf{Modele discriminative} iau datele observate și pun o porabilite pe structura ascunsă, dându-se observațiile - probabilite condiționtă. Din această, categorie fac parte Maximum Entropy Markov Models și Conditional Random Fields.\cite{Mccallum00maximumentropy}\cite{Lafferty01conditionalrandom}
+
+Modelele discriminative modelează deci $P(C|D)$, adică răspund la întrebarea din abordarea naturală, care e probabilitatea ca un un document să fie în clasa $C$, observând datele $D$.
+
+
+Aceste modele au fost folosite cu succes în alte task-uri de \textit{sequence labeling}, cum ar fi POS tagging. La fel și în NER, contează foarte mult secvența continuă de cuvinte dintr-o vecinătate, la un anumit moment de decizie, cu alte cuvinte, contează contextul local.
+
+Modelele \textit{discriminative} obțin scoruri mai bune atât pe datele de antrenament cât si pe datele de test. Modelele generative având acea probabilitate \textit{joint} (legată) între datele observate și clasa ce trebuie modelată tind să crească probabilitatea în mod exagerat, să numere de mai multe ori aceeași dovadă, atunci când \textit{feature-urile} (caracteristicle) nu sunt \textit{independente} una de alta. Așa cum vom vedea, feature-urile alese în problemele de NLP \textit{nu sunt independente}. Deci un model generativ va exagera practic în momentul în care avem astfel de feature-uri. Modelele \textit{discriminative} propuse ulterior, ca MEMM, sau CRF, sunt acum folosite pe scară largă în sistemele NER.
+
+\index{rețea bayesiană}
+
+În \labelindexref{Figura}{img:hmm-memm-linear-chain} se poate observa o modelare cu grafuri de dependență (rețea bayesiană) pentru un model generativ de tip HMM, respectiv pentru un model discriminativ de tip Maximum-Entropy Markov Model. Ambele sunt modele simple, de forma \textit{lanț liniar} (eng. \textit{linear chain}). Adică, vin în secvență de la stânga la dreapta, exact cum vine în secvență textul natural. Arcele marchează condiționarea. De exemplu, pentru modelul generative HMM (a), observația $o_t$ la momentul de timp $t$ este condiționată de starea ascunsă la momentul de timp $t, s_t$, iar starea $s_t$ este condiționată de starea anterioară $t-1$. Deci, putem scrie $P(s_t|s_{t-1})$ și $P(o_t|s_t)$. Pe de altă parte, la modelul discriminativ MEMM (b), starea curentă $s_t$ este condiționată de două elemente: starea anterioară $s_{t - 1}$ și observația curentă,  $o_t$. Astfel, pentru modelul discriminativ, putem scrie $P(s_t|s_{t - 1}, o_{t - 1})$.
+
+Ultima modelare vine mult mai natural. De exemplu putem să găndim așa: categoria cuvântului curent (persoană, organizație, nimic, etc) este influențată de observația făcută , cuvântul curent - $o_t$ și de categoria cuvântului anterior - $s_{t-1}$.
+
+\fig[scale=0.3]{src/img/hmm-memm-linear-chain.png}{img:hmm-memm-linear-chain}{Graful de dependențe (Rețeaua Bayesiană) pentru  a) HMM tradițional și b) Maximum Entropy Markov Model}
+
+Ca un ultim exemplu, vom expune cum arată matematic un MEMM. Este un model exponețial în care se adună contribuțiile fiecărei \textit{caracteritstici} (eng. \textit{feature}) $f_i$ ce depinde de clasă și de datele observate. Fiecare \textit{feature} $f_i$ este ponderată cu un parametru $\lambda_{i}$. Acești parametri constituie parametrii modelului și trebuie determinați folosind setul de date de antrenament și căutând să minimizăm eroare unei funcții de cost pe acest set. De obicei se folosește principiul \textit{Maximum Likelihood Estimation} pentru determinarea ponderirilor care descriu cel mai bine modelul pe setul de date de antrenament.
+
+Acum, fiecare astfel de feature împreună cu ponderea ei, $\lambda_{i} f(c,d) $ va vota. Exponențierea se face ca voturile să devină toate pozitive. Apoi, pentru a le putea transforma în probabilități, se împarte cu un termen de \textit{normalizare}, care nu este altceva decât o sumă peste toate feature-urile și peste toate clasele. Astfel, toată expresia este adusă în intervalul $[0,1]$, deci devine o probabilitate. Ceea ce am descris este ilustrat în \labelindexref{Figura}{img:memm-equation}.
+
+
+\fig[scale=0.3]{src/img/memm-equation.png}{img:memm-equation}{Exemplu de clasificator linear de tip MEMM}
+
+
+\section{Reprezentarea IO verus Reprezentarea IOB}
+\label{sec:io-encoding}
+
+Pentru adnotarea de documente în task-ul NER, s-au propus două metode:
+
+\begin{itemize}
+\item reprezentarea IO (Inside-Outside) marchează fiecare cuvânt (\textit{token}) cu clasa din care face parte. Nu face distincție între începutul unei entităti și interioarul ei;
+\item reprezeintarea IOB (Inside-Outside-Beginning) face distincție între începutul unei entități si interiorul ei.
+\end{itemize}
+
+Encoding-ul IOB,  aduce un plus de complexitate. Înseamnă să marchezi diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje. De exemplu, pentru textul "Is John Doe here?", encodările IO și IOB vor fi următoarele ca în \labelindexref{Tabelul}{table:iob-encoding}:
+
+
+\begin{center}
+\begin{table}[hb]
+\caption{Comparație între encodarea IO și IOB}
+\begin{tabular}{ |l | r | r |}
+\hline
+  Token & Encodare IO & Encodare IOB \\
+\hline
+  Is & O & O \\
+  John & PER & B-PER  \\
+  Doe & PER & I-PER \\
+  here & O & O \\
+  ? & O & O \\
+  \hline
+\end{tabular}
+ \label{table:iob-encoding}
+\end{table}
+\end{center}
+
+
+\textit{Avantajul} pe care îl aduce în plus față de encodarea clasică este că putem delimita  \textit{entitățile consecutive de același tip}. De exemplu, două persoane pot fi delimiate corect. Însă, în practică, delimtarea persoanelor este marcată în text cu virgulă de exemplu, token care va fi etichetat ca exemplu negativ \texttt{O}. Deci delimitarea va fi posibilă fără probleme. Cazurile în care două entități conescutive din aceeși categorie se referă la două obiecte ditincte sunt foarte rare.
+
+\textit{Dezavantajul} este reprezentat de dublarea numărului de clase pentru antrenarea modelului. Adică, dacă înainte pentru $C$ categorii de entități aveam $C + 1 $ clase (trebuia să adaugăm si clasa \texttt{O}, acum numărul lor se dublează pentru fiecare cateogrie de entitate in parte. Asta deoarece avem două clase disincte pentru fiecare categorie \texttt{X}, \texttt{B-X} și \texttt{I-X}, de exemplu pentru \texttt{PERSON} vom avea \texttt{B-PERSON} si \texttt{I-PERSON}. Același lucru e valabil pentru toate cele C categorii, mai puțin pentru clasa \texttt{O}, pentru care nu se va dubla numărul. Deci în encodarea IOB, pentru un număr de $C$ categorii de entități vom avea $2C + 1 $ clase în antrenarea modelului. Astfel, antrenarea modelului va si semnficativ mai lentă, iar probabilitățile mai mici.
+
+\section{Alegerea Feature-urilor pentru NER}
+
+\textit{Feature-urile} descriu proprietăți pe care le au cuvintele dintr-o vecinătate a cuvântului analizat de cele mai multe ori. Ele sunt de obicei teste care întorc valori booleene (adevarat sau fals). Un exemplu de \textit{feature} este un test pe cuvântul curent dacă începe sau nu cu literă mare \texttt{IsCapitalized(word)}.
+
+Pentru etichetarea unei secvențe, de obicei, ne uităm în jurul cuvântului de analizat la momentul curent. Putem avea feature-uri de mai multe tipuri:
+
+\begin{itemize}
+\item pe cuvinte: cuvântul curent $w_i$, cuvântul precedent $w_{i-1}$, cuvântul următor $w_{i+1}$;
+\item pe etichete (clase): categoria cuvântului anterior $c_{i-1}$;
+\item alte clase de clasifcare lingvistică: parte de vorbire a cuvântului curent, partea de vorbire anterioară etc.
+\item \textit{morfologie}, afixe: sufixe și prefixe, subșiruri din cuvânt. De exemplu, în limba română multe nume de persoane se termină în sufixul \textbf{escu}. Un feature de tipul sufix de lungime 4 $s_4$ ar putea învăța acest lucru;
+\item scrierea sau nu cu majusculă (Case): începe cu literă mare, e scris doar cu litere mari, are litere mari amestecate cu litere mici (ex. eBay);
+\item cifre: Cuvinte formate din 4 cifre de exemplu  în intervalul 1900-2020, pot fi considerați candidați pentru date calendaristice;
+\item \textit{forma cuvântului}: mapează cuvintele la reprezentări simplificate care rețin atributep precum lungimea, capitalizarea, numere, liniuța. De exemplu, Lebiniz-Newton ar putea fi mapat la Xxxxx-Xxxxx.
+\item prescurtări, termeni de tip Mr., Inc. S.A.
+
+\end{itemize}
+
+\index{expresie regulată}
+De obicei, aceste feature-uri sunt alese prin \textit{trial and error}. Se verifică ce scăpări face algoritmul și se adaugă alte feature-uri. Sunt scrise în cod folosind \textit{expresii regulate}.
+
+\index{gazetteer}
+\section{Dicționare de Termeni}
+Dicționarele cu nume de persoane, organizații locatii etc. poartă denumirea în literatura de specialitate de \textit{gazetteers}. Problema cu aceste dicționare este că sunt rupte de context, deci nu poți învăța de exemplu că înainte de o locatie, foarte des, apare propoziția "la" sau "în". Poți doar învăța caracterisitici ale cuvintelor, de exemplu, ca multe nume se termină în "escu", sau multe locații in "ești" - București, Pitești etc. De asemenea, ele nu sunt \textit{exhaustive}, nu acoperă toate posibilitățile. Este imposibil să enumeri toate teritoriile și toate persoanele, chiar și într-un domeniu restrâns, chiar și într-o singură limbă.
+
+Cu toate aceste neajunsuri, dicționarele de termeni sunt utile și cresc performanța unui sistem de identificare a entităților cu nume.
+
+
+
+
+
+
 

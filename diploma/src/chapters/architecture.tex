@@ -179,11 +179,10 @@ Așa că și eu am decis să folosesc un Conditional Random Field. Am avut de al
 \abbrev{MALLET}{MAchine Learning for LanguagE Toolkit}
 \index{Apache Maven}
 
-În urma cercetării tool-urilor deja existente, am descoperit MALLET(MAchine Learning for LanguagE Toolkit)\footnote{\url{http://mallet.cs.umass.edu/}} și Stanford CRFClassifier. M-am oprit asupra acestor două tool-uri deoarece ele erau destinate special oferirii de algoritmi de Învățare Automată pentru Procesarea Limbajului Natural și puteau fi folosite direct din Java - erau implementate în Java. De asemenea erau disponibile în repository-ul central Maven. Este interesant de observat că celebrul tool de Machine Learning  Am experimentat mai întâi cu MALLET, încercând să mă prind cum pot antrena un model statistic CRF. 
+În urma cercetării tool-urilor deja existente, am descoperit MALLET(MAchine Learning for LanguagE Toolkit)\footnote{\url{http://mallet.cs.umass.edu/}} și Stanford CRFClassifier. M-am oprit asupra acestor două tool-uri deoarece ele erau destinate special oferirii de algoritmi de Învățare Automată pentru Procesarea Limbajului Natural și puteau fi folosite direct din Java - erau implementate în Java. De asemenea erau disponibile în repository-ul central Maven. Este interesant de observat că celebrul tool de Machine Learning, WEKA duce lispă de implementări ale CRF sau MEMM. 
 
-Din păcate, documentația disponibilă pentru MALLET este destul de puțină. De asemenea, lucrul făcut până în prezent și formatul datelor erau mai adecvate folosirii CRF-ului de la Stanford.
 
-Stanford CRFClassifier\footnote{\url{http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/ie/crf/CRFClassifier.html}} acceptă ca input un set de documente de antrenament, in forma implicită, pe 3 coloane. Ele trebuie să conțină cuvântul, tag-ul POS (partea de vorbire) și clasa lui (PERSOANĂ, ORGANIZAȚIE, etc.). Puteți vedea un exemplu ilustrativ în \labelindexref{Tabelul}{table:input-crf}.
+\paragraph{Stanford CRFClassifier}\footnote{\url{http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/ie/crf/CRFClassifier.html}} acceptă ca input un set de documente de antrenament, in forma implicită, pe 3 coloane. Ele trebuie să conțină cuvântul, tag-ul POS (partea de vorbire) și clasa lui (PERSOANĂ, ORGANIZAȚIE, etc.). Puteți vedea un exemplu ilustrativ în \labelindexref{Tabelul}{table:input-crf}.
 
 \begin{center}
 \begin{table}[htb]
@@ -201,6 +200,15 @@ Stanford CRFClassifier\footnote{\url{http://nlp.stanford.edu/nlp/javadoc/javanlp
 \end{center}
 
 Așa că am antrenat modelul și l-am salvat pe disc folosind Stanford CRFClassifier. Antrenarea unui model cu 5 clase a durat puțin în comparație cu antrenarea unui model cu 14 clase (includem aici nu doar categoriile de entități, ci și clasa O). Asta deoarece la 14 clase, funcția ce trebuia optimizata avea peste 100 000 de variabile. Se poate demonstra că funcția ce trebuie optimizată depinde de numărul de clase și de numărul de feature-uri ales. De fapt, dacă avem de exemplu 15 feature-uri, vom combina aceste 15 feature-uri  cu fiecare clasă, deci având mai multe clase creșțem numărul de parametrii ce trebuie calculați pentru ca modelul nostru să aproximeze cât mai bine datele de antrenament.
+
+\paragraph{MALLET} este al doilea toolkit pe care l-am utilizat. Am exprimentate cu el, încercând să mă prind cum pot antrena un model statistic CRF. Deși documentația disponibilă pentru MALLET este destul de puțină, MALLET este \textit{open source}, iar codul este scris foarte bine. Deși a avut o curbă de învâțare mai abruptă, până la urmă am reușit să folosesc MALLET sequence labeling pentru sistemul meu NER. 
+
+MALLET dă mult mai multă libertate de alegere când vine vorba de antrenarea unui model folosind Conditional Random Fields sau Maximum Entropy Markov Models. Așa că mi-am stabilit eu propriile \textit{feature-uri} pe care doream ca algoritmul de învățare să le utilizeze.
+
+De asemenea, programtorul are control direct asupra Conditional Random Field-ului. Poate seta foarte mulți parametri. De exemplu, poate fi ales algoritmul de optimizare a funcției de cost.
+
+\index{F1-Score}
+Cu toate că am avut mai multă liberate de decizie cu MALLET, performanțele obținute de modeulul antrenat cu el sunt mai slabe, cu un scor $F_1$ de 76\% pe setul de date de test, dar de 98\% pe setul de date de antrenament, ceea ce înseamnă ca algoritmul \textit{memorează} datele de antrenament (face \textit{overfitting}) și esuează în a \textit{generaliza}. Mai multe detalii despre evaluarea performanțelor vor fi prezentate în capitolul aferent, la \labelindexref{Secțiunea}{sec:model-measurements}.
 
 
 \section{Modulul de Efectuare a Statisticilor}
@@ -262,7 +270,7 @@ Apoi, după ce a încărcat textul, la apăsarea butonului "Identifică Entită�
 \item[Problema Dependențelor de alte librării] apare foarte multe ori într-un proiect complex, când te poți lovi de faptul ca un jar are pe care îl folosești are nevoie de alte jar-uri ca să funcționeze. Întreținerea manuală a acestor \textit{dependențe} poate da foarte multe bătăi de cap. Apache Maven, prin al său POM(Project Object Model) rezolvă această problemă.
 
 \index{Central Point of Control}
-\item[Problema Duplicării Librăriilor jar] apare în momentul în care pe un calculator ai mai multe proiecte care folosesc aceeași librarie, de exemplu, guava.jar. De foarte multe ori, ea va fi copiată și duplicată pentru fiecare proiect în parte. Va ocupa de mai multe ori spațiu inutil pe hard disk. De asemenenea, librăria dacă va fi updatat-a cu o nouă versiune, de la 1.2 la 1.3, va fi greu de menținută sincronizarea. Acest lucru încalcă un principiu software important, numit \textit{Central Point of Control}. Apache Maven rezolvă această problemă, salvând \textit{într-un singur loc} pe HDD într-un \textit{repository} local librăriile jar. El se ocupă de crearea ierarhiei de directoare care corespunde ierarhiei de pachete. De exemplu pentru pachetul Java \texttt{org.apache.commons} se va crea pe dis o ierarhive \texttt{/usrname/.m2/org/apache/commons/commons.jar}.
+\item[Problema Duplicării Librăriilor jar] apare în momentul în care pe un calculator ai mai multe proiecte care folosesc aceeași librarie, de exemplu, guava.jar. De foarte multe ori, ea va fi copiată și duplicată pentru fiecare proiect în parte. Va ocupa de mai multe ori spațiu inutil pe hard disk. De asemenenea, librăria dacă va fi updatat-a cu o nouă versiune, de la 1.2 la 1.3, va fi greu de menținută sincronizarea. Acest lucru încalcă un principiu software important, numit \textit{Central Point of Control}. Apache Maven rezolvă această problemă, salvând \textit{într-un singur loc} pe HDD într-un \textit{repository} local librăriile jar. El se ocupă de crearea ierarhiei de directoare care corespunde ierarhiei de pachete. De exemplu pentru pachetul Java \texttt{org.apache.commons} se va crea pe dis co ierarhie \texttt{/username/.m2/org/apache/commons/commons.jar}.
 \end{description}
 
 Sunt și alte avantaje pe care le aduce folosirea Apache Maven, care stau în spatele filosofiei sale. Nu le voi descrie aici.

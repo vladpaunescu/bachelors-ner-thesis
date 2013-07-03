@@ -12,14 +12,14 @@
 \nomenclatureentry{aHMM@[{HMM}]\begingroup Hidden Markov Model\nomeqref {1.0}|nompageref}{4}
 \nomenclatureentry{aMEMM@[{MEMM}]\begingroup Maximum-entropy Markov model\nomeqref {1.0}|nompageref}{4}
 \nomenclatureentry{aCRF@[{CRF}]\begingroup Conditional Random Field\nomeqref {1.0}|nompageref}{4}
-\nomenclatureentry{aASR@[{ASR}]\begingroup Automatic Speech Recognition\nomeqref {2.0}|nompageref}{9}
-\nomenclatureentry{aOCR@[{OCR}]\begingroup Optical Character Recognition\nomeqref {2.0}|nompageref}{9}
-\nomenclatureentry{aMT@[{MT}]\begingroup Machine Translation\nomeqref {2.0}|nompageref}{13}
-\nomenclatureentry{aKNN@[{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}|nompageref}{15}
-\nomenclatureentry{aJSON@[{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}|nompageref}{24}
-\nomenclatureentry{aBRAT@[{BRAT}]\begingroup Brat Rapid Annotation Tool\nomeqref {3.0}|nompageref}{27}
-\nomenclatureentry{aMALLET@[{MALLET}]\begingroup MAchine Learning for LanguagE Toolkit\nomeqref {3.0}|nompageref}{29}
-\nomenclatureentry{aGUI@[{GUI}]\begingroup Graphical User Interface\nomeqref {3.0}|nompageref}{30}
-\nomenclatureentry{aCLI@[{CLI}]\begingroup Command Line Interface\nomeqref {3.0}|nompageref}{30}
-\nomenclatureentry{aPOM@[{POM}]\begingroup Project Object Model\nomeqref {3.0}|nompageref}{32}
-\nomenclatureentry{aORM@[{ORM}]\begingroup Object-Relational Mapping\nomeqref {3.0}|nompageref}{32}
+\nomenclatureentry{aASR@[{ASR}]\begingroup Automatic Speech Recognition\nomeqref {2.0}|nompageref}{7}
+\nomenclatureentry{aOCR@[{OCR}]\begingroup Optical Character Recognition\nomeqref {2.0}|nompageref}{7}
+\nomenclatureentry{aMT@[{MT}]\begingroup Machine Translation\nomeqref {2.0}|nompageref}{11}
+\nomenclatureentry{aKNN@[{KNN}]\begingroup K-Nearest Neighbors\nomeqref {2.0}|nompageref}{13}
+\nomenclatureentry{aJSON@[{JSON}]\begingroup JavaScript Object Notation\nomeqref {3.0}|nompageref}{22}
+\nomenclatureentry{aBRAT@[{BRAT}]\begingroup Brat Rapid Annotation Tool\nomeqref {3.0}|nompageref}{25}
+\nomenclatureentry{aMALLET@[{MALLET}]\begingroup MAchine Learning for LanguagE Toolkit\nomeqref {3.0}|nompageref}{27}
+\nomenclatureentry{aGUI@[{GUI}]\begingroup Graphical User Interface\nomeqref {3.0}|nompageref}{29}
+\nomenclatureentry{aCLI@[{CLI}]\begingroup Command Line Interface\nomeqref {3.0}|nompageref}{29}
+\nomenclatureentry{aPOM@[{POM}]\begingroup Project Object Model\nomeqref {3.0}|nompageref}{29}
+\nomenclatureentry{aORM@[{ORM}]\begingroup Object-Relational Mapping\nomeqref {3.0}|nompageref}{30}

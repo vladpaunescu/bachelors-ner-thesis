@@ -1,9 +1,9 @@
 \chapter{Descriere în Detaliu și Cercetări Similare}
 \label{chapter:history}
 
-În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații, vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu, vom prezenta provoacările NER și factorii care influențează un sistem NER și vom expune produsele software existente cu tehnologia actuală în prezent - \textit{vârful de lance} - State of the Art.
+În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații, vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu, vom prezenta provoacările NER și factorii care influențează un sistem NER și vom expune produsele software existente în prezent cu tehnologia actuală - \textit{vârful de lance} - State of the Art.
 
-\section{Definirea formală}
+\section{Definirea Formală}
 
 În comunitatea științifică, nu există in momentul de față un acrod clar în definirea unei entități cu nume. Totuși se pot da câteva definiții destul de bune.
 
@@ -220,6 +220,7 @@ O \textit{observație importantă} ce merită făcută aici este ca ceea ce înt
 
 
 \subsection{Influența Domeniului și a Tipului de Text}
+\label{sub-sec:domain-influence}
 
 Acești doi factori contribuie semnificativ la limitarea sistemelor NER actuale. 
 
@@ -379,7 +380,7 @@ Această abordare are cu mai mulți clasificatori are avantaje și dezavantaje.
 	\item Un singur tip de entitate scade timpul de antrenare a modelului, deoarece funcția ce trebuie optimizată are un număr redus de variabile, având doar o două clase.
 \end{itemize}
 
-\textit{Dezavantajul} major al antrenării mai multor clasificatori este reprezentat de distribuția nesimetrică a claselor. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON} \texttt{LOCATIO}, etc. Acum, având doar o singură categorie această asimetrie a cauzată de faptul ca numărul de exemple negative este mult mai mare decât numarul de exemple pozitive este și mai pronunțată. Asta deoarece, de exemplu, pentru modelul antrenat pe persoane, toate exemplele pozitive de tip locație, organizație etc, care înainte mai contrabalansau asimetria, vor deveni exemple negative de tip \texttt{O}. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}.
+\textit{Dezavantajul} major al antrenării mai multor clasificatori este reprezentat de distribuția nesimetrică a claselor. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON} \texttt{LOCATION}, etc. Acum, având doar o singură categorie această asimetrie a cauzată de faptul ca numărul de exemple negative este mult mai mare decât numarul de exemple pozitive este și mai pronunțată. Asta deoarece, de exemplu, pentru modelul antrenat pe persoane, toate exemplele pozitive de tip locație, organizație etc, care înainte mai contrabalansau asimetria, vor deveni exemple negative de tip \texttt{O}. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}.
 
 De asemenea, Apache OpenNLP pune la dispoziție NER multimbă. Pe lângă engleză, avem modele antrenate pe limba spaniolă și pe limba olandeză, pe 4 clase de la CoNLL-2002.
 
@@ -402,34 +403,7 @@ Din păcate, deși are o colecție impresionantă de corpsuuri, printe ele nu se
 
 \index{IOB encoding}
 \index{IO encoding}
-Din ce am putut citi pe site-ul lor, este de remarcat faptul că ei au antrenat modelele pe encodarea de tip \textit{IOB}, nu cea clasică, \textit{IO}. Encoding-ul IOB,  aduce un plus de complexitate. Inseamnă să marchezi diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje.
-
-
-De exemplu, pentru textul "Is John Doe here?", encodările IO și IOB vor fi următoarele ca în \labelindexref{Tabelul}{table:iob-encoding}:
-
-
-\begin{center}
-\begin{table}[hb]
-\caption{Comparație între encodarea IO și IOB}
-\begin{tabular}{ |l | r | r |}
-\hline
-  Token & Encodare IO & Encodare IOB \\
-\hline
-  Is & O & O \\
-  John & PER & B-PER  \\
-  Doe & PER & I-PER \\
-  here & O & O \\
-  ? & O & O \\
-  \hline
-\end{tabular}
- \label{table:iob-encoding}
-\end{table}
-\end{center}
-
-
-\textit{Avantajul} pe care îl aduce în plus față de encodarea clasică este că putem delimita  \textit{entitățile consecutive de același tip}. De exemplu, două persoane pot fi delimiate corect. Însă, în practică, delimtarea persoanelor este marcată în text cu virgulă de exemplu, token care va fi etichetat ca exemplu negativ \texttt{O}. Deci delimitarea va fi posibilă fără probleme. Cazurile în care două entități conescutive din aceeși categorie se referă la două obiecte ditincte sunt foarte rare.
-
-\textit{Dezavantajul} este reprezentat de dublarea numărului de clase pentru antrenarea modelului. Adică, dacă înainte pentru $C$ categorii de entități aveam $C + 1 $ clase (trebuia să adaugăm si clasa \texttt{O}, acum numărul lor se dublează pentru fiecare cateogrie de entitate in parte. Asta deoarece avem două clase disincte pentru fiecare categorie \texttt{X}, \texttt{B-X} și \texttt{I-X}, de exemplu pentru \texttt{PERSON} vom avea \texttt{B-PERSON} si \texttt{I-PERSON}. Același lucru e valabil pentru toate cele C categorii, mai puțin pentru clasa \texttt{O}, pentru care nu se va dubla numărul. Deci în encodarea IOB, pentru un număr de $C$ categorii de entități vom avea $2C + 1 $ clase în antrenarea modelului. Astfel, antrenarea modelului va si semnficativ mai lentă, iar probabilitățile mai mici.
+Din ce am putut citi pe site-ul lor, este de remarcat faptul că ei au antrenat modelele pe encodarea de tip \textit{IOB}, nu cea clasică, \textit{IO}. Encoding-ul IOB,  aduce un plus de complexitate. Înseamnă să marchezi diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje. Mai multe detalii despre aceste moduri de adnotare a textelor vor fi prezentate în capitolul de Tehnici și Algoritmi Folosiți, la  \labelindexref{Secțiunea}{sec:io-encoding}.
 
 \subsection{Alte Aplicații}
 
