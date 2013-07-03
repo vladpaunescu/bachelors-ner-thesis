@@ -1,7 +1,7 @@
 \chapter{Descriere în Detaliu și Cercetări Similare}
 \label{chapter:history}
 
-În acest capitol vom descrie mai în detaliu task-ul NER, vom expune domeniile similare în care NER are aplicații, vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu, vom prezenta provoacările NER și factorii care influențează un sistem NER și vom expune produsele software existente în prezent cu tehnologia actuală - \textit{vârful de lance} - State of the Art.
+În acest capitol vom descrie mai în detaliu \textit{task}-ul NER, vom expune domeniile similare în care NER are aplicații, vom prezenta un istoric al cercetărilor din ultimii 20 de ani din domeniu, vom prezenta provocările NER și factorii care influențează performanțele unui sistem NER și vom expune produsele software existente în prezent cu tehnologia actuală - \textit{vârful de lance} - State of the Art.
 
 \section{Definirea Formală}
 
@@ -9,41 +9,40 @@
 
 Entitățile cu nume sunt expresii care conțin nume de presoane, organizații, locații, timpi și cantități. (eng. "Named entities are phrases that contain the names of persons, organizations, locations, times, and quantities.") (CoNLL-2002)
 
-Definiția dată de CoNLL-2002 este pragmatică în sensul că poate clarifică sarcina NER, a identificării entităților cu nume. Ea limitează entitățile cu nume la conceptele de \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, \texttt{TIMP} și \texttt{CANTITATE}.
+Definiția dată de CoNLL-2002 este pragmatică în sensul că poate clarifica sarcina NER, a identificării entităților cu nume. Ea limitează entitățile cu nume la conceptele de \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, \texttt{TIMP} și \texttt{CANTITATE}.
 
 
-\textit{Identificarea Entităților cu Nume} constă in identificarea aparitiilor unor tipuri predefinite de expresii intr-un text. Vom arăta pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
+\textit{Identificarea Entităților cu Nume} constă in identificarea aparițiilor unor tipuri predefinite de expresii într-un text. Vom arăta pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
 
 \textbf{<Date>}, \textbf{<Person>}, \textbf{<Organization>} și \textbf{<Location>}.\\
 
 
-On \textbf{<Date>}Jan $13^{th}$\textbf{</Date>}, \textbf{<Person>}John Briggs Jr\textbf{</Person>} contacted
-\textbf{<Organization}>Wonderful Stockbrockers Inc\textbf{</Organization>} in\textbf{ <Location>}New
+On \textbf{<Date>}Jan $13^{th}$\textbf{</Date>}, \textbf{<Person>}John Briggs Jr.\textbf{</Person>} contacted
+\textbf{<Organization}>Wonderful Stockbrockers Inc.\textbf{</Organization>} in\textbf{ <Location>}New
 York\textbf{</Location>} and instructed them to sell all his shares in
 \textbf{<Organization>}Acme\textbf{</Organization>}.\\
 
-In expresia "Entitate cu nume", cuvântul "nume" rastrânge entitățile doar la acelea pentru care exista indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți include numele proprii, precum și anumiți termeni natural, cum ar fi unele specii biologice sau substanțe.
+In expresia "Entitate cu nume", cuvântul "nume" rastrânge entitățile doar la acelea pentru care exista indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți includ numele proprii, precum și anumiți termeni naturali, cum ar fi unele specii biologice sau substanțe.
 
-O extindere general agreată este să se includă și expresii temporale (\texttt{TIMEX}) si expresii numerice (\texttt{NUMEX}.
+O extindere general agreată este să se includă și expresii temporale (\texttt{TIMEX}) și expresii numerice (\texttt{NUMEX}.
 
 În continuare, vom utiliza cuvintele entiate și entitate cu nume, alternativ. Ele vor semnfica același lucru în contextul de față.
 
 \subsection{Tipuri de Entități}
 
-Vom începe cu un exemplu ilustrativ, care arată legătura între entități si categorii, concepte. \labelindexref{Figura}{img:entity-concept} de mai jos arată relația intre concepte și entități.\footnote{\url{http://webknox.com/p/named-entity-definition}}
+Vom începe cu un exemplu ilustrativ, care arată legătura între entități si categorii, concepte. \labelindexref{Figura}{img:entity-concept} de mai jos arată relația între concepte și entități.\footnote{\url{http://webknox.com/p/named-entity-definition}}
 
 
 \fig[scale=0.5]{src/img/entity-concept.png}{img:entity-concept}{Relația între concepte și entități}
 
-Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce voi prezenta este o împărțire realizata cu o granularitate mare. Se pot realiza împărțiri cu granlurități mult mai fine, adica de exemplu categoria \texttt{PERSON} poate fi impărțită în mai multe subtipuri, de exemplu:
+Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce voi prezenta este o împărțire realizată cu o \textit{granularitate} mare. Se pot realiza împărțiri cu granlurități mult mai fine, adică de exemplu categoria \texttt{PERSON} poate fi impărțită în mai multe subtipuri, de exemplu:
 
 \begin{itemize}
 \item politician;
 \item sportiv;
 \item actor;
-\item celbritate.
+\item celebritate.
 \end{itemize}
-
 
 Împărțirea clasică nu împarte categoriile în subcategorii de granularitate mai fină. Ea este următoarea:
 
@@ -53,7 +52,7 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 		\item PERSON;
 		\item ORGANIZATION;
 		\item LOCATION;
-		\item MISC. (alte entităti care nu se încadrează in nicio categorie)
+		\item MISC. (alte entități care nu se încadrează în nicio categorie)
 	\end{enumerate}
 
 
@@ -61,8 +60,8 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 
 	\begin{enumerate}
 		\item NUMBER (numeral cardinal, număr);
-		\item ORDINAL (numeral ordinal, al doilea, primul etc);
-		\item PERCENT (procent, de exemplu 25\% 30 procente);
+		\item ORDINAL (numeral ordinal, "al doilea", "primul" etc.);
+		\item PERCENT (procent, de exemplu 25\%, 30 de procente);
 		\item MONEY (de exemplu \$20,000).
 	\end{enumerate}
 	
@@ -70,24 +69,24 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 	
 		\begin{enumerate}
 			\item DATE (Dată calendaristică, de exemplu 12.09.2012);
-			\item DARATION (de exemplu, seven days, a week);
-			\item TIME (de exemplu, 9:00 AM);
-			\item SET (de exemplu, daily, weekly, anually).
+			\item DARATION (de exemplu seven days, a week);
+			\item TIME (de exemplu 9:00 AM);
+			\item SET (de exemplu daily, weekly, anually).
 		\end{enumerate}
 
 
 \end{enumerate}
 
-\subsection{Entități în alte tipuri de texte}
+\subsection{Entități în Alte Tipuri de Texte}
 
-Majoritatea cercetarii pe NER s-a făcut și se face pe texte scrise. Acest lucru a fost ales pentru a nu introduce și mai multe surse de erori decât sistemul NER le poate comite. Așa cum am precizat, problema poate fi modelată matematic ca \textit{Sequence labeling}. Deoarece scrierea cu majusculă și alte elemente de morfologia și forma cuvintelor sunt folosite ca \textit{feature-uri} pentru identificarea candidaților la entități cu nume, textele scrise au fost studiate extensiv. Ele pastrează informații despre scrierea cuvintelor.
+Majoritatea cercetării pe NER s-a făcut și se face pe texte scrise. Acest lucru a fost ales pentru a nu introduce și mai multe surse de erori decât sistemul NER poate comite. Așa cum am precizat, problema poate fi modelată matematic ca \textit{Sequence labeling}. Deoarece scrierea cu majusculă și alte elemente de morfologia și forma cuvintelor sunt folosite ca \textit{feature-uri} pentru identificarea candidaților la entități cu nume, textele scrise au fost studiate extensiv. Ele păstrează informații despre scrierea cuvintelor.
 
 \begin{description}
 \item[O primă] primă alternativă a task-ului NER este folosirea vorbirii ca input(Favre et al, 2005).\cite{favre2005} Task-ul este considerat mai dificil deoarece scrierea cu majusculă a cuvintelor este pierdută. De asemenea, cuvintele sunt aproximate de tehnologii de recunaoștere a vorbirii(eng. Automatic Speech Recognition - ASR)\abbrev{ASR}{Automatic Speech Recognition}, care sunt predispuse la erori. Astfel apare propagarea eroriror. Input-ul pentru sistemul NER este astfel degradat din start.
 
-\item[O a doua] alternativă de formulare a problemei NER este folosirea unor pagini scanate ca input. Aceste pagini sunt trecute prin sistemde de recunoaștere a caracterelor (eng. Optical Character Recognition - OCR)\abbrev{OCR}{Optical Character Recognition}. Cum și aceste sisteme introduc erori, problema degradarii input-ului se mainfestă și aici.(Maynard et al., 2002)\cite{maynard2002}
+\item[O a doua] alternativă de formulare a problemei NER este folosirea unor pagini scanate ca input. Aceste pagini sunt trecute prin sisteme de de recunoaștere a caracterelor (eng. Optical Character Recognition - OCR)\abbrev{OCR}{Optical Character Recognition}. Cum și aceste sisteme introduc erori, problema degradării input-ului se mainfestă și aici.(Maynard et al., 2002)\cite{maynard2002}
 
-\item[O a treia] alternativă este să se utilizeze documente care au o oarecare sutructură, documente semistrucutrate, de exemplu documente HTML. Se pot extrage informații suplimentare din aceste tipuri de documente. De exemplu, delimitarea entităților poate fi extrasă mai precis pentru că ele pot fi demarcate de tag-ui html, cum ar fi \texttt{<span>}European Union\texttt{</span>}.(Kushmerick, 1997)\cite{kushmerick1997}
+\item[O a treia] alternativă este să se utilizeze documente care au o oarecare sutructură, documente \textit{semistrucutrate}, de exemplu documente HTML. Se pot extrage informații suplimentare din aceste tipuri de documente. De exemplu, delimitarea entităților poate fi extrasă mai precis pentru că ele pot fi demarcate de \textit{tag}-uri html, cum ar fi \texttt{<span>}European Union\texttt{</span>}.(Kushmerick, 1997)\cite{kushmerick1997}
 
 \end{description}
 
@@ -113,23 +112,23 @@ De asemenea, cercetări ample s-au făcut folosind Wikipedia ca sursă de cunos�
 
 \paragraph{Traducerea entităților cu nume}
 
-reprezintă sarcina de a traduce entitățile în mode automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților genereaza până la 10\% din erorile de traducere automată(Vilar et al, 2006) \cite{vilar2006}.
+reprezintă sarcina de a traduce entitățile în mod automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților genereaza până la 10\% din erorile de traducere automată (Vilar et al, 2006) \cite{vilar2006}.
 
 \paragraph{Identificarea acronimelor}
 
-este sarcina de a putea identifica in mod corespunzător definiția corectă a unui acronim. De exemplu, "CS" poate însemna "Computer Science", dar si "Counter-Strike". Rezolvarea  acronimelor este utilă în construirea rețeleore de coreferință. Poate imbunătăți recall-ul informației (procentul de entitați corecte identificate din totalul entităților corecte), prin exapandarea acronimului la semnificația sa originală. Problema este legată de NER deoarece foarte multe nume de organizații sunt date prin acronime: IBM, GE EU etc. (Nadeau \& Tourney, 2005)\cite{Nadeau05asupervised}
+este sarcina de a putea identifica in mod corespunzător definiția corectă a unui acronim. De exemplu, "CS" poate însemna "Computer Science", dar si "Counter-Strike". Rezolvarea  acronimelor este utilă în construirea rețelelor de coreferință. Poate imbunătăți \textit{recall}-ul informației (procentul de entitați corecte identificate din totalul entităților corecte), prin expandarea acronimului la semnificația sa originală. Problema este legată de NER deoarece foarte multe nume de organizații sunt date prin acronime: IBM, GE, EU etc. (Nadeau \& Tourney, 2005)\cite{Nadeau05asupervised}
 
 \paragraph{Identificarea descrierilor entităților}
 
-este identificarea pasajelor din text care descriu o entitate dată. De exemplu, Traian Băsescu este descris ca "președintele Românieie", sau "șeful de stat al României", ori "liderul de la Cotroceni", în funcție de document. Informațiile din descriere pot fi folosite ca sugestii în eliminarea ambiguităților numelore de persoane.(Radev, 1998)\cite{Radev98learningcorrelations}
+este identificarea pasajelor din text care descriu o entitate dată. De exemplu, Traian Băsescu este descris ca "președintele României", sau "șeful de stat al României", ori "liderul de la Cotroceni", în funcție de document. Informațiile din descriere pot fi folosite ca sugestii în eliminarea ambiguităților numelor de persoane (Radev, 1998).\cite{Radev98learningcorrelations}
 
 \paragraph{Eliminarea coreferințelor pronomiale}
 
-constă în rezolvarea coreferințelor pronomiale prin descoperirea entității la care face referire un pronume. Entitatea a apărut înaintea pronumelui. De exemplu, în textul "Ion este un elev silitor. El studiază la Stanford." , pronumele "El" se referă la "Ion". Are aplicații diverse, de la extinderea identificării descrierilor entităților până la Question Answering - Răspunderea la Întrebări, de exemplu: "Cine a spart geamul?" (Dimitrov et al, 2002)\cite{Dimitrov02alight-weight}
+constă în rezolvarea coreferințelor pronomiale prin descoperirea entității la care face referire un pronume. Entitatea a apărut înaintea pronumelui. De exemplu, în textul "Ion este un elev silitor. El studiază la Stanford." , pronumele "El" se referă la "Ion". Are aplicații diverse, de la extinderea identificării descrierilor entităților până la Question Answering - Răspunderea la Întrebări, de exemplu: "Cine a spart geamul?" (Dimitrov et al., 2002).\cite{Dimitrov02alight-weight}
 
 \paragraph{Restauraea capitalizării}
 
-se referă la stabilirea corectă a scrierii cu majusculă sau nu a cuvintelor dintr-un text. De foarte multe ori, în textele din Web-ul social\index{Web Social}, cum ar fi forum-uri, chat-uri, facebook, sau twitter, utilizatorii scriu cu literă mică numele de persoane. De asemenea, acest task este util în Machine Translation, unde o propoziție este tradusă de obicei, fără a ține cont de capitalizare. Totodată, în textele procesate din vorbire, capitalizarea nu este disponibilă. Dându-se o propoziție în care toate cuvintele sunt scrise cu literă mică, scopul este să se restaureze cuvintele care erau scrise cu literă mare.(Agbago et al., 2006)\cite{Agbago06}
+se referă la stabilirea corectă a scrierii cu majusculă sau nu a cuvintelor dintr-un text. De foarte multe ori, în textele din \textit{Web-ul social}\index{Web Social}, cum ar fi forum-uri, chat-uri, facebook, sau twitter, utilizatorii scriu cu literă mică numele de persoane. De asemenea, acest \textit{task} este util în Machine Translation, unde o propoziție este tradusă de obicei, fără a ține cont de capitalizare. Totodată, în textele procesate din vorbire, capitalizarea nu este disponibilă. Dându-se o propoziție în care toate cuvintele sunt scrise cu literă mică, scopul este să se restaureze cuvintele care erau scrise cu literă mare.(Agbago et al., 2006)\cite{Agbago06}
 
 
 
