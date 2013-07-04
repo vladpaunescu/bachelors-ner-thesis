@@ -1,4 +1,4 @@
-\chapter{Statistici si Rezultate Obținute}
+\chapter{Statistici și Rezultate Obținute}
 \label{chapter:measurements}
 
 \section{Statistici Corpus Obținut cu Microsoft Academic Search}
@@ -12,9 +12,9 @@
 
 \index{Științe Sociale}
 
-\subsection{Statistici Documente PDF Download-ate}
+\subsection{Statistici Documente PDF Descărcate}
 
-În \labelindexref{Tabelul}{table:downloaded-pdf-summary}, avem rezultatele procesului de download pentru domeniul Științe Sociale. Putem observa că aproximativ 10\% din publicațiile găsite reprezintă documente PDF ce au putut fi efectiv download-ate. Ulterior, vom vedea că acest corpus este totuși absolut suficient pentru ceea ce avem noi nevoie.
+În \labelindexref{Tabelul}{table:downloaded-pdf-summary}, avem rezultatele procesului de download pentru domeniul Științe Sociale. Putem observa că aproximativ 10\% din publicațiile găsite reprezintă documente PDF ce au putut fi efectiv descărcate. Ulterior, vom vedea că acest corpus este totuși absolut suficient pentru ceea ce avem noi nevoie.
 
 \begin{center}
 \begin{table}[htb]
@@ -25,7 +25,7 @@
     \hline
     Număr total publicații & 8498 \\
      \hline
-    Număr total PDF-uri download-ate & 962  \\
+    Număr total PDF-uri descărcate & 962  \\
      \hline
   \end{tabular}
   \label{table:downloaded-pdf-summary}
@@ -34,11 +34,11 @@
 
 \subsection{Statistici Cuvinte din Corpus}
 
-După ce am download-at documentele, am folosit un parser de PDF, Apache Tika, pentru a extrage textul din ele. Apoi, am efectuat mai multe prelucrări asupra textului. Vor fi descirse ulterior.
+După ce am descărcat documentele, am folosit un parser de PDF, Apache Tika, pentru a extrage textul din ele. Apoi, am efectuat mai multe prelucrări asupra textului pe care le-am descris anterior la \labelindexref{Secțiunea}{section:pdf-parsing}.
 
 Documentele text obținute au fost analizate pentru a determina dimensiunea vocabuluarului $|V|$ și numărul total de cuvinte.
 
-Mai întâi, folosit câteva programe drăguțe din \texttt{Unix}, precum \texttt{tr}, \texttt{sort} și \texttt{wc}. Codul poate fi văzut în \labelindexref{Listingul}{lst:vocabulary-size-bash}, Ele au raportat următoarele date:
+Mai întâi, am folosit câteva programe utile din \texttt{Unix}, precum \texttt{tr}, \texttt{sort} și \texttt{wc}. Codul poate fi văzut în \labelindexref{Listingul}{lst:vocabulary-size-bash}, Ele au raportat următoarele date:
 
 \begin{center}
 \begin{table}[htb]
@@ -59,13 +59,13 @@ Mai întâi, folosit câteva programe drăguțe din \texttt{Unix}, precum \textt
 \lstset{caption=Comenzile Unix folosite pentru determinarea vocabularului, label=lst:vocabulary-size-bash}
 \lstinputlisting{src/code/build/vocabulary-size-bash.txt}
 
-Este suprinzător numărul mare de cuvinte și vom vedea și de ce. În \labelindexref{Listingul}{lst:top-words-bash}, avem cele mai utilizate cuvinte din corpusul obținut. Primele cuvinte "the", "of", "and" era de așteptat să apară primele, deoarece sunt foarte folosite în limba engleză. În această statistică nu am ținut cont de capitalizare, de exemplu, "The" și "the" același lucru. Dar observăm că apar foarte des cuvinte \textit{token-uri} care nu sunt cuvinte din limba engleză, cum ar fi "s", "m", sau "e". Acest lucru este cauzat de faptul ce în engleză, posesia este construită cu John's, iar noi am considerat \textit{token-uri} separate "John" și "s". De aceea "s" apare de peste 50 000 de ori.
+Este suprinzător numărul mare de cuvinte și vom vedea și de ce. În \labelindexref{Listingul}{lst:top-words-bash}, avem cele mai utilizate cuvinte din corpusul obținut. Primele cuvinte "the", "of", "and" era de așteptat să apară primele, deoarece sunt foarte folosite în limba engleză. În această statistică nu am ținut cont de capitalizare, de exemplu, "The" și "the" sunt același lucru. Dar observăm că apar foarte des \textit{token-uri} care nu sunt cuvinte din limba engleză, cum ar fi "s", "m", sau "e". Acest lucru este cauzat de faptul ce în engleză, posesia este construită cu John's, iar noi am considerat \textit{token-uri} separate "John" și "s". De aceea "s" apare de peste 50,000 de ori.
 
 \lstset{language=make}
 \lstset{caption=Cele mai folosite cuvinte din limba engleză pentru corpusul obținut folosind programe Unix, label=lst:top-words-bash}
 \lstinputlisting{src/code/build/top-words-bash.txt}
 
-Observând acest lucru, am decis să implementez în Java un algoritm mai robust pentru a determina statistici referitoare la corpus. Programele din Unix au oferit doar rezultate orientative.
+Observând acest lucru, s-a decis implementarea în Java a un algoritm mai robust pentru a determina statistici referitoare la corpus. Programele din Unix au oferit doar rezultate orientative.
 
 Astfel, am implementat în Java un algoritm mai robust pentru a calcula dimensiunea vocabuluarului. Rezultatele pot fi observate în \labelindexref{Listingul}{lst:top-words-java}.
 
@@ -92,7 +92,7 @@ Folosind Java, am obținut următoarele dimensiuni ale corpusului, prezentate î
 De asemenea, am ignorat scrierea cu majusculă. Și aici "The" și "the" reprezintă același cuvânt.
 
 \begin{description}
-	\item[O primă observație] ce se poate face este că dimensiunile vocabularului și ale numărului total de cuvinte raportate de cele două metode de calcul sunt apropiate, de același ordin de mărime. Avem un \textbf{vocabular} de aproximativ \textbf{110 000 de cuvinte distincte} și în un\textbf{ număr total de peste 9 milioane de cuvinte}.
+	\item[O primă observație] ce se poate face este că dimensiunile vocabularului și ale numărului total de cuvinte raportate de cele două metode de calcul sunt apropiate, de același ordin de mărime. Avem un \textbf{vocabular} de aproximativ \textbf{110,000 de cuvinte distincte} și în un\textbf{ număr total de peste 9 milioane de cuvinte}.
 	\item [O a doua observație] ce se poate face este ca în statisticile raportate de Java au dispărut \textit{token-urile} bizare precum "s", "e", "m", "d" sau "onghaul".
 \end{description}
 
@@ -115,13 +115,13 @@ De asemenea, am ignorat scrierea cu majusculă. Și aici "The" și "the" reprezi
 \end{table}
 \end{center}
 
-În labelindexref{Listingul}{lst:top-words-bash-annotated} este sunt evidențiate cele utilizate cuvinte din corpusul adnotat potrivit instrumentelor din Unix.
+În \labelindexref{Listingul}{lst:top-words-bash-annotated} sunt evidențiate cele mai utilizate cuvinte din corpusul adnotat potrivit instrumentelor din Unix.
 
 \lstset{language=make}
 \lstset{caption=Cele mai folosite cuvinte din limba engleză pentru subsetul adnotat din corpus folosind programe Unix, label=lst:top-words-bash-annotated}
 \lstinputlisting{src/code/build/top-words-bash-annotated.txt}
 
-De asemenea, am generat statistici folosind programul scris în Java. Am obținut următoarele dimensiuni ale subsetului adnotat manual din corpus, prezentate în \labelindexref{Tabelul}{table:vocabulary-size-java-annotated}:
+De asemenea, au fost generate statistici folosind programul scris în Java. Au fost obținute următoarele dimensiuni ale subsetului adnotat manual din corpus, prezentate în \labelindexref{Tabelul}{table:vocabulary-size-java-annotated}:
 
 \begin{center}
 \begin{table}[htb]
@@ -141,9 +141,9 @@ De asemenea, am generat statistici folosind programul scris în Java. Am obținu
 \lstset{caption=Cele mai folosite cuvinte din limba engleză pentru subsetul adnotat din corpus obținut folosind Java, label=lst:top-words-java-annotated}
 \lstinputlisting{src/code/build/top-words-java-annotated.txt}
 
-Observăm ca valorile raportate de cele doua programe sunt apropiate în limita unei marje de eroare, de aproximativ 9 000 de cuvinte unice în vocabular și de aproximativ 110 000 de cuvinte în total. De asmemenea, topul celor mai frecvente cuvinte este asemănător atât la corpusul mare cât și la subsetul adnotat.
+Observăm că valorile raportate de cele două programe sunt apropiate în limita unei marje de eroare, de aproximativ 9 000 de cuvinte unice în vocabular și de aproximativ 110,000 de cuvinte în total. De asmemenea, topul celor mai frecvente cuvinte este asemănător atât la corpusul mare cât și la subsetul adnotat.
 
-\textbf{În concluzie}, eu am adnotat 216 din peste 20 000 de documente, însemnând cam 1\% din total. Numărul total de cuvinte a scăzut de la peste 9 milioane de cuvinte la puțin peste 110,000 de cuvinte, deci aproximativ 1.15\% din total. Numărul de cuvinte a scăzut proporțional cu numărul de documente. Pe de altă parte vocabularul s-a redus de la 110,000 de cuvinte la 9,000 de cuvinte. Aceasta reprzintă 8.1\% din vocabularul inițial. Reducerea nu a fost liniară, ceea ce era de așteptat.
+\textbf{În concluzie}, la data scrierii lucrării, au fost adnotate 216 din peste 20,000 de documente, însemnând cam 1\% din total. Numărul total de cuvinte a scăzut de la peste 9 milioane de cuvinte la puțin peste 110,000 de cuvinte, deci aproximativ 1.15\% din total. Numărul de cuvinte a scăzut proporțional cu numărul de documente. Pe de altă parte vocabularul s-a redus de la 110,000 de cuvinte la 9,000 de cuvinte. Aceasta reprezintă 8.1\% din vocabularul inițial. Reducerea nu a fost liniară, ceea ce era de așteptat.
 
 \section{Statistici Entități din Corpusul Adnotat}
 
@@ -153,7 +153,7 @@ Am analizat repartiția entităților pe corpusul adnotat manual. Am făcut aces
 
 \begin{center}
 \begin{table}[htb]
-  \caption{Distribuția mumărului de entități în corpusul adnotat pentru 13 categorii}
+  \caption{Distribuția numărului de entități în corpusul adnotat pentru 13 categorii}
   \begin{tabular}{|l|r|}
   \hline
    Categorie Entitate & Număr apariții\\
@@ -174,7 +174,7 @@ Am analizat repartiția entităților pe corpusul adnotat manual. Am făcut aces
  MONEY	&	29	\\
   
    \hline
-   \textbf{Total} 	&	\textbf{11494} \\
+   \textbf{Total} 	&	\textbf{11,494} \\
    \hline
    
   \end{tabular}
@@ -184,16 +184,14 @@ Am analizat repartiția entităților pe corpusul adnotat manual. Am făcut aces
 
 \fig[scale=0.44]{src/img/entities-distribution-13-categories.png}{img:top-entites-13-categories}{Distribuța procentuală a numărului de entități pentru 13 categorii}
 
-\textbf{Putem observa} că textele abundă de \textit{numere}, \textit{persoane} și \textit{date calendaristice}. Acest lucru poate fi explicat de tipul de text, document științific, din științe sociale, în care există foarte multe \textit{aprecieri cantitative (numere)}, dar foarte multe \textit{referințe} la alte lucrări, de exemplu (Mayer, 1999). Acestea conțin atât nume de persoane cât și date calendaristice.
+\textbf{Putem observa} că textele abundă de \textit{numere}, \textit{persoane} și \textit{date calendaristice}. Acest lucru poate fi explicat de tipul de text, document științific, din științe sociale, în care există foarte multe \textit{aprecieri cantitative (numere)} și foarte multe \textit{referințe} la alte lucrări, de exemplu (Mayer, 1999). Acestea conțin atât nume de persoane cât și date calendaristice.
 
-Am efectuat satistici și pentru cele 4 tipuri de entități clasice. Ele pot fi văzute \labelindexref{Tabelul}{table:top-entites-4-categories}. De asemenea, este ilustrată distribuția procentuală o diagramă de tip \textit{Piechart} din \labelindexref{Figura}{img:entities-distribution-4-categories}. Am considerat ca făcând parte din categoria \texttt{MISC} entitățile din categoria \texttt{NATIONALITY}. Celelalte tipuri de entități au fost eliminate. 
-
-
+Am efectuat statistici și pentru cele 4 tipuri de entități clasice. Ele pot fi văzute \labelindexref{Tabelul}{table:top-entites-4-categories}. De asemenea, este ilustrată distribuția procentuală într-o diagramă de tip \textit{Piechart} din \labelindexref{Figura}{img:entities-distribution-4-categories}. Am considerat ca făcând parte din categoria \texttt{MISC} entitățile din categoria \texttt{NATIONALITY}. Celelalte tipuri de entități au fost eliminate. 
 
 
 \begin{center}
 \begin{table}[htb]
-  \caption{Distribuția mumărului de entități în corpusul adnotat pentru 4 categorii}
+  \caption{Distribuția numărului de entități în corpusul adnotat pentru 4 categorii}
   \begin{tabular}{|l|r|}
   \hline
    Categorie Entitate & Număr apariții\\
@@ -215,7 +213,7 @@ Am efectuat satistici și pentru cele 4 tipuri de entități clasice. Ele pot fi
 \fig[scale=0.5]{src/img/entities-distribution-4-categories.png}{img:entities-distribution-4-categories}{Distribuța procentuală a numărului de entități pentru 4 categorii}
 
 
-\textbf{Se obsevă} că predomină entitătile de tip \texttt{PERSON}. Există de aproximativ de 2.5 ori mai multe persoane decât alte tipuri de entități. Celelcalte tipuri de entiați ocupă procente aprpiate, sunt în jur de 900-1,000 de entități din categoriile \texttt{LOCATION}, \texttt{ORGANIZATION}, respectiv \texttt{MISC}.
+\textbf{Se obsevă} că predomină entitătile de tip \texttt{PERSON}. Există de aproximativ de 2.5 ori mai multe persoane decât alte tipuri de entități. Celelcalte tipuri de entități ocupă procente apropiate, sunt în jur de 900-1,000 de entități din categoriile \texttt{LOCATION}, \texttt{ORGANIZATION}, respectiv \texttt{MISC}.
 
 \section{Evaluarea Performanțelor Modelelor Antrenate}
 \label{sec:model-measurements}
@@ -223,9 +221,9 @@ Am efectuat satistici și pentru cele 4 tipuri de entități clasice. Ele pot fi
 \subsection{Precision și Recall}
 \label{subsec:precision-and-recall}
 
-În\textit{ Extragerea de Informații}, pentru evaluarea performanțelor unui algoritm de clasificare deseori se folosesc metrici specifice care să poată pune în evidența mai multe tipuri de erori.
+În\textit{ Extragerea de Informații}, pentru evaluarea performanțelor unui algoritm de clasificare deseori se folosesc metrici specifice care să poată pune în evidență mai multe tipuri de erori.
 
-Dacă persupunem că avem douar două clase în clasificatorul nostru, de exemplu PERSON și O, cuvintele din text pot fi ori PERSON, ori nu NEGATIVE (O). Algortimul de clasificare nu știe răspunsurile corecte. El va încerca să perzică pentru ficare cuvânt din ce clasă face parte. Astfel, exista 4 variante ale unui rezultat de clasificare:
+Dacă persupunem că avem doar două clase în clasificatorul nostru, de exemplu PERSON și O, cuvintele din text pot fi ori PERSON, ori nu, NEGATIVE (O). Algortimul de clasificare nu știe răspunsurile corecte. El va încerca să perzică pentru ficare cuvânt din ce clasă face parte. Astfel, există 4 variante ale unui rezultat de clasificare:
 
 \index{true positive}
 \index{true negative}
@@ -233,22 +231,22 @@ Dacă persupunem că avem douar două clase în clasificatorul nostru, de exempl
 \index{false negative}
 
 \begin{itemize}
-\item \textit{true positie} algoritmul a zis că face parte din clasa PERSON, a zis DA și cuvântul chiar facea parte din clasa PERSON. Acesta este un \textit{true positive} (\textbf{tp}). Este un \textit{rezultat corect}. Algorimul a spus POSITIVE și în realitate era TRUE (Adevărat);
+\item \textit{true positie} algoritmul a zis că face parte din clasa PERSON, a zis DA și cuvântul chiar facea parte din clasa PERSON. Acesta este un \textit{true positive} (\textbf{tp}). Este un \textit{rezultat corect}. Algoritmul a spus POSITIVE și în realitate era TRUE (Adevărat);
 
-\item \textit{true negative} algoritmul a prezis că nu face parte din clasa PERSON, a calsifciat cu O, Negativ, iar cuvântul într-adevăr nu facea parte din clasa PERSON. Avem acum un \textit{true negative} (\textbf{tn}). Reprezintă \textit{absența corectă a unui rezultat}. A spus NEGATIVE și era TRUE (adevărat);
+\item \textit{true negative} algoritmul a prezis că nu face parte din clasa PERSON, a calsificat cu O, Negativ, iar cuvântul într-adevăr nu făcea parte din clasa PERSON. Avem acum un \textit{true negative} (\textbf{tn}). Reprezintă \textit{absența corectă a unui rezultat}. A spus NEGATIVE și era TRUE (adevărat);
 
-\item \textit{false positive} algoritmul a considerat că face parte din clasa PERSON, a zis DA, dar răspunsul corecte era că nu face parte din clasa. Acesta este un \textit{false positive} (\textbf{fp}). Este un \textit{rezultat greșit, neașteptat}. Algorimul a spus POSITIVE și în realitate era FALSE;
+\item \textit{false positive} algoritmul a considerat că face parte din clasa PERSON, a zis DA, dar răspunsul corect era că nu face parte din clasă, (O). Acesta este un \textit{false positive} (\textbf{fp}). Este un \textit{rezultat greșit, neașteptat}. Algoritmul a spus POSITIVE, dar în realitate era FALSE;
 
-\item \textit{false negative} algoritmul a prezis că nu face parte din clasa PERSON, a calsifciat cu O, Negativ, dar cuvântul în realitate facea parte din clasa PERSON. Avem acum un \textit{false negative} (\textbf{fn}). A spus NEGATIVE și în realitate era TRUE (adevărat).
+\item \textit{false negative} algoritmul a prezis că nu face parte din clasa PERSON, a calsifciat cu O, Negativ, dar cuvântul în realitate facea parte din clasa PERSON. Avem acum un \textit{false negative} (\textbf{fn}). A spus NEGATIVE, dar în realitate era TRUE (adevărat). Reprezintă un rezultat lipsă.
 
 \end{itemize}
 
-Deci partea prima parte (true/false) reprezintă răspunsul corect (observația), clasa realeă, iar a doua parte (positive/negative) reprezintă răspunsul prezis de algortim.
+Deci prima parte (true/false) reprezintă răspunsul corect (observația), clasa reală, iar a doua parte (positive/negative) reprezintă răspunsul prezis de algortim.
 
 \index{confusion matrix}
 Aceste 4 variante de rezultat pot fi dispuse într-o matrice ce poartă denumirea de \textit{confusion matrix}. Pe diagonala principală avem rezultatele corecte (true positive și true negative). Iar pe diagonala secundară avem rezultatele greșite. Acest fapt este ilustrat în \labelindexref{Figura}{img:precision-recall}.
 
-\fig[scale=0.8]{src/img/precision-recall.png}{img:percision-recall}{Tabel care ilustrează cele 4 categorii de clase pe care la poate lua un rezultat}
+\fig[scale=0.8]{src/img/precision-recall.png}{img:precision-recall}{Tabel care ilustrează cele 4 categorii de clase pe care la poate lua un rezultat}
 
 Aceste mărimi sunt de fapt numere. Se numără pentru un set de date analizate câte rezultate fac parte din cele 4 categorii.
 
@@ -259,7 +257,7 @@ Se pot defini două măsuri mai importante folosind aceste 4 variante de rezulta
 \begin{itemize}
 \item \textit{percision} (precizia) reprezintă fracțiunea de elemente clasificate corect ca făcând parte din clasa pozitivă (PERSON, în exemplul nostru), adică \textit{true positives}, raportată la totalul de elemente care au fost etichetate ca făcând parte din clasa pozitivă, cu alte cuvinte, toate elementele pentru care sistemul nostru a etichetat cu PERSON (true positive + false positive). Precizia măsoară procentul de elemente care sunt relevante;
 
-\item \textit{recall} (acoperirea) reprezintă fracțiunea de elemetne corect clasificate ca făcând parte din clasa pozitivă (PERSON), (true positives), raportată la totalul de elemente care în realitate făceau parte din clasa POSITIVE (PERSON), cu alte cuivnte toate elementele care în relitate făceau parte din clasa positivă (PEROSN), adică suma elementelor true positive cu elementele false negative, care sunt elemetne ce nu au fost etichetate ca făcând parte din clasa positivă, deși ar fi trebuit. Recall-ul măsroară fracțiunea de elemente relevante ce sunt găsite.
+\item \textit{recall} (acoperirea) reprezintă fracțiunea de elemetne corect clasificate ca făcând parte din clasa pozitivă (PERSON), (true positives), raportată la totalul de elemente care în realitate făceau parte din clasa POSITIVE (PERSON), cu alte cuvinte toate elementele care în realitate făceau parte din clasa pozitivă (PEROSN), adică suma elementelor true positive cu elementele false negative, care sunt elemente ce nu au fost etichetate ca făcând parte din clasa pozitivă, deși ar fi trebuit. Recall-ul măsroară fracțiunea de elemente relevante ce sunt găsite din totalul de elemente relevante.
 \end{itemize}
 
 \begin{equation}
@@ -273,44 +271,44 @@ Recall = \frac{true\ positives}{true\ positives + false\ negatives} = \frac{tp}{
 Există de obicei un compromis între aceste două metrici, este posibil să fie crescută 
 precizia cu costul reducerii recall-ului și invers.
 
-Pentru unele aplicații este importantă precizia, iar pentru altele este mai important recall-ul. De exemplu, pentru un sistem de diagnosticare a tumorilor în maligne/benigne, este mult mai important să fie găsiste \textit{toate} tumorile maligne, chiar dacă în rezultate mai apar și tumori benigne. Nu deranjează acest lucru. Astfel, acest sistem trebuie să aiba un \textit{recall} mare, să gasească toate rezultatele corecte chiar dacă unele nu sunt relevante. Pe de altă parte, pentru un motor de căutare ar fi plăcut ca atunci când cauți de exemplu poze cu mașini să îți arate cât mai multe poze cu mașini, chiar dacă nu ți le arată pe toate. M-ar deranja să văd strecurate printre rezultatele căutării poze cu case, sau poze cu oameni. Pentru un astfel de sistem este imporant procentul de rezultate care sunt relevante, care mă interesează pe mine (poze cu mașini), deci contează mai mult \textit{precision-ul}.
+Pentru unele aplicații este importantă precizia, iar pentru altele este mai important recall-ul. De exemplu, pentru un sistem de diagnosticare a tumorilor în maligne/benigne, este mult mai important să fie găsite \textit{toate} tumorile maligne, chiar dacă în rezultate mai apar și tumori benigne. Nu deranjează acest lucru. Astfel, acest sistem trebuie să aibă un \textit{recall} mare, să găsească toate rezultatele corecte chiar dacă unele nu sunt relevante. Pe de altă parte, pentru un motor de căutare ar fi plăcut ca atunci când căutăm de exemplu poze cu mașini să ne arate cât mai multe poze cu mașini, chiar dacă nu ni le arată pe toate. Ne-ar deranja să vedem strecurate printre rezultatele căutării poze cu case, sau poze cu oameni. Pentru un astfel de sistem este imporant procentul de rezultate care sunt relevante, care ne interesează pe noi (poze cu mașini), deci contează mai mult \textit{precision-ul}.
 
 \subsection{F1 Score}
 \index{F1-Score}
 \index{medie armonică}
 
-\textit{Scorul} $F_1$ (F-Score sau F-measure) reprezintă un masura a acurateții unui test. Are aplicații în statistică și în Extragerea de Informații. Având definite \textit{precision-ul} și \textit{recall-ul} din \labelindexref{Secțiunea}{subsec:precision-and-recall}, trebuie să putem combina aceste măsuratori într-o singură valoare, care să estimeze cantitativ perormanța statstică a unui sistem. În literatura de specialitate, cea mai scorul $F_1$ este cel mai folosit. El este definit in felul următor:
+\textit{Scorul} $F_1$ (F-Score sau F-measure) reprezintă o masură a acurateții unui test. Are aplicații în statistică și în Extragerea de Informații. Având definite \textit{precision-ul} și \textit{recall-ul} din \labelindexref{Secțiunea}{subsec:precision-and-recall}, trebuie să putem combina aceste măsurători într-o singură valoare, care să estimeze cantitativ performanța statistică a unui sistem. În literatura de specialitate, scorul $F_1$ este cel mai folosit. El este definit in felul următor:
 
 \begin{equation}
-F_{1} = 2 \cdot \frac{precision \cdot reacll}{precsion + recall}
+F_{1} = 2 \cdot \frac{precision \cdot recall}{precsion + recall}
 \end{equation}
 
-Această definiție nu este altceva decât \textit{media armonică} a celor două marimi. Media armonică, dintre toate mediile, este cea mai aproape de \textit{minimul} dintre cei dou termeni. Acest fapt înseamnă că dacă unul dintre cei doi termeni, precision sau recall, va fi mic, el va penaliza foarte mult scor-ul $F_1$. Deci, această măsură este în așa fel definită încât să favorizeze sistemele care au un balans între \textit{precision} și \textit{recall}.
+Această definiție nu este altceva decât \textit{media armonică} a celor două marimi. Media armonică, dintre toate mediile, este cea mai aproape de \textit{minimul} dintre cei doi termeni. Acest fapt înseamnă că dacă unul dintre cei doi termeni, precision sau recall, va fi mic, el va penaliza foarte mult scorul $F_1$. Deci, această măsură este în așa fel definită încât să favorizeze sistemele care au un balans între \textit{precision} și \textit{recall}.
 
-\subsection{Asimteria Numărului de Exemple}
+\subsection{Asimetria Numărului de Exemple}
 \label{subsec:example-assymetry}
 
-În NER, este binecunoscută problema distribuției asimetrice a claselor. Numărul de exemple negative este mult mai mare decât numărul de exemple pozitive. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON} \texttt{LOCATION}, etc. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}. De obicei sistemele NER se bucură de o precizie bună, dar au un \textit{recall} mic. Cu alte cuvinte nu găsesc toate entitățile dintr-un text. S-au propus mai multe metode de a combate acest neajuns, cel mai utilizat fiind folosire \textit{feature-urilor} non-locale, de la distanță.(Mao et. al, 2007)\cite{Mao2007}
+În NER, este binecunoscută problema distribuției asimetrice a claselor. Numărul de exemple negative este mult mai mare decât numărul de exemple pozitive. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE}, domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON}, \texttt{LOCATION}, etc. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}. De obicei sistemele NER se bucură de o precizie bună, dar au un \textit{recall} mic. Cu alte cuvinte nu găsesc toate entitățile dintr-un text. S-au propus mai multe metode de a combate acest neajuns, cea mai utilizată fiind folosirea \textit{feature-urilor} non-locale, de la distanță.(Mao et. al, 2007)\cite{Mao2007}
 
 \subsection{Moduri de Efectuare a Măsurătorii}
 
 În task-ul NER în special, din cauză că entitățile cu nume se pot întinde pe mai multe cuvinte, există mai multe moduri de a măsura performanțele unui model:
 
 \begin{itemize}
-\item \textit{per token}: fiecare cuvânt să fie tratat în mod separat și dacă de exemplu [PRSOANĂ Ion Popescu] sistemul a detectat [PERSOANĂ Ion] Popescu, el să primească credit pentru faptul că a detectat parțial persoana. Acest mod de evaluare nu ține cont de \textit{limitele} entităților, este mai permisiv și de obicei scorurile raportate sunt mai bune. Acest mod este folosit și de mine în evaluarea performanțelor;
+\item \textit{per token}: fiecare cuvânt să fie tratat în mod separat și dacă de exemplu, pentru [PRSOANĂ Ion Popescu] sistemul a detectat [PERSOANĂ Ion] Popescu, el să primească credit pentru faptul că a detectat parțial persoana. Acest mod de evaluare nu ține cont de \textit{limitele} entităților, este mai permisiv și de obicei scorurile raportate sunt mai bune. Acest mod este folosit și de mine în evaluarea performanțelor;
 
-\item \textit{pe entitate}: acest mod de evaluare este mult mai stric și ține cont de entitate ca întreg. Dacă sistemul nu a detectat întreaga entitate, este penalizat. Erorile de limite (\textit{boundary errors}) sunt foarte întâlnite în sistemele NER.
+\item \textit{pe entitate}: acest mod de evaluare este mult mai strict și ține cont de entitate ca întreg. Dacă sistemul nu a detectat întreaga entitate, este penalizat. Erorile de limite (\textit{boundary errors}) sunt foarte întâlnite în sistemele NER.
 
 \end{itemize}
 
-Există și alte discuții privind modul de evaluare. Una dintre ele este dacă sistemul a detectat o entitate, dar a clasificat-o greșit. Se pune problema dacă sa îi dăm credit sau sa penalizăm sistemul.
+Există și alte discuții privind modul de evaluare. Una dintre ele este dacă sistemul a detectat o entitate, dar a clasificat-o greșit. Se pune problema dacă să îi dăm credit sau să penalizăm sistemul.
 
 \subsection{Performanțele Modelului cu 13 categorii}
 
-Am evaluat scor-ul $F_1$ pentru modelul construit de mine cu 13 categorii de entități. Modul în care am evaluat a fost să împart setul de date în două bucăți: set de date de antrenament și set de date de test, pe care am efectuat măsurătorile. Bineînțeles, pentru a asigura relevanța statistică a seturilor, am amestecat înainte de a împărți documentele din corpusul adnotat.
+Am evaluat scorul $F_1$ pentru modelul construit de mine cu 13 categorii de entități. Modul în care am evaluat a fost să împart setul de date în două bucăți: set de date de antrenament și set de date de test, pe care am efectuat măsurătorile. Bineînțeles, pentru a asigura relevanța statistică a seturilor, am amestecat înainte de a împărți documentele din corpusul adnotat.
 
 
-Din păcate, pentru modelul cu 13 categorii, nu am avut un alt model cu care să compar perfomențele modelului meu, neexistând niciun model cu 13 categorii de entități. Rezultatele sunt centralizate în \labelindexref{Tabelul}{table:f1-score-13-class}.
+Din păcate, pentru modelul cu 13 categorii, nu am avut un alt model cu care să compar performanțele modelului meu, neexistând niciun model cu 13 categorii de entități. Rezultatele sunt centralizate în \labelindexref{Tabelul}{table:f1-score-13-class}.
 
 
 \begin{center}
@@ -320,8 +318,8 @@ Din păcate, pentru modelul cu 13 categorii, nu am avut un alt model cu care să
   \hline
    Metrică & Valoare\\
    \hline
-  True positives & 12955.5 \\
-  True negatives & 108450.0 \\
+  True positives & 12 955.5 \\
+  True negatives & 108 450.0 \\
   False positives & 591.0 \\
   False negatives & 1412.0 \\
     \hline
@@ -336,17 +334,17 @@ Din păcate, pentru modelul cu 13 categorii, nu am avut un alt model cu care să
 \end{table}
 \end{center}
 
-În această evaluare am dat credit parțial atunci când sistemul gasea o entitate, dar o clasifica greșit. Am efectuat și o evaluare a performanțelor modelului antrenat de mine în care nu am dat credit algoritmului atunci când identifica o entitate, dar o clasfica greșit. Acest lucru este prezentat în \labelindexref{Tabelul}{table:f1-score-13-class-no-credit}:
+În această evaluare am dat credit parțial atunci când sistemul găsea o entitate, dar o clasifica greșit. Am efectuat și o evaluare a performanțelor modelului antrenat de mine în care nu am dat credit algoritmului atunci când identifica o entitate, dar o clasifica greșit. Acest lucru este prezentat în \labelindexref{Tabelul}{table:f1-score-13-class-no-credit}.
 
 \begin{center}
 \begin{table}[htb]
-  \caption{Scorul $F_1$ obținut de modelul antrenat de mine cu 13 categorii de entități fără credit parțial la identificare, dar clasficare greșită}
+  \caption{Scorul $F_1$ obținut de modelul antrenat de mine cu 13 categorii de entități fără credit parțial la identificare, dar clasificare greșită}
   \begin{tabular}{|l|r|}
   \hline
    Metrică & Valoare\\
    \hline
-  True positives & 12460.0 \\
-  True negatives & 108450.0 \\
+  True positives & 12 460.0 \\
+  True negatives & 10 8450.0 \\
   False positives & 591.0 \\
   False negatives & 1412.0 \\
     \hline
@@ -362,11 +360,11 @@ Din păcate, pentru modelul cu 13 categorii, nu am avut un alt model cu care să
 \end{center}
 
 
-\textbf{În concluzi}e, am obținut scoruri $F_1$ apropiate în ambele moduri de evaluare, de  92.82\%, respectiv 92.56\%. Observăm că sistemul se bucură de o precizie foarte bună, de peste 95\%, iar \textit{recall-ul} este mai mic cu 5-6 puncte procentuale, de 89-90\%. Acest lucru era de așteptat. Așa cum am explicat în \labelindexref{Secțiunea}{subsec:example-assymetry}, sistemele NER tind să aibă un \textit{recall} mai mic decăt \textit{precision-ul}, din cauza distribuției asimetrice a numărului de exemple negative (O - mult mai multe), în comparație cu numărul de exemple pozitive (PERSON, de exemplu, mai puține). 
+\textbf{În concluzi}e, au fost obținute scoruri $F_1$ apropiate în ambele moduri de evaluare, de  92.82\%, respectiv 92.56\%. Observăm că sistemul se bucură de o precizie foarte bună, de peste 95\%, iar \textit{recall-ul} este mai mic cu 5-6 puncte procentuale, de 89-90\%. Acest lucru era de așteptat. Așa cum am explicat în \labelindexref{Secțiunea}{subsec:example-assymetry}, sistemele NER tind să aibă un \textit{recall} mai mic decăt \textit{precision-ul}, din cauza distribuției asimetrice a numărului de exemple negative (O - mult mai multe), în comparație cu numărul de exemple pozitive (PERSON, de exemplu, mai puține). 
 
 \subsection{Performanțele Modelului cu 4 Categorii}
 
-La modelul cu patru categorii am avut un model cu care să compar performanțele algorimtului meu: modeulul antrenat pe corpusul Reuters CoNLL-2003, de la Stanford, pe care îl voi denumi \textit{baseline}. Așa că am evaluat performanțele în mod similar ca la modeulul cu 13 tipuri de entități. Evaluarea a fost făcută \textit{pe token}.
+La modelul cu patru categorii am avut un model cu care să compar performanțele algoritmului meu: modelul antrenat pe corpusul Reuters CoNLL-2003, de la Stanford, pe care îl voi denumi \textit{baseline}. Așa că am evaluat performanțele în mod similar ca la modelul cu 13 tipuri de entități. Evaluarea a fost făcută \textit{pe token}.
 
 \begin{center}
 \begin{table}[htb]
@@ -376,7 +374,7 @@ La modelul cu patru categorii am avut un model cu care să compar performanțele
    Metrică & Valoare Model Prorpiu & Valoare \textit{baseline}\\
    \hline
   True positives & 6103.0 & 5906.0 \\
-  True negatives & 116207.0 & 115214.0\\
+  True negatives & 116 207.0 & 115 214.0\\
   False positives & 389.0 & 1382.0 \\
   False negatives & 1018.0 & 1402.0\\
     \hline
@@ -393,24 +391,24 @@ La modelul cu patru categorii am avut un model cu care să compar performanțele
 
 \begin{description}
 
-\item[O primă concluzie] ar fi să facem următoarele aprecieri cantitative asupra rezultatelor. Modelul antrenat de mine a obținut un scor \textbf{$F_1$} de peste \textbf{89.66\%}, cu o precizie de aproximativ 94\%, respectiv un \textit{recall} de 85.7\%.  De această dată, \textbf{diferența} între \textit{precision} și \textit{recall}\textbf{ este și mai pronunțată, de peste 9 puncte procentuale}. Acest lucru este pus pe seama faptului explicat anterior la \labelindexref{Secțiunea}{subsec:example-assymetry}. Sistemele NER tind să aibă un \textit{recall} mai mic decăt \textit{precision-ul}, din cauza distribuției asimetrice a numărului de exemple negative (O - mult mai multe), în comparație cu numărul de exemple pozitive (PERSON, de exemplu, mai puține). 
+\item[O primă concluzie] ar fi să facem următoarele aprecieri cantitative asupra rezultatelor. Modelul antrenat de mine a obținut un scor \textbf{$F_1$} de peste \textbf{89.66\%}, cu o precizie de aproximativ 94\%, respectiv un \textit{recall} de 85.7\%.  De această dată, \textbf{diferența} între \textit{precision} și \textit{recall}\textbf{ este și mai pronunțată, de peste 8 puncte procentuale}. Acest lucru este pus pe seama faptului explicat anterior la \labelindexref{Secțiunea}{subsec:example-assymetry}. Sistemele NER tind să aibă un \textit{recall} mai mic decăt \textit{precision-ul}, din cauza distribuției asimetrice a numărului de exemple negative (O - mult mai multe), în comparație cu numărul de exemple pozitive (PERSON, de exemplu, mai puține). 
 
 \textit{Caracterul mult mai pronunțat} acum al acestei diferențe este cauzat și de faptul că avem doar 4 clase și dacă ne uităm la exemplele pozitive sunt doar 6,000 de exemple \textit{true positive}, față de \textit{true negatives} care sunt 116,207, de aproape 20 de ori mai multe. Oricum \textit{recall-ul} este calculat folosind \textit{false negatives}, care sunt 1,018, destul de multe, comparabil cu \textit{true positives}.
 
 Faptul că \textit{recall-ul} este mult mai mic decât \textit{precision-ul} a tras în jos scorul $F_1$, mai mult spre \textit{recall}.
 
-\item[În al doilea rând], sistemul de la Stanford antrenat pe corpusul Reuters, sitemul de referință \textit{baseline} a obținut un scor $F_1$ ce doar 80.92\%, cu 9 procente mai mic. Dar el a reușit să obțină  valori foarte apropiate între \textit{precision} și \textit{recall}, de 81.03\%, respectiv 80.81\%, lucru remarcabil.
+\item[În al doilea rând], sistemul de la Stanford antrenat pe corpusul Reuters, sistemul de referință \textit{baseline} a obținut un scor $F_1$ de doar 80.92\%, \textbf{cu 9 procente mai mic}. Dar el a reușit să obțină  valori foarte apropiate între \textit{precision} și \textit{recall}, de 81.03\%, respectiv 80.81\%, lucru remarcabil.
 
 \end{description}
 
 \subsection{Performanțele Modelului CRF antrenat cu MALLET}
 
 \index{MALLET}
-Am experimentat și cu CRF-ul pus la dispoziție de MALLET(MAchine Learning for LanguagE Toolkit). Aici am avut posibilitatea să îmi stabilesc propriul set de \textit{feature-uri}. Am folosit mai multe combinații de \textit{feature-uri}. Pe o rată de 70\% set de antreanament, 30\% set de test, folosind doar cele 4 categorii clasice, am obținut următoarele rezultate prezentate în \labelindexref{Tebelul}{table:f1-score-mallet}. Algoritmul a ajuns la convergență după 95 de iterații:
+Am experimentat și cu CRF-ul pus la dispoziție de MALLET(MAchine Learning for LanguagE Toolkit). Aici am avut posibilitatea să ne stabilim propriul set de \textit{feature-uri}. Am folosit mai multe combinații de \textit{feature-uri}. Pe o rată de 70\% set de antreanament, 30\% set de test, folosind doar cele 4 categorii clasice, am obținut următoarele rezultate prezentate în \labelindexref{Tebelul}{table:f1-score-mallet}. Algoritmul a ajuns la convergență după 95 de iterații:
 
 \begin{center}
 \begin{table}[htb]
-  \caption{Scorul $F_1$ obținut de modelul antrenat de mine și de modelul \textit{baseline} cu 4 tipuri de entități}
+  \caption{Scorul $F_1$ obținut de modelul folosind MALLET cu 4 tipuri de entități}
   \begin{tabular}{|l|l|r|r|r|}
   \hline  
   Set Date & Categore Entitate & Precizie & Recall & $F_1$-score \\
@@ -435,12 +433,12 @@ Am experimentat și cu CRF-ul pus la dispoziție de MALLET(MAchine Learning for 
 \end{table}
 \end{center}
 
-Rezultatele sunt mai slabe decât cele raportate în cazul antrenării folosind Stanford CRF. Explicația ar putea fi pusă pe seama faptului că am avut control deplin asupra CRF-ului și ca nu am reușit să aleg parametrii optimi pentru CRF, astfel încât să îl adaptez la task-ul de NER. De asemenea, performanțele variază, însă doar marginal (cu maxim 10\%), în funcție de \textit{feature-urile} alese în antrenarea modelului.
+Rezultatele sunt mai slabe decât cele raportate în cazul antrenării folosind Stanford CRF. Explicația ar putea fi pusă pe seama faptului că am avut control deplin asupra CRF-ului și că nu am reușit să aleg parametrii optimi pentru CRF, astfel încât să îl adaptez la task-ul NER. De asemenea, performanțele variază, însă doar marginal (cu maxim 10\%), în funcție de \textit{feature-urile} alese în antrenarea modelului.
 
 \index{overfitting}
-De asemenea, se observă că algoritmul obține un scor $F_1$ de peste 98\% pe setul de training, și deoar 76.65\% pe setul de Test, cu peste 20 procente mai mic. Practic, modelul antrenat de mine face \textit{overfitting} pe setul de antrenament. Aș fi folosit și un set de date de validare, ca să previn procesul de memorare și de supraspecializare, dar MALLET în momentul de față nu pune la dispoziție o astfel de opțiune.
+De asemenea, se observă că algoritmul obține un scor $F_1$ de peste 98\% pe setul de training, și de doar 76.65\% pe setul de Test, cu peste 20 procente mai mic. Practic, modelul antrenat de mine face \textit{overfitting} pe setul de antrenament. Aș fi folosit și un set de date de validare, ca să previn procesul de memorare și de supraspecializare, dar MALLET în momentul de față nu pune la dispoziție o astfel de opțiune.
 
-\textit{Overfitting-ul} poate fi pus pe sema faptului că dimensiunea corpusului meu de antrenament este destul de mică. Astfel, modelul tinde \textit{să memoreze} rezultatele văzute în loc \textit{să generalizeze}. Este foarte probabil ca nici setul de \textit{feature-uri} să nu fie ales tocmai în mod adecvat.
+\textit{Overfitting-ul} poate fi pus pe seama faptului că dimensiunea corpusului meu de antrenament este destul de mică. Astfel, modelul tinde \textit{să memoreze} rezultatele văzute în loc \textit{să generalizeze}. Este foarte probabil ca nici setul de \textit{feature-uri} să nu fie ales tocmai în mod adecvat.
 
 
 

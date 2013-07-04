@@ -7,9 +7,9 @@
 \BOOKMARK [2][-]{subsection.1.1.3}{1.1.3 Ce este o Entitate cu Nume?}{section.1.1}% 7
 \BOOKMARK [2][-]{subsection.1.1.4}{1.1.4 Motivatia Recunoasterii Entitatilor cu Nume}{section.1.1}% 8
 \BOOKMARK [1][-]{section.1.2}{1.2 Contributia \356n Domeniu}{chapter.1}% 9
-\BOOKMARK [2][-]{subsection.1.2.1}{1.2.1 Construierea unui Set Semnificativ de Texte - Corpus}{section.1.2}% 10
-\BOOKMARK [2][-]{subsection.1.2.2}{1.2.2 Adnotarea unui subset din corpusul str\342ns}{section.1.2}% 11
-\BOOKMARK [2][-]{subsection.1.2.3}{1.2.3 Antrenarea unui sistem NER pe textele adnotate}{section.1.2}% 12
+\BOOKMARK [2][-]{subsection.1.2.1}{1.2.1 Construirea unui Set Semnificativ de Texte - Corpus}{section.1.2}% 10
+\BOOKMARK [2][-]{subsection.1.2.2}{1.2.2 Adnotarea unui Subset din Corpusul Creat}{section.1.2}% 11
+\BOOKMARK [2][-]{subsection.1.2.3}{1.2.3 Antrenarea unui Sistem NER pe Textele Adnotate}{section.1.2}% 12
 \BOOKMARK [1][-]{section.1.3}{1.3 Structura Lucrarii}{chapter.1}% 13
 \BOOKMARK [0][-]{chapter.2}{2 Descriere \356n Detaliu si Cercetari Similare}{}% 14
 \BOOKMARK [1][-]{section.2.1}{2.1 Definirea Formala}{chapter.2}% 15
@@ -18,7 +18,7 @@
 \BOOKMARK [1][-]{section.2.2}{2.2 Domenii \316nrudite si Aplicatii NER}{chapter.2}% 18
 \BOOKMARK [2][-]{subsection.2.2.1}{2.2.1 Cercetari Similare}{section.2.2}% 19
 \BOOKMARK [2][-]{subsection.2.2.2}{2.2.2 Aplicatii NER}{section.2.2}% 20
-\BOOKMARK [1][-]{section.2.3}{2.3 Provocari ale NER. Factori de Influenta}{chapter.2}% 21
+\BOOKMARK [1][-]{section.2.3}{2.3 Dificultati ale NER. Factori de Influenta}{chapter.2}% 21
 \BOOKMARK [2][-]{subsection.2.3.1}{2.3.1 Evolutia NER. Scurt Istoric}{section.2.3}% 22
 \BOOKMARK [2][-]{subsection.2.3.2}{2.3.2 Influenta Limbii}{section.2.3}% 23
 \BOOKMARK [2][-]{subsection.2.3.3}{2.3.3 Influenta Domeniului si a Tipului de Text}{section.2.3}% 24
@@ -32,7 +32,7 @@
 \BOOKMARK [1][-]{section.3.1}{3.1 Modulul de Web Scraping}{chapter.3}% 32
 \BOOKMARK [2][-]{subsection.3.1.1}{3.1.1 Ce este un Scraper Web?}{section.3.1}% 33
 \BOOKMARK [2][-]{subsection.3.1.2}{3.1.2 Colectarea Documentelor PDF}{section.3.1}% 34
-\BOOKMARK [1][-]{section.3.2}{3.2 Modulul de Procesare a PDF-urilor Download-ate}{chapter.3}% 35
+\BOOKMARK [1][-]{section.3.2}{3.2 Modulul de Procesare a PDF-urilor Descarcate}{chapter.3}% 35
 \BOOKMARK [1][-]{section.3.3}{3.3 Modulul de Adnotare Provizorie}{chapter.3}% 36
 \BOOKMARK [1][-]{section.3.4}{3.4 Corectarea Manuala a Adnotarii folosind BRAT}{chapter.3}% 37
 \BOOKMARK [1][-]{section.3.5}{3.5 Modulul de Antrenare a Modelului Statistic}{chapter.3}% 38
@@ -51,14 +51,14 @@
 \BOOKMARK [1][-]{section.4.4}{4.4 Dictionare de Termeni}{chapter.4}% 51
 \BOOKMARK [0][-]{chapter.5}{5 Statistici si Rezultate Obtinute}{}% 52
 \BOOKMARK [1][-]{section.5.1}{5.1 Statistici Corpus Obtinut cu Microsoft Academic Search}{chapter.5}% 53
-\BOOKMARK [2][-]{subsection.5.1.1}{5.1.1 Statistici Documente PDF Download-ate}{section.5.1}% 54
+\BOOKMARK [2][-]{subsection.5.1.1}{5.1.1 Statistici Documente PDF Descarcate}{section.5.1}% 54
 \BOOKMARK [2][-]{subsection.5.1.2}{5.1.2 Statistici Cuvinte din Corpus}{section.5.1}% 55
 \BOOKMARK [1][-]{section.5.2}{5.2 Statistici Cuvinte din Corpusul Adnotat}{chapter.5}% 56
 \BOOKMARK [1][-]{section.5.3}{5.3 Statistici Entitati din Corpusul Adnotat}{chapter.5}% 57
 \BOOKMARK [1][-]{section.5.4}{5.4 Evaluarea Performantelor Modelelor Antrenate}{chapter.5}% 58
 \BOOKMARK [2][-]{subsection.5.4.1}{5.4.1 Precision si Recall}{section.5.4}% 59
 \BOOKMARK [2][-]{subsection.5.4.2}{5.4.2 F1 Score}{section.5.4}% 60
-\BOOKMARK [2][-]{subsection.5.4.3}{5.4.3 Asimteria Numarului de Exemple}{section.5.4}% 61
+\BOOKMARK [2][-]{subsection.5.4.3}{5.4.3 Asimetria Numarului de Exemple}{section.5.4}% 61
 \BOOKMARK [2][-]{subsection.5.4.4}{5.4.4 Moduri de Efectuare a Masuratorii}{section.5.4}% 62
 \BOOKMARK [2][-]{subsection.5.4.5}{5.4.5 Performantele Modelului cu 13 categorii}{section.5.4}% 63
 \BOOKMARK [2][-]{subsection.5.4.6}{5.4.6 Performantele Modelului cu 4 Categorii}{section.5.4}% 64

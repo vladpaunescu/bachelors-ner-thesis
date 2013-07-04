@@ -1,11 +1,11 @@
 \chapter{Concluzii și Cercetări Ulterioare}
 \label{chapter:conclusions}
 
-În acest capitol formulăm elementele cele mai importante ale lucrării de fată și conchidem prin evidențiera direcțiilor posibile de cercetare ulterioare.
+În acest capitol formulăm elementele cele mai importante ale lucrării de fată și conchidem prin evidențierea direcțiilor posibile de cercetare ulterioare.
 
 \section{Concluzii}
 
-Teza de față reprezintă Identificarea Entităților cu Nume în texte din Științe Sociale. Pentru aceasta, mai întăi am studiat literatura de specialite în domeniu pentru a înțelege mai bine contextul problemei de față.
+Teza de față reprezintă Identificarea Entităților cu Nume în texte din Științe Sociale. Pentru aceasta, mai întăi am studiat literatura de specialitate în domeniu pentru a înțelege mai bine contextul problemei de față.
 
 \index{Natural Language Processing}
 
@@ -18,63 +18,63 @@ De obicei, sistemele NER lucrează în două faze:
 \begin{enumerate}
 
 \item \textit{Identifică}: în această fază, entitățile sunt găsite în text, limitele lor sunt stabilite. Nu se poate spune însă nimic despre tipul lor.
-\item \textit{Clasifică}: entitățile identificate la pasul anterior sunt clasificate în categoria corespunzătore.
+\item \textit{Clasifică}: entitățile identificate la pasul anterior sunt clasificate în categoria corespunzătoare.
 
 \end{enumerate}
 
-De foarte multe ori, aceste două faze sunt unite într-un sitem NER. Sistemul propus de mine nu face o distincție clară între cele două etape, ele realizându-se într-un proces atomic.
+De foarte multe ori, aceste două faze sunt unite într-un sistem NER. Sistemul propus de mine nu face o distincție clară între cele două etape, ele realizându-se într-un proces atomic.
 
-Sistemele NER pot fi realizate în mai multe moduri, folosind reguli de mână, sau folosind tehnici de Învățare Automată, atât supervizată, cât și nesupervizată. O tendință nouă în domeniu este aceea a sistemlor semi-supervizate, care pornesc de la un număr mic de elemente deja cunoscute și se extind prin diferite tehnici. Există metode de clusterizare ierarhică pentru clasificarea entităților, dar acestea au marele dezavantaj că la final produc niște clase abstracte, pe care cineva trebuie să le denumească. Toate sistemele au nevoie de o muncă anterioară de observație a textelor, și în particular, de adnoatare manuală. Sistemele semisuperivizate au capacitatea de a se \textit{boostrapa}. De exemplu, pot da query-uri către un motor de căutare cum ar fi "cities such as Boston", pentru a își extinde orziontul de orașe cunoscute.
+Sistemele NER pot fi realizate în mai multe moduri, folosind reguli scrise de mână, sau folosind tehnici de Învățare Automată, atât supervizată, cât și nesupervizată. O tendință nouă în domeniu este aceea a sistemlor semi-supervizate, care pornesc de la un număr mic de elemente deja cunoscute și se extind prin diferite tehnici. Există metode de clusterizare ierarhică pentru clasificarea entităților, dar acestea au marele dezavantaj că la final produc niște clase abstracte, pe care cineva trebuie să le denumească. Toate sistemele au nevoie de o muncă anterioară de observație a textelor, și în particular, de adnoatare manuală. Sistemele semisuperivizate au capacitatea de a se \textit{boostrapa}. De exemplu, pot da query-uri către un motor de căutare cum ar fi "cities such as Boston", pentru a își extinde orziontul de orașe cunoscute.
 
-\textbf{Sistemul realizat de de mine } face parte din categoria sistemelor supervizate. Folosesc o tehnică binecunoscută în domenium, aceea de \textit{sequence labeling} pentru a recunoaște și clasifica entitătile. Am folosit Conditional Random Field pentru a pute implementa acest lucru. 
+\textbf{Sistemul prezentat în teza de față} face parte din categoria sistemelor supervizate. Este folosită o tehnică binecunoscută în domeniu, aceea de \textit{sequence labeling} pentru a recunoaște și clasifica entitățile. S-a folosit Conditional Random Field pentru a putea implementa acest lucru. 
 
-Modelul a fost antrenat pe un corpus adnotat manual din Științe Sociale. Întreg corpusul a fost obținut folosind tehnici de \textit{Web Sraping} și folosind Web API-ul pus la dispoziție de Microsoft Academic Search. Au fost download-ate aproape 1,000 de documente PDF. Acestea au constituit un corpus impresionant de peste 9 milioane de cuvinte și un \textit{vocbular} $V$ de peste 100,000 de cuvinte din limba engleză.
+Modelul a fost antrenat pe un corpus adnotat manual din Științe Sociale. Întreg corpusul a fost obținut folosind tehnici de \textit{Web Scraping} și folosind Web API-ul pus la dispoziție de Microsoft Academic Search. Au fost descărcate aproape 1,000 de documente PDF. Acestea au constituit un corpus impresionant de peste 9 milioane de cuvinte și un \textit{vocabular} $V$ de peste 100,000 de cuvinte din limba engleză.
 
 Din acest copus, o parte a fost adnotat manual folosind BRAT cu 13 categorii de entități. A fost adnotat în total aproximativ 1\% din corpus.
 
-Subsetul adnotat a fost folosit pentru antrenarea modelului. Am experimentat mai multe moduri de antrenare a unui CRF. Am folosit implementarea de la Stanford a CRF și implementarea MALLET(MAchine Learning for LanguagE Toolkit). 
+Subsetul adnotat a fost folosit pentru antrenarea modelului. S-au experimentat mai multe moduri de antrenare a unui CRF. A fost folosită implementarea de la Stanford a CRF și implementarea MALLET (MAchine Learning for LanguagE Toolkit). 
 
-La antrenarea modeluilui folsond MALLET, am avut mai multă libertate în alegera caracterisiticilor (\textit{feature-urilor}) și în setarea parametrilor CRF. Puteam alege și metoda de optimizare a funcției.
+La antrenarea modelului folsind MALLET, ne-a fost oferită mai multă libertate în alegerea caracteristicilor (\textit{feature-urilor}) și în setarea parametrilor CRF. Se putea alege și metoda de optimizare a funcției de cost.
 
-Am obținut un scor $F_1$ de aproximativ 92\% pentru modelul Stanford CRF antrenat pe 13 categorii șî un scor $F_1$ de aprximativ 89.6\% pe modelul CRF antrenat pe 4 categorii. La modelul antrenat cu MALLET, scorul $F_1$ raportat de sistem a fost de 98.74\% pe setul de date de antrenament și de 76.65\% pe setul de date de test. Acest lucru demonstrează că algoritmul a făcut \textit{overfitting} pe setul de date de antrenament. Este poate cauzat și de dimensiunea relativ redusă a corpusului adnotat.
+S-a obținut un scor $F_1$ de aproximativ 92\% pentru modelul Stanford CRF antrenat pe 13 categorii și un scor $F_1$ de aprximativ 89.6\% pe modelul CRF antrenat pe 4 categorii. La modelul antrenat cu MALLET, scorul $F_1$ raportat de sistem a fost de 98.74\% pe setul de date de antrenament și de 76.65\% pe setul de date de test. Acest lucru demonstrează că algoritmul a făcut \textit{overfitting} pe setul de date de antrenament. Este poate cauzat și de dimensiunea relativ redusă a corpusului adnotat.
 
-Elementul de noutate pe care îl constituie lucrarea este că nu a mai fost studiată problema NER pe texte cu conținut din științe sociale, din informațiile pe care le posed în momentul de față.
+Elementul de noutate pe care îl constituie lucrarea este că nu a mai fost studiată problema NER pe texte cu conținut din științe sociale, din informațiile pe care le avem în momentul de față.
 
 Modelul antrenat de mine a avut o performanță mai bună decât sistemul \textit{baseline}, de referință, și anume Stanford NER, antrenat pe corpusul Reuters de la CoNLL-2003. Rezultatele obținute cu MALLET în care am avut mult mai multă libertate în alegerile făcute lasă însă loc de cercetare ulterioară.
 
 \section{Cercetări Ulterioare}
 
-Îmi propun să extind sistemul NER și să studiez Identificarea Entitătilor cu Nume în alte limbi, să cercetez multilimbă. Intenționez ca să contiunui cercetarea pe \textit{limba franceză} și pe \textit{limba română}.
+Ne propunem să extinde, sistemul NER și să studiem Identificarea Entităților cu Nume în alte limbi, să cercetăm în mod multilignvistic. Intenționăm ca să contiunuăm cercetarea pe \textit{limba franceză} și pe \textit{limba română}.
 
-De asemenea, voi explora posibilitatea extinderii în alte domenii, altul decât Științe Sociale. Voi încerca să obțin corpusul Reuters de la CoNLL-2003 și să pot să îmi testez algoritmii de învățare pe acel corpus pe care majoritate covârșitoare a comunității științifice din domeniu a făcut teste. Astfel, voi putea compara rezultatele cu cele ale altor cercetători din domeniu. Este cunoscut faptul că sistemele NER antrenate pe un domeniu sunt foarte senisibile la domeniul respectiv și performanțele lor scad drastic în momentul schimbarii doemniului sau tipului de text (trecerea de la text formal la text informal, din chat, sau de la text din știri, la text din articole științifice). Acest lucru a fost arătat mai pe larg în \labelindexref{Secțiunea}{sub-sec:domain-influence}, dedicată special acestui fapt. Amintesc aici ca \textit{transferul de vocabular} influențează într0-o oarecare măsură performanțele sistemului NER.
+De asemenea, vom explora posibilitatea extinderii în alte domenii, altul decât Științe Sociale. Vom încerca să obținem corpusul Reuters de la CoNLL-2003 și să putem să ne testăm algoritmii de învățare pe acel corpus pe care majoritatea covârșitoare a comunității științifice din domeniu a făcut teste. Astfel, vom putea compara rezultatele cu cele ale altor cercetători din domeniu. Este cunoscut faptul că sistemele NER antrenate pe un domeniu sunt foarte sensibile la domeniul respectiv și performanțele lor scad drastic în momentul schimbării domeniului sau tipului de text (trecerea de la text formal la text informal, din chat, sau de la text din știri, la text din articole științifice). Acest lucru a fost arătat mai pe larg în \labelindexref{Secțiunea}{sub-sec:domain-influence}, dedicată special acestui fapt. Amintim aici că \textit{transferul de vocabular} influențează într-o oarecare măsură performanțele sistemului NER.
 
 \index{Web Social}
-Întrucât Internetul este o sursă imensă de text scris, mai ales din Web-ul Social, voi cerceta identificarea entităților cu nume în texte din domeniile conexe cu Web-ul social, din forumu-uri din \textit{tweet-uri}, din disucții de pe e-mail, etc.
+Întrucât Internetul este o sursă imensă de text scris, mai ales din Web-ul Social, vom cerceta identificarea entităților cu nume în texte din domeniile conexe cu Web-ul social, din forum-uri, din \textit{tweet-uri}, din discuții de pe e-mail, etc.
 
-Deoarece este nevoie de un \textbf{corpus adnota}t pentru a putea folosi sistemul așa cum este acum, îmi propun ca să explorez noi abordări în identificarea entităților cu nume, cum ar fi:
+Deoarece este nevoie de un \textbf{corpus adnotat} pentru a putea folosi sistemul așa cum este acum, ne propunem ca să explorăm noi abordări în identificarea entităților cu nume, cum ar fi:
 
 \index{gazetteer}
 \begin{itemize}
 \item folosirea Wikipedia pentru clasificare;
 \item folosirea de algoritmi de Învățare Automată nesupervizați de clasificare;
 \item folosirea de dicționare de termeni (eng. \textit{Gazetteers}) pentru a îmbunătăți performanțele sistemului;
-\item explorarae de noi \textit{feature-uri} în algoritmul de Învățare Automată.
+\item explorarea de noi \textit{feature-uri} în algoritmul de Învățare Automată.
 \end{itemize}
 
-În plus, doresc ca sistemul meu să poată fi capabil să elimine \textit{coreferințele pronomiale}. Adică, de exemplu în propoziția "Ion este un elev silitor. El are numai 10.", sistemul să își dea seama că "El" se referă la "Ion" și să identifice "El" ca persoană.
+În plus, dorim ca sistemul nostru să poată fi capabil să elimine \textit{coreferințele pronomiale}. Adică, de exemplu în propoziția "Ion este un elev silitor. El are numai 10.", sistemul să își dea seama că "El" se referă la "Ion" și să identifice "El" ca persoană.
 
-Îmi propun să extind la \textit{noi categorii de entități} sistemul, cu o granularitate mai fină. De exemplu \textit{Locațiile} pot fi subdivizate mai departe în Orașe, Tări, Aeroporturi, Râuri, etc.
+Ne propunem să extindem la \textit{noi categorii de entități} sistemul, cu o granularitate mai fină. De exemplu \textit{Locațiile} pot fi subdivizate mai departe în Orașe, Tări, Aeroporturi, Râuri, etc.
 
-De asemenea, doresc să cercetez \textit{extragerea de relații între entități} și \textit{detecția evenimentelor}, amblele aplicații directe ale identificării entităților cu nume. Similar, o altă aplicație directă a identificării entităților cu nume este reprezentată de \textit{extragerea citatelor dintr-un text}. Voi lua în considerare și cercetarea acestui domeniu. Am început chiar\textbf{ lucrul preliminar} în acest domeniu, \textbf{identificând coapariția entităților}. Am considerat acest lucru ca fiind ceva similar, conex cu lucrarea de față, dar care nu face subiectul direct al lucrării. Așa ca l-am inclus în \labelindexref{Anexa}{chap:entities-cooccurrence}.
+De asemenea, dorim să cercetăm \textit{extragerea de relații între entități} și \textit{detecția evenimentelor}, amblele aplicații directe ale identificării entităților cu nume. Similar, o altă aplicație directă a identificării entităților cu nume este reprezentată de \textit{extragerea citatelor dintr-un text}. Vom lua în considerare și cercetarea acestui domeniu. Am început chiar \textbf{lucrul preliminar} în acest domeniu, \textbf{identificând coapariția entităților}. Am considerat acest lucru ca fiind ceva similar, conex cu lucrarea de față, dar care nu face subiectul direct al lucrării. Așa ca l-am inclus în \labelindexref{Anexa}{chap:entities-cooccurrence}.
 
-\textit{Analiza sentimentelor} reprezintă un alt punct intens de cercetare, conex cu identificare entităților cu nume. Sentimentele de obiecei au o \textit{s}ursă (\textit{source}) (cine are acea opinie), care reprezintă o entitate cu nume în cele mai multe cazuri și o \textit{țintă} (\textit{target}), despre care se afirmă ceea ce se afirmă, careia i se atribuie opinia. Ținta despre care se atribuie opinia este de asemnea o entitate cu nume în cele mai multe cazuri. De asemena există \textit{aspecte} ale țintei, despre care se formulează opinii. De exemplu, dacă un cumpărator își exprimă opinia despre un telefon, aspecte pot fi constituite de baterie, cameră, ecran LCD, design, calitatea sunetului. Aceste aspecte pot fi extrase automat din textele cu opinii. Există aplicații comerciale care fac acest lucru în momentul de fața, așa cum este \textit{}.\footnote{\url{https://www.google.com/shopping/product/616831026873328487?hl=en\&q=iphone+5\&oq=iphone+5\&sa=X\&ei=SF_TUcPLOY7Qsgabl4HwBw\&ved=0CKsBEPMCMAI}}
+\textit{Analiza sentimentelor} reprezintă un alt punct intens de cercetare, conex cu identificarea entităților cu nume. Sentimentele de obicei au o \textit{sursă} (\textit{source}) (cine are acea opinie), care reprezintă o entitate cu nume în cele mai multe cazuri și o \textit{țintă} (\textit{target}), despre care se afirmă ceea ce se afirmă, căreia i se atribuie opinia. Ținta căreia i se atribuie opinia este de asemenea o entitate cu nume în cele mai multe cazuri. De asemenea există \textit{aspecte} ale țintei, despre care se formulează opinii. De exemplu, dacă un cumpărător își exprimă opinia despre un telefon, aspecte pot fi constituite de baterie, cameră, ecran LCD, design, calitatea sunetului, etc. Aceste aspecte pot fi extrase automat din textele cu opinii. Există aplicații comerciale care fac acest lucru în momentul de față, așa cum este \textit{}.\footnote{\url{https://www.google.com/shopping/product/616831026873328487?hl=en\&q=iphone+5\&oq=iphone+5\&sa=X\&ei=SF_TUcPLOY7Qsgabl4HwBw\&ved=0CKsBEPMCMAI}}
 
-Îmi propun să studiez mai aprofundat tehnicile și modelele matematice care stau la baza algoritmilor de Învățare Automată pentru identificare entităților cu nume și anume: Conditional Random Fields, Maximum Entropy Markov Models (modele discriminative) si Hidden Markov Models (model generativ). 
+Ne propunem să studiem mai aprofundat tehnicile și modelele matematice care stau la baza algoritmilor de Învățare Automată pentru identificare entităților cu nume și anume: Conditional Random Fields, Maximum Entropy Markov Models (modele discriminative) si Hidden Markov Models (model generativ). 
 
-În aceeași ordine de idei, doresc să explorez facilitățile oferite de MALLET (MAchine Learning for LanguagE Toolkit) pentru a putea beneficia la maxim de el. Voi experiminta cu diferite set-uri de \textit{feature-uri} pentru îmbunătățirea ulterioară.
+În aceeași ordine de idei, dorim să explorăm mai departe facilitățile oferite de MALLET (MAchine Learning for LanguagE Toolkit) pentru a putea beneficia la maxim de el. Vom experiminta cu diferite set-uri de \textit{feature-uri} pentru îmbunătățirea ulterioară.
 
 \index{open source}
-Într-un orizont mai îndepărtat de timp, dacă voi considera oportun și necesar, voi realiza propria implementare de Conditional Random Fields și Maximum Entropy Markov Models. Ceea ce am făcut acum s-a bazat pe implementări gata realizate. M-am lovit de curba de învățare a API-ului MALLET, care nu are o ducumentație foarte elaborată, dar compensează prin faptul că este \textit{open source}, iar codul este ușor de citit.
+Într-un orizont mai îndepărtat de timp, dacă vom considera oportun și necesar, vom realiza propria implementare de Conditional Random Fields și Maximum Entropy Markov Models. Ceea ce am făcut acum s-a bazat pe implementări gata realizate. Ne-am lovit de curba de învățare a API-ului MALLET, care nu are o ducumentație foarte elaborată, dar compensează prin faptul că este \textit{open source}, iar codul este ușor de citit.
 
 
 

@@ -1,7 +1,7 @@
 \chapter{Descrierea Arhitecturii Sistemului}
 \label{chapter:architecture}
 
-În acest capitol vom prezenta arhitectura sistemului. Capitolul este împărțit în componentele ce alcătuiesc arhitectura sistemului. Aplicația a fost scrisă modular. Pentru fiecare task in parte, am creat module. Modulul care este destinat strângerii de date (PDF-uri) pentru construierea unui corpus a fost scris în limbajul Python. Modulele care au preluat aceste PDF-uri și au făcut diferite prelucrări pe ele și modulul NER sunt scrie in limbajul de programare Java. De asemenea, am reținut diferite aspecte considerate importante în baza de date, MySQL.
+În acest capitol vom prezenta arhitectura sistemului. Capitolul este împărțit în componentele ce alcătuiesc arhitectura sistemului. Aplicația a fost scrisă modular. Pentru fiecare task in parte, am creat module. Modulul care este destinat strângerii de date (PDF-uri) pentru construierea unui corpus a fost scris în limbajul Python. Modulele care au preluat aceste PDF-uri și au făcut diferite prelucrări pe ele și modulul NER sunt scrise in limbajul de programare Java. De asemenea, am reținut diferite aspecte considerate importante în baza de date, MySQL.
 
 
 \section{Modulul de Web Scraping}
@@ -13,9 +13,9 @@ Acest modul are ca principal scop strângerea de PDF-uri folosind diferite servi
 
 \subsection{Ce este un Scraper Web?}
 
-\textit{Un Scraper Web} este o tehnică software care are ca scop extragerea de informații de pe site-urile web. Este înrudită cu \textit{web crawling-ul}, dar nu are ca scop \textit{indexarea} paginilor we, ci mai degrabă se urmărește obținerea de date structurate din informația de pe Web, de tip HTML.
+\textit{Un Scraper Web} este o tehnică software care are ca scop extragerea de informații de pe site-urile web. Este înrudită cu \textit{web crawling-ul}, dar nu are ca scop \textit{indexarea} paginilor web, ci mai degrabă se urmărește obținerea de date structurate din informația de pe Web, de tip HTML.
 
-Modulul meu a foslosit tehnici de web scraping doar atunci când un serviciu web, sau un web API nu era disponibili. Inițial, am folosit această tehnică.
+Modulul meu a folosit tehnici de web scraping doar atunci când un serviciu web, sau un web API nu erau disponibile. Inițial, am folosit această tehnică.
 
 Un server web poate răspunde la o cerere în două moduri. Această împărțire este făcută de mine, în urma observațiilor personale:
 
@@ -25,28 +25,28 @@ Un server web poate răspunde la o cerere în două moduri. Această împărțir
 
 \index{machine readable}
 
-\item modul în care răspunsul este destinat interpretării de către o mașină, \textit{machine readable}. De exemplu, un răspuns poate veni in format \texttt{XML}, sau în format \texttt{JSON}. Acum este mult mai ușor ca un program software să poată extrage informație din datele primite. Trebuie doar să cunoască modul în care aceste date sunt strucutare.
+\item modul în care răspunsul este destinat interpretării de către o mașină, \textit{machine readable}. De exemplu, un răspuns poate veni in format \texttt{XML}, sau în format \texttt{JSON}. Acum este mult mai ușor ca un program software să poată extrage informație din datele primite. Trebuie doar să cunoască modul în care aceste date sunt structurate.
 \end{itemize}
 
 \subsection{Colectarea Documentelor PDF}
 
 Pentru a putea colecta documente PDF din domeniul științelor sociale de pe Web, am folosit două aplicații Web:
 \begin{description}
-\item[ Google Scholar]\footnote{\url{http://scholar.google.ro/}} "Stand on the shoulders of giants". Acest tool a fost folosit inițial pentru download-area de documente PDF. Din cauză ca nu dispunea de un serviciu Web, sau nu avea un API, a trebuit să folosesc Web Scraping-ul și să interpretez documente în format HTML, destinate oamenilor. Într-o fază inițială, am considerat adecvat acest tool, însă ulterior am decis că nu este suficient de robust pentru o utilizare adecvată. De exemplu, structura documentului HTML întoarsă de către Google Scholar putea să se schimbe în timp și căile \texttt{XPath} folosite pentru extragerea de link-uri către PDF-uri sau pentru extragerea de titluri de publicații riscau să devină invalide.
+\item[Google Scholar]\footnote{\url{http://scholar.google.ro/}} "Stand on the shoulders of giants". Acest tool a fost folosit inițial pentru descărcarea de documente PDF. Din cauză ca nu dispunea de un serviciu Web, sau nu avea un API, a trebuit să folosesc Web Scraping-ul și să interpretez documente în format HTML, destinate oamenilor. Într-o fază inițială, am considerat adecvat acest tool, însă ulterior am decis că nu este suficient de robust pentru o utilizare adecvată. De exemplu, structura documentului HTML întoarsă de către Google Scholar putea să se schimbe în timp și căile \texttt{XPath} folosite pentru extragerea de link-uri către PDF-uri sau pentru extragerea de titluri de publicații riscau să devină invalide.
 
 
 \index{h-index}
-În \labelindexref{Figura}{img:google-scholar-publications} se poate observa cum arată răspunsul lui Google Scholar cu cele mai citate publicații după \textbf{h-index}\footnote{\url{http://www.google.com/intl/en/scholar/metrics.html}}. Acest indice încearcă să estimeze atâț \textit{productivitatea} unui cercetător, cât și \textit{impactul} pe care îl au lucrările sale. Astfel, este luat în considerare \textit{numărul} de publicații pe care îl are autorul, dar și de câte ori aceste publicații sunt \textit{referite} (citate) în alte publicații.
+În \labelindexref{Figura}{img:google-scholar-publications} se poate observa cum arată răspunsul lui Google Scholar cu cele mai citate publicații după \textbf{h-index}\footnote{\url{http://www.google.com/intl/en/scholar/metrics.html}}. Acest indice încearcă să estimeze atât \textit{productivitatea} unui cercetător, cât și \textit{impactul} pe care îl au lucrările sale. Astfel, este luat în considerare \textit{numărul} de publicații pe care îl are autorul, dar și de câte ori aceste publicații sunt \textit{referite} (citate) în alte publicații.
 
 \fig[scale=0.4]{src/img/google-scholar-publications.png}{img:google-scholar-publications}{Lista de publicații din domeniul Social Science întoarsă de Google Scholar}
 
-Pe scurt, scraper-ul de Google Scholar funcționa astfel. Lua primele 10 publicații si apoi căuta pe rând fiecare publicație, ca să gasească PDF-uri. De exemplu, pentru prima publicație din top \textit{IZA Discussion Papers}, faceam un query de forma \url{http://scholar.google.ro/scholar?q="iza+discussion+papers"}. Apoi, căutam în pagina HTML rezultatele care aveau PDF-uri publice și le download-am. Deoarece am descoperit un alt tool, pe care il voi prezenta în cele ce urmează, am renunțat la Google Schoolar.
+Pe scurt, scraper-ul de Google Scholar funcționa astfel. Lua primele 10 publicații si apoi căuta pe rând fiecare publicație, ca să gasească PDF-uri. De exemplu, pentru prima publicație din top \textit{IZA Discussion Papers}, faceam un query de forma \url{http://scholar.google.ro/scholar?q="iza+discussion+papers"}. Apoi, căutam în pagina HTML rezultatele care aveau PDF-uri publice și le descărcam. Deoarece am descoperit un alt tool, pe care îl voi prezenta în cele ce urmează, am renunțat la Google Scholar.
 
 
 \item [Microsoft Academic Search]\footnote{\url{http://academic.research.microsoft.com/}}
 
 \index{Corpus}
-Acest tool pune la dispoziție un API și un serviciu Web care întoarce răspunsul sub forma unui \texttt{JSON}, ușor de citit de un porgram. Tot ce trebuie să faci este să obții un \textit{App Id}, care reprezintă un cod unic de identificare. Limitările sunt constituite de faptul ca nu poți folosi API-ul în scopuri comerciale, ai voie maxim 200 de request-uri pe minut și răspunsul este limitat la doar 100 de \textit{item-uri}. De asemenea, nu poți folosi API-ul pentru a \textit{crawl-a} întregul corpus.
+Acest tool pune la dispoziție un API și un serviciu Web care întoarce răspunsul sub forma unui \texttt{JSON}, ușor de citit de un porgram. Tot ce trebuie să faci este să obții un \textit{App Id}, care reprezintă un cod unic de identificare. Limitările sunt constituite de faptul că nu poți folosi API-ul în scopuri comerciale, ai voie maxim 200 de request-uri pe minut și răspunsul este limitat la doar 100 de \textit{item-uri}. De asemenea, nu poți folosi API-ul pentru a \textit{crawl-a} întregul corpus.
 
 
 Am ales să îmi construiesc corpusul folosind Microsoft Academic Search.
@@ -74,15 +74,16 @@ Ca arhitectură, codul este structurat în felul următor. Am un script care ob�
 
 \end{description}
 
-\section{Modulul de Procesare a PDF-urilor Download-ate}
+\section{Modulul de Procesare a PDF-urilor Descărcate}
+\label{section:pdf-parsing}
 
-În această secțiune voi prezenta arhitectura sistemului care se ocupă de prelucrarea PDF-urilor download-ate de modulul prezentat în  \labelindexref{Secțiunea}{sec:web-module}. Modulul de față extrage textul din PDF-uri și realizează prelucrările necesare pentru a putea avea un text fără multe artefacte. Arhitectura este sub formă de \textit{pipeline}.
+În această secțiune voi prezenta arhitectura sistemului care se ocupă de prelucrarea PDF-urilor descărcate de modulul prezentat în  \labelindexref{Secțiunea}{sec:web-module}. Modulul de față extrage textul din PDF-uri și realizează prelucrările necesare pentru a putea avea un text fără multe artefacte. Arhitectura este sub formă de \textit{pipeline}.
 \index{pipeline}
 
-Din acest moment, am trecut pe limbajul Java. Am ales acest lucru deoarece a crescut complexitatea proiectului, iar Java, având \textit{tipare statică}, este mai \textit{type safe}, deci mai sigur în dezvoltarea aplicațiilor mai complexe decât Python.
+Din acest moment, am trecut pe limbajul Java. Am ales acest lucru deoarece a crescut complexitatea proiectului, iar Java, având \textit{tipare statică}, este mai \textit{type safe}, deci mai sigur decât Python în dezvoltarea aplicațiilor mai complexe.
 
 \index{parsare}
-Prima etapă a fost reprezentată de \textit{parsarea} pdf-urilor obținute pentru a putea extrage textul din ele. Am experimentat cu două parsere, \texttt{PDFBox} și parser-ul de PDF-uri din suita \texttt{Apache Tika}. Observând rezultatele obtinute în procesul de parsare am rămas pe Apache Tika. 
+Prima etapă a fost reprezentată de \textit{parsarea} pdf-urilor obținute pentru a putea extrage textul din ele. Am experimentat cu două parsere, \texttt{PDFBox} și parser-ul de PDF-uri din suita \texttt{Apache Tika}. Observând rezultatele obținute în procesul de parsare am rămas pe Apache Tika. 
 
 \index{cross-platform}
 Cu toate acestea, au rămas caractere ce nu puteau fi parsate. Am întâmpinat dificultăți la encodarea caracterelor, deoarece Java pe Windows folosește \textit{encoduing-ul} Windows-1252.\footnote{\url{https://en.wikipedia.org/wiki/Windows-1252}} Am avut probleme la deschiderea fișierelor text pe o platformă Linux, care folosește encoding-ul UTF-8.\footnote{\url{https://en.wikipedia.org/wiki/Utf8}} Până la urmă am rezolvat această problemă, forțând Java să scrie și pe Windows fișierele text folosind UTF-8. Astfel, fișierele text au devenit cross-platform.
@@ -91,26 +92,26 @@ Cu toate acestea, au rămas caractere ce nu puteau fi parsate. Am întâmpinat d
 După extragerea textului, anumite caractere \textit{netokenizabile}, artefacte rămase în urma procesului de parsare a PDF-urilor au fost eliminate și înlocuite cu ?. În particular, am înlocuit caracterul \texttt{
 Unicode Character 'REPLACEMENT CHARACTER' (U+FFFD)}, cu "?".
 
-Apoi, am observat că multe articole sunt scrise folosind layout-ul de două coloane. Astfel, liniile sunt foarte scurte. Scopul meu era să folosesc aceste texte pentru a le putea adnota. Doream să am linii mai lungi. Așa că am concatenat liniile, înlocuind caracterulu \textit{newline} cu spațiu. Din păcate, existau foarte multe locuri în care era realizată despărțirea în silabe a unor cuvinte în limba engleză. Cum nu toate despărțirile în silabe puteau fi concatentate făra linie, a trebuit să apelez la tehnici bazate pe dicționare engleze pentru a putea vedea când puteam elimina linia și când nu. De exemplu, cuvântul \textit{mis-sion} poate fi concatenat la \textit{mission}, dar \textit{post-9/11} nu poate fi concatenat la \textit{post9/11}.
+Apoi, am observat că multe articole sunt scrise folosind layout-ul de două coloane. Astfel, liniile sunt foarte scurte. Scopul meu era să folosesc aceste texte pentru a le putea adnota. Doream să am linii mai lungi. Așa că am concatenat liniile, înlocuind caracterulu \textit{newline} cu spațiu. Din păcate, existau foarte multe locuri în care era realizată despărțirea în silabe a unor cuvinte în limba engleză. Cum nu toate despărțirile în silabe puteau fi concatenate fără linie, a trebuit să apelez la tehnici bazate pe dicționare engleze pentru a putea vedea când puteam elimina linia și când nu. De exemplu, cuvântul \textit{mis-sion} poate fi concatenat la \textit{mission}, dar \textit{post-9/11} nu poate fi concatenat la \textit{post9/11}.
 
 Pentru aceasta, am implementat un sistem bazat pe 3 dicționare engleze online:
 
 \begin{itemize}
 \item \url{http://dictionary.reference.com};
 \item \url{http://www.merriam-webster.com};
-\item \url{http://www.thefreedictionary.com};
+\item \url{http://www.thefreedictionary.com}.
 \end{itemize}
 
 \index{cache}
 De asemenea, pentru a evita request-urile http succesive pentru același cuvânt, am implementat un sistem de \textit{cache}, pe două niveluri:
 
 \begin{enumerate}
-\item \textbf{primul nivel}, în codul Java, un \textit{HashMap} care reținea cuvintele care au fost întâlnite ignorând capitalizarea. Țineam minte atât exemplele pozitive, care puteau fi concatentate (acestea erau cele mai comune, fiind cuvinte din limba engleză), cât și exemplele negative care nu puteau fi concatenate. Oricum, exemplele negative rar erau întâlnite din nou;
-\item \textbf{al doilea nivel}, în baza de date, era activat doar dacă programul nu gasea cuvântul în HashMap-ul din cod. Era util atunci când programul era întrerupt înainte de procesarea întregului corpus. Am folosit acest sistem de \textit{persistență}, deoarece eliminarea despărțirii în silabe a fost o sarcină care a durat mult timp, implicând request-uri succesive \textit{http}. 
+\item \textbf{primul nivel}, în codul Java, un \textit{HashMap} care reținea cuvintele care au fost întâlnite ignorând capitalizarea. Țineam minte atât exemplele pozitive, care puteau fi concatenate (acestea erau cele mai comune, fiind cuvinte din limba engleză), cât și exemplele negative care nu puteau fi concatenate. Oricum, exemplele negative rar erau întâlnite din nou;
+\item \textbf{al doilea nivel}, în baza de date, era activat doar dacă programul nu găsea cuvântul în HashMap-ul din cod. Era util atunci când programul era întrerupt înainte de procesarea întregului corpus. Am folosit acest sistem de \textit{persistență}, deoarece eliminarea despărțirii în silabe a fost o sarcină care a durat mult timp, implicând request-uri succesive \textit{http}. 
 
 \end{enumerate}
 
-Dacă nu era găsit în cache, cuvântul concatenat era căutat pe cele trei dicționare în ordinea în care am dat-o. Primul dicționar care răspundea afirmativ, spunând că acel cuvânt există oprea procesul și cuvântul era considerat corect. El era înlocuit în text cu varianta fără linie de despărțire în silabe, era salvat în cache și în baza de date. Dacă niciun dicționar nu îl găsea, liniuța de despărțire în silabe era păstrată, eliminându-se doar cracterul \textit{newline}.
+Dacă nu era găsit în cache, cuvântul concatenat era căutat pe cele trei dicționare în ordinea dată mai sus. Primul dicționar care răspundea afirmativ, spunând că acel cuvânt există oprea procesul și cuvântul era considerat corect. El era înlocuit în text cu varianta fără linie de despărțire în silabe, era salvat în cache și în baza de date. Dacă niciun dicționar nu îl găsea, liniuța de despărțire în silabe era păstrată, eliminându-se doar cracterul \textit{newline}.
 
 \textit{În urma acestui proces}, am obțiunut o serie de fișiere text pe care le-am considerat suficient de "curate" pentru a putea fi procesate mai departe de către algoritmi. A fost un proces lung, care a necesitat timp și a fost destul de anevoios.
 
@@ -121,13 +122,13 @@ Ceea ce am descris mai sus este rezumat într-un mod intuitiv în \labelindexref
 
 \section{Modulul de Adnotare Provizorie}
 
-Am adnotat provizioriu întregul folosind Stanford NER cele 962 de fișiere text obținute anterior. Corpusul a fost adnotat cu modelul antrenat pe corpusul Retures propus de ConLL-2003. Adică, a avut cele 4 tipuri de entități clasice: PERSON, ORGANIZATION, LOCATION, MISC. Suplimentar, Stanford NER a identificat fără a folosi modele statistice și următoarele tipuri de entități: \texttt{TIMEX} adică DATE, DURATION, TIME, SET și \texttt{NUMEX} adică NUMBR, PERCENT, ORDINAL, MONEY, în total 12 tipuri de entități cu nume.
+Folosind Stanford NER, am adnotat provizioriu cele 962 de fișiere text obținute anterior. Corpusul a fost adnotat cu modelul antrenat pe corpusul Retures propus de CoNLL-2003. Adică, a avut cele 4 tipuri de entități clasice: PERSON, ORGANIZATION, LOCATION, MISC. Suplimentar, Stanford NER a identificat fără a folosi modele statistice și următoarele tipuri de entități: \texttt{TIMEX} adică DATE, DURATION, TIME, SET și \texttt{NUMEX} adică NUMBR, PERCENT, ORDINAL, MONEY, în total 12 tipuri de entități cu nume.
 
 Evident că adnotarea nu a fost perfectă. Am folosit un tool foarte util pentru modificarea adnotărilor în mod vizual. El se numește BRAT(brat rapid annotation tool)\footnote{\url{http://brat.nlplab.org}}.
 
-Am convertit fișierele din formatul în encodarea IO scoasă de Stanford NER în format-ul specific BRAT. Dar, când am ajuns la adnotarea efectivă am observat că aplicația răspundea extrem de greu. Durau secunde bune de la selectarea unui text și până când aplicația brat răspundea. Am testat pe exemplele lor și am observat ca aplicația răspunde destul de rapid. Imediat am ipotezat faptul ca explicația trebuie să fie dimensiunea foarte mare a fișierelor text și numărul mare de entități.
+Am convertit fișierele din formatul în encodarea IO scoasă de Stanford NER în formatul specific BRAT. Dar, când am ajuns la adnotarea efectivă am observat că aplicația răspundea extrem de greu. Durau secunde bune de la selectarea unui text și până când aplicația brat răspundea. Am testat pe exemplele lor și am observat ca aplicația răspunde destul de rapid. Imediat am ipotezat faptul ca explicația trebuie să fie dimensiunea foarte mare a fișierelor text și numărul mare de entități.
 
-Așa că m-am întors înapoi la corpusul inițial de 962 de documente. Am decis să îl împart în bucățele mai mici după câteva reguli simple: după maxim 4000 de caractere sau după 5 linii noi consecutive. Astfel am obținut peste 20 000 de \textit{split-uri}, fișiere mai mici de cam 50 de linii. Le-am procesat din nou cu Stanford NER și apoi ele au fost transformate din nou în formatul acceptat de brat, pentru a corecta adnotările greșite de Stanford NER.
+Așa că m-am întors înapoi la corpusul inițial de 962 de documente. Am decis să îl împart în bucățele mai mici după câteva reguli simple: după maxim 4000 de caractere sau după 5 linii noi consecutive. Astfel am obținut peste 20,000 de \textit{split-uri}, fișiere mai mici de cam 50 de linii. Le-am procesat din nou cu Stanford NER și apoi ele au fost transformate din nou în formatul acceptat de BRAT, pentru a corecta adnotările greșite de Stanford NER.
 
 \section{Corectarea Manuală a Adnotării folosind BRAT}
 \label{section:brat-annotation}
@@ -140,42 +141,42 @@ Am adnotat pentru 13 categorii de entități, 12 deja disponibile din Stanford N
 
 În \labelindexref{Figura}{img:brat-image}, se poate observa modul în care a decurs adnotarea manuală a textelor. 
 
-\fig[scale=0.5]{src/img/brat-image.png}{img:brat-image}{Intefață grafică a BRAT}
+\fig[scale=0.48]{src/img/brat-image.png}{img:brat-image}{Intefață grafică a BRAT}
 
-Procedeul a implicat un volum mare de muncă și un efort substanțial, consumând destul timp. În total, am reușit să adnotez aproximativ 200 de split-uri, creând un mic corpus, din care să pot \textit{bootstrap-a} un algoritm de ML. Am încercat să creez un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți. Într-o proporție covârșitoare, foarte multe nume de persoane se află în referințe în acest tip de texte, documente PDF din domeniul Științelor Sociale, de exempl (E. Mayer \& R. Silva, 2001). Adesea, sistemul NER de la Stanford greșea când întâlnea o astfel de construcție cu \&, clasificând-o greșit ca \texttt{ORGANIZATION}.
+Procedeul a implicat un volum mare de muncă și un efort substanțial, consumând destul timp. În total, la data scrierii lucrării, s-a reușit adnotarea a aproximativ 200 de split-uri, creând un mic corpus, din care să pot \textit{bootstrap-a} un algoritm de ML. Am încercat să creez un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți. Într-o proporție covârșitoare, foarte multe nume de persoane se află în referințe în acest tip de texte, documente PDF din domeniul Științelor Sociale, de exempl (E. Mayer \& R. Silva, 2001). Adesea, sistemul NER de la Stanford greșea când întâlnea o astfel de construcție cu \&, clasificând-o greșit ca \texttt{ORGANIZATION}.
 
-Această etapă nu pot spune ca este gata. Ar fi fost aproape imposibil, chiar dacă mi-aș fi dedicat 12 ore pe zi, timp de 3 luni, să termin de corectat adnotarea a celor peste 20 000 de split-uri. Adnotând 200 de split-uri, înseamnă că am adnotat aproximativ 1 \% din corpusul inițial.
+Această etapă nu se poate spune că este gata. Ar fi fost aproape imposibil, chiar dacă mi-aș fi dedicat 12 ore pe zi, timp de 3 luni, să termin de corectat adnotarea a celor peste 20,000 de split-uri. Adnotând 200 de split-uri, înseamnă că am adnotat aproximativ 1\% din corpusul inițial.
 
 \section {Modulul de Antrenare a Modelului Statistic}
 
-În această secțiune voi prezenta modulul cu care a fost folosit pentru a antrena pe corpusul obținut anterior a unui model statistic adecvat acestui corpus. Voi prezenta detalii tehnice și librăriile existente folosite de mine.
+În această secțiune voi prezenta modulul care a fost folosit pentru a antrena pe corpusul obținut anterior un model statistic adecvat acestui corpus. Voi prezenta detalii tehnice și librăriile existente folosite.
 
 \subsection{Motivarea Alegerii Modelării cu Conditional Random Field}
 
 \index{sequence labeling}
-Folosind corpusul adnotat corect, am antrenat un model statistic pe el. Problema de față face parte din ceea ce se numește \textit{sequence labeling}. Cu alte cuvinte, la un moment de timp, clasificatorul are de luat o singură decizie, \textit{condiționat} de dovezile din observațiile anterioare, de exemplu cuvintele, și de \textit{deciziile anterioare}. Acest lucru poate fi ilustrat mai bine în \labelindexref{Figura}{img:sequence-labeling} de mai jos. 
+Folosind corpusul adnotat corect, s-a antrenat un model statistic pe el. Problema de față face parte din ceea ce se numește \textit{sequence labeling}. Cu alte cuvinte, la un moment de timp, clasificatorul are de luat o singură decizie, \textit{condiționat} de dovezile din observațiile anterioare, de exemplu cuvintele, și de \textit{deciziile anterioare}. Acest lucru poate fi ilustrat mai bine în \labelindexref{Figura}{img:sequence-labeling} de mai jos. 
 
 
 \fig[scale=0.3]{src/img/sequence-labeling.png}{img:sequence-labeling}{Ilustrare a procesului de decizie pe o secvență}
 
-În acest modul a trebuit să adaptez algoritmii la ordinea naturală în care veneau datele, aceea de secvență. Pentru aceste tipuri de problemă s-au studiat extensiv modele și algoritmi de ML, care pot fi aplicați pe secvența. Ei pot fi împărțiti în două categorii:
+În acest modul a trebuit să adaptez algoritmii la ordinea naturală în care veneau datele, aceea de secvență. Pentru aceste tipuri de problemă s-au studiat extensiv modele și algoritmi de ML, care pot fi aplicați pe secvență. Ei pot fi împărțiti în două categorii:
 
 \index{Hidden Markov Model}
 \index{Maximum Entropy Markov Model}
 \index{Conditional Random Field}
 \begin{itemize}
-\item modele \textit{generative}, care pun o probabilitate atât pe datele observate cât și pe clasa ce trebuie "ghicită" (starea asunsă). Ele generează datele observate din clasa ascunsă, și aleg clasa care se potrivește cel mai bine cu datele observate. Din categoria acestor modele fac parte Modele Hidden Markov Models (HMM), Naive Bayes etc. Un astfel de model HMM este folosit în lucrarea lui Bikel, 1999, lucare de pionierat în domeniul NER, prima abordează NER ca o problemă de \textit{sequence labeling}\cite{Bikel99analgorithm};
-\item modele \textit{discriminative}, care iau datele observate și pun o porabilite pe structura ascunsă, dându-se observațiile - probabilite condiționtă. Din această, categorie fac parte Maximum Entropy Markov Models și Conditional Random Fields.\cite{Mccallum00maximumentropy}\cite{Lafferty01conditionalrandom}
+\item modele \textit{generative}, care pun o probabilitate atât pe datele observate cât și pe clasa ce trebuie "ghicită" (starea asunsă). Ele generează datele observate din clasa ascunsă și aleg clasa care se potrivește cel mai bine cu datele observate. Din categoria acestor modele fac parte Modele Hidden Markov Models (HMM), Naive Bayes etc. Un astfel de model HMM este folosit în lucrarea lui Bikel, 1999, lucare de pionierat în domeniul NER, prima care abordează NER ca o problemă de \textit{sequence labeling}\cite{Bikel99analgorithm};
+\item modele \textit{discriminative}, care iau datele observate și pun o porabilite pe structura ascunsă, dându-se observațiile - probabilite condiționată. Din această categorie fac parte Maximum Entropy Markov Models și Conditional Random Fields.\cite{Mccallum00maximumentropy}\cite{Lafferty01conditionalrandom}
 \end{itemize}
 
-Aceste modele au fost folosite cu succes în alte task-uri de \textit{sequence labeling}, cum ar fi POS tagging. La fel și în NER, contează foarte mult secvența continuă de cuvinte dintr-o vecinătate, la un anumit moment de decizie, cu alte cuvinte, contează contextul local.
+Aceste modele au fost folosite cu succes în alte task-uri de \textit{sequence labeling}, cum ar fi POS tagging. La fel și în NER, contează foarte mult secvența continuă de cuvinte dintr-o vecinătate a cuvântului curent, la un anumit moment de decizie, cu alte cuvinte, contează \textit{contextul local}.
 
-Modelele \textit{discriminative} obțin scoruri mai bune atât pe datele de antrenament cât si pe datele de test. Modelele generative având acea probabilitate \textit{joint} (legată) între datele observate și clasa ce trebuie modelată tind să crească probabilitatea în mode exagerat, să numere de mai multe ori aceeași dovadă, atunci când \textit{feature-urile} (caracteristicle) nu sunt \textit{independente} una de alta. Așa cum vom vedea, feature-urile alese în problemele de NLP \textit{nu sunt independente}. Deci un model generativ va exagera practic în momentul în care avem astfel de feature-uri. Modelele \textit{discriminative} propuse ulterior, ca MEMM, sau CRF, sunt acum folosite pe scară largă în sistemele NER.
+Modelele \textit{discriminative} obțin scoruri mai bune atât pe datele de antrenament cât si pe datele de test. Modelele generative având acea probabilitate \textit{joint} (legată) între datele observate și clasa ce trebuie modelată tind să crească probabilitatea în mod exagerat, să numere de mai multe ori aceeași dovadă, atunci când \textit{feature-urile} (caracteristicle) nu sunt \textit{independente} una de alta. Așa cum vom vedea, feature-urile alese în problemele de NLP \textit{nu sunt independente}. Deci un model generativ va exagera practic în momentul în care avem astfel de feature-uri. Modelele \textit{discriminative} propuse ulterior, ca MEMM, sau CRF, sunt acum folosite pe scară largă în sistemele NER.
 
 \subsection{Utilizarea Software a Conditinal Random Field}
 \label{sub-sec:crf-software}
 
-Așa că și eu am decis să folosesc un Conditional Random Field. Am avut de ales în a implementa eu singur un CRF sau să folosesc o implementare deja făcută într-o librările de ML disponibilă. Am ales a doua variantă din cauză ca implementarea ar fi necesitat un timp considerabil și probabil nu aș fi putut să o fac mai bine decât ceea ce există deja. De asemenea, puteam să am \textit{bug-uri} în implementarea mea. Am ales o implementare care a fost deja testată și în care probabilitatea ca ea să aibă bug-uri era mică.
+Așa că s-a decis utilizarea un Conditional Random Field. Am avut de ales în a implementa eu singur un CRF sau să folosesc o implementare deja făcută într-o librările de ML disponibilă. Am ales a doua variantă din cauză ca implementarea ar fi necesitat un timp considerabil și probabil nu aș fi putut să o fac mai bine decât ceea ce există deja. De asemenea, puteam să am \textit{bug-uri} în implementarea mea. Am ales o implementare care a fost deja testată și în care probabilitatea ca ea să aibă bug-uri era mică.
 
 \index{MALLET}
 \abbrev{MALLET}{MAchine Learning for LanguagE Toolkit}
@@ -201,37 +202,37 @@ Așa că și eu am decis să folosesc un Conditional Random Field. Am avut de al
 \end{table}
 \end{center}
 
-Așa că am antrenat modelul și l-am salvat pe disc folosind Stanford CRFClassifier. Antrenarea unui model cu 5 clase a durat puțin în comparație cu antrenarea unui model cu 14 clase (includem aici nu doar categoriile de entități, ci și clasa O). Asta deoarece la 14 clase, funcția ce trebuia optimizata avea peste 100 000 de variabile. Se poate demonstra că funcția ce trebuie optimizată depinde de numărul de clase și de numărul de feature-uri ales. De fapt, dacă avem de exemplu 15 feature-uri, vom combina aceste 15 feature-uri  cu fiecare clasă, deci având mai multe clase creșțem numărul de parametrii ce trebuie calculați pentru ca modelul nostru să aproximeze cât mai bine datele de antrenament.
+Așa că am antrenat modelul și l-am salvat pe disc folosind Stanford CRFClassifier. Antrenarea unui model cu 5 clase a durat puțin în comparație cu antrenarea unui model cu 14 clase (includem aici nu doar categoriile de entități, ci și clasa O). Asta deoarece la 14 clase, funcția ce trebuia optimizată avea peste 100,000 de variabile. Se poate demonstra că funcția ce trebuie optimizată depinde de numărul de clase și de numărul de feature-uri ales. De fapt, dacă avem de exemplu 15 feature-uri, vom combina aceste 15 feature-uri  cu fiecare clasă, deci având mai multe clase creștem numărul de parametri ce trebuie calculați pentru ca modelul nostru să aproximeze cât mai bine datele de antrenament.
 
-\paragraph{MALLET} este al doilea toolkit pe care l-am utilizat. Am exprimentate cu el, încercând să mă prind cum pot antrena un model statistic CRF. Deși documentația disponibilă pentru MALLET este destul de puțină, MALLET este \textit{open source}, iar codul este scris foarte bine. Deși a avut o curbă de învâțare mai abruptă, până la urmă am reușit să folosesc MALLET sequence labeling pentru sistemul meu NER. 
+\paragraph{MALLET} este al doilea toolkit care a fost utilizat. Am exprimentat cu el, încercând să mă prind cum pot antrena un model statistic CRF. Deși documentația disponibilă pentru MALLET este destul de puțină, MALLET este \textit{open source}, iar codul este scris foarte bine. Deși a avut o curbă de învâțare mai abruptă, până la urmă am reușit să folosesc MALLET sequence labeling pentru sistemul meu NER. 
 
-MALLET dă mult mai multă libertate de alegere când vine vorba de antrenarea unui model folosind Conditional Random Fields sau Maximum Entropy Markov Models. Așa că mi-am stabilit eu propriile \textit{feature-uri} pe care doream ca algoritmul de învățare să le utilizeze.
+MALLET dă mult mai multă \textbf{libertate de alegere} când vine vorba de antrenarea unui model folosind Conditional Random Fields sau Maximum Entropy Markov Models. Așa că mi-am stabilit eu propriile \textit{feature-uri} pe care doream ca algoritmul de învățare să le utilizeze.
 
 De asemenea, programtorul are control direct asupra Conditional Random Field-ului. Poate seta foarte mulți parametri. De exemplu, poate fi ales algoritmul de optimizare a funcției de cost.
 
 \index{F1-Score}
-Cu toate că am avut mai multă liberate de decizie cu MALLET, performanțele obținute de modeulul antrenat cu el sunt mai slabe, cu un scor $F_1$ de 76\% pe setul de date de test, dar de 98\% pe setul de date de antrenament, ceea ce înseamnă ca algoritmul \textit{memorează} datele de antrenament (face \textit{overfitting}) și esuează în a \textit{generaliza}. Mai multe detalii despre evaluarea performanțelor vor fi prezentate în capitolul aferent, la \labelindexref{Secțiunea}{sec:model-measurements}.
+Cu toate că MALLET oferă mai multă libertate de decizie, performanțele obținute de modeulul antrenat cu el sunt mai slabe, cu un scor $F_1$ de 76\% pe setul de date de test, dar de 98\% pe setul de date de antrenament, ceea ce înseamnă ca algoritmul \textit{memorează} datele de antrenament (face \textit{overfitting}) și eșuează în a \textit{generaliza}. Mai multe detalii despre evaluarea performanțelor vor fi prezentate în capitolul aferent, la \labelindexref{Secțiunea}{sec:model-measurements}.
 
 
 \section{Modulul de Efectuare a Statisticilor}
 
 \index{multithreading}
-Este bine cunoscut faptul că performanțele unui un model statistic pot fi măsurate prin mai multe metrici, cum ar fi \textit{viteza} cu care algoritmul clasifică un text dat, dar și \textit{acuratețea} cu care furnizează răspunsurile corecte. De o importanță majoră este ultimul element. Dacă timpii de rulare pot fi imbunătățiți folosind \textit{multithreading}, de exemplu, calitatea pe care o oferă algoritmul bazat pe acel model nu poate fi îmbunătățita schimbând arhitectura sofware sau hardware.
+Este bine cunoscut faptul că performanțele unui un model statistic pot fi măsurate prin mai multe metrici, cum ar fi \textit{viteza} cu care algoritmul clasifică un text dat, dar și \textit{acuratețea} cu care furnizează răspunsurile corecte. De o importanță majoră este ultimul element. Dacă timpii de rulare pot fi imbunătățiți folosind \textit{multithreading}, de exemplu, calitatea pe care o oferă algoritmul bazat pe acel model nu poate fi îmbunătățită schimbând arhitectura sofware sau hardware.
 
 \index{precision}
 \index{recall}
 \index{F1-Score}
-Astfel, am implementat programe speciale care s-au ocupat de măsurarea performanțelor, de cât de bine răspundea corect sistemul meu. În acest modul, am folosit metrici speciale din statistică, \textit{precision} și \textit{recall}. Cele două metrici înglobează două concepte importante:
+Astfel, au fost implementate programe speciale care s-au ocupat de măsurarea performanțelor, de cât de bine răspundea corect sistemul meu. În acest modul, au fost folosite metrici speciale din statistică, \textit{precision} și \textit{recall}. Cele două metrici înglobează două concepte importante:
 
 \begin{itemize}
-\item \textit{precision} măsoară câte dintre răspunsurile furnizate de sistem sunt curecte din totalul răspunsurilor. Cu alte cuvinte, stabilește procentul de răspunsuri corecte, relevante;
+\item \textit{precision} măsoară câte dintre răspunsurile furnizate de sistem sunt corecte din totalul răspunsurilor. Cu alte cuvinte, stabilește procentul de răspunsuri corecte, relevante;
 
-\item \textit{recall} măsoară câte dintre răspunsuri corecte a întors sistemul din \textit{totalul} de răpsunsuri corecte pe care trebuia sale întoarcă.
+\item \textit{recall} măsoară câte dintre răspunsuri corecte a întors sistemul din \textit{totalul} de răspunsuri corecte pe care trebuia să le întoarcă.
 \end{itemize}
 
-De obicei sistemele NER au un \textit{recall} mai mic. Adică, atunci când identifică o entitate, o identifică în mod corect (au \textit{precision bun}), dar nu reușesc să găsească toate entitățile dintr-un text. Vom vedea într-o secțiune ulterioară de ce se are loc acest lucru.
+De obicei sistemele NER au un \textit{recall} mai mic decăt \textit{precision-ul}. Adică, atunci când identifică o entitate, o identifică în mod corect (au \textit{precision bun}), dar nu reușesc să găsească toate entitățile dintr-un text. Vom vedea într-o secțiune ulterioară de ce se are loc acest lucru.
 
-Am calculat apoi scorul F1 (F1-Score) pentru setul de date. Am obținut performanțe destul de bune pe setul de date cu un scor F1 de aproximativ 92\%. Acest modul a fost esențial în a îmi da o confirmare exactă că sistemul făcea ce trebuie, pe lângă confirmarea dată de interfața grafică.
+Am calculat apoi scorul $F_1$ (F1-Score) pentru setul de date. Am obținut performanțe destul de bune pe setul de date cu un scor $F_1$ de aproximativ 92\%. Acest modul a fost esențial în a îmi da o confirmare exactă că sistemul făcea ce trebuie, pe lângă confirmarea dată de interfața grafică.
 
 \section{Interfața Grafică}
 
@@ -239,12 +240,12 @@ Am calculat apoi scorul F1 (F1-Score) pentru setul de date. Am obținut performa
 \abbrev{CLI}{Command Line Interface}
 \index{Graphical User Interface}
 \index{Command Line Interface}
-În ziua de astăzi, pentru a ne adresa unei categorii cât mai vaste de utilizatori orice program modern trebuie să aibă o interfață grafică. Degeaba ai implementat tu un lucru spectaculos, dacă la sfâșitul programului, tot ce face el, este să afișeze un număr. Deși acest mod de lucru poate prezenta interes pentru o categorie restrânsă de cercetători în domeniu, el nu poate fi prezentat unui public larg, arătând doar un \textit{Command Line Interface} - CLI.
+În ziua de astăzi, pentru a ne adresa unei categorii cât mai vaste de utilizatori, orice program modern trebuie să ofere o interfață grafică. Degeaba ai implementat tu un lucru spectaculos, dacă la sfâșitul programului, tot ce face el, este să afișeze un număr. Deși acest mod de lucru poate prezenta interes pentru o categorie restrânsă de cercetători în domeniu, el nu poate fi prezentat unui public larg, arătând doar un \textit{Command Line Interface} - CLI.
 
-Deși marea majoaritate a produsului software scris de mine citește din fișiere text și afișează informații la consolă, am decis să implementez și \textit{Interfață Grafică} pentru a putea vedea rezultatele într-un mod mult mai intuitiv. O imagine face cât 1000 
+Deși marea majoritate a produsului software scris de mine citește din fișiere text și afișează informații la consolă, am decis să implementez și \textit{Interfață Grafică} pentru a putea vedea rezultatele într-un mod mult mai intuitiv. O imagine face cât 1000 
 de cuvinte, este o vorbă din popor.
 
-Interfața grafică permite utilizatorului să introducă un text pentru care deorește identificarea entităților cu nume. De asemenea, pentru că uneori este mai convenabil, utilizatorul are posibiliatea să încarce un fișier text. De asemenea, utilizatorul poate să aleagă între 3 modele puse la dispoziție în momentul de față:
+Interfața grafică permite utilizatorului să introducă un text pentru care dorește identificarea entităților cu nume. De asemenea, pentru că uneori este mai convenabil, utilizatorul are posibiliatea să încarce un fișier text. De asemenea, utilizatorul poate să aleagă între 3 modele puse la dispoziție în momentul de față:
 \begin{itemize}
 \item  cel care recunoaște 4 tipuri de entități "clasice" - persoane, organizații, locații și alte;
 \item cel care poate recunoaște 13 categorii de entități;
@@ -257,22 +258,22 @@ Apoi, după ce a încărcat textul, la apăsarea butonului "Identifică Entită�
 
 \section{Tehnologii Software Folosite în Implementare}
 
-În cadrul acestei secțiuni voi descrie pe scurt tehnologiile software pe care le-am folosit în elaborarea produsului software.
+În cadrul acestei secțiuni vom descrie pe scurt tehnologiile software care au fost folosite în elaborarea produsului software.
 
 \subsection{Apache Maven}
 
 \index{Apache Maven}
 
-Întrucât am lucrat în limbajul de programare Java, când aveam nevoie de biblioteci puteam să download-ez fișierele .jar și să le includ în proiect. Acest mod de a include manual jar-urile în proiect are mai multe inconveniente:
+Întrucât am lucrat în limbajul de programare Java, când aveam nevoie de biblioteci puteam să descarc fișierele .jar și să le includ în proiect. Acest mod de a include manual jar-urile în proiect are mai multe inconveniente:
 
 \index{Project Object Model}
 \abbrev{POM}{Project Object Model}
 
 \begin{description}
-\item[Problema Dependențelor de alte librării] apare foarte multe ori într-un proiect complex, când te poți lovi de faptul ca un jar are pe care îl folosești are nevoie de alte jar-uri ca să funcționeze. Întreținerea manuală a acestor \textit{dependențe} poate da foarte multe bătăi de cap. Apache Maven, prin al său POM(Project Object Model) rezolvă această problemă.
+\item[Problema Dependențelor de alte librării] apare foarte multe ori într-un proiect complex, când te poți lovi de faptul ca un jar pe care îl folosești are nevoie de alte jar-uri ca să funcționeze. Întreținerea manuală a acestor \textit{dependențe} poate da foarte multe bătăi de cap. Apache Maven, prin al său POM(Project Object Model) rezolvă această problemă.
 
 \index{Central Point of Control}
-\item[Problema Duplicării Librăriilor jar] apare în momentul în care pe un calculator ai mai multe proiecte care folosesc aceeași librarie, de exemplu, guava.jar. De foarte multe ori, ea va fi copiată și duplicată pentru fiecare proiect în parte. Va ocupa de mai multe ori spațiu inutil pe hard disk. De asemenenea, librăria dacă va fi updatat-a cu o nouă versiune, de la 1.2 la 1.3, va fi greu de menținută sincronizarea. Acest lucru încalcă un principiu software important, numit \textit{Central Point of Control}. Apache Maven rezolvă această problemă, salvând \textit{într-un singur loc} pe HDD într-un \textit{repository} local librăriile jar. El se ocupă de crearea ierarhiei de directoare care corespunde ierarhiei de pachete. De exemplu pentru pachetul Java \texttt{org.apache.commons} se va crea pe dis co ierarhie \texttt{/username/.m2/org/apache/commons/commons.jar}.
+\item[Problema Duplicării Librăriilor jar] apare în momentul în care pe un calculator ai mai multe proiecte care folosesc aceeași librarie, de exemplu, guava.jar. De foarte multe ori, ea va fi copiată și duplicată pentru fiecare proiect în parte. Va ocupa de mai multe ori spațiu inutil pe hard disk. De asemenenea, librăria dacă va fi updatată cu o nouă versiune, de la 1.2 la 1.3, va fi greu de menținută sincronizarea. Acest lucru încalcă un principiu software important, numit \textit{Central Point of Control}. Apache Maven rezolvă această problemă, salvând \textit{într-un singur loc} pe HDD într-un \textit{repository} local librăriile jar. El se ocupă de crearea ierarhiei de directoare care corespunde ierarhiei de pachete. De exemplu pentru pachetul Java \texttt{org.apache.commons} se va crea pe disc o ierarhie \texttt{/username/.m2/org/apache/commons/commons.jar}.
 \end{description}
 
 Sunt și alte avantaje pe care le aduce folosirea Apache Maven, care stau în spatele filosofiei sale. Nu le voi descrie aici.
@@ -283,13 +284,13 @@ Sunt și alte avantaje pe care le aduce folosirea Apache Maven, care stau în sp
 \abbrev{ORM}{Object-Relational Mapping}
 
 
-Object Relational Mapping furnizează un mod convenabil de a asigura independența de baza de date folosită. În loc să accesezi direct baza de date prin cereri SQL, care depind direct de tipul de bază de date folosit, de exemplu MySQL, Oracle, etc. Folosești clase \textit{adaptor} care encapsulează în obiecte și abstractizeaza accesul la baza de date. Astfel, codul sursă devine independent de baza de date folosită. Dacă în viitor, se trece, de exemplu de la MySQL la Oracle DB, codul sursă nu trebuie modificat. Acest ORM-uri mai sunt denumite și sub titulatura de \textit{relational persistance}.
+Object Relational Mapping furnizează un mod convenabil de a asigura independența de baza de date folosită. În loc ca baza de date să fie accesată direct prin cereri SQL, care depind direct de tipul de bază de date folosit, de exemplu MySQL, Oracle, etc. se folosesc clase \textit{adaptor} care încapsulează în obiecte și abstractizează accesul la baza de date. Astfel, codul sursă devine independent de baza de date folosită. Dacă în viitor, se trece, de exemplu de la MySQL la Oracle DB, codul sursă nu trebuie modificat. Aceste ORM-uri mai sunt denumite și sub titulatura de \textit{relational persistance}.
 
 Am folosit atât pentru Python, cât și pentru Java ORM-uri pentru aces la baza de date:
 \index{Hibernate}
 \index{SQLAlchemy}
 \begin{itemize}
-\item pentru Java am folosit \textit{Hibernate} de la JBoss.\footnote{\url{http://www.hibernate.org/}}. Deși are o curbă de învățare mai abruptă, de îndată ce ai prins ideea, este foarte ușor de lucrat cu el. În plus, IDE-ul NetBeans generează cod automat pentru \textit{mapping-ul} între tabelele din baza de date și clasele din Java;
+\item pentru Java am folosit \textit{Hibernate} de la JBoss.\footnote{\url{http://www.hibernate.org/}}. Deși are o curbă de învățare mai abruptă, de îndată ce ați prins ideea, este foarte ușor de lucrat cu el. În plus, IDE-ul NetBeans generează cod automat pentru \textit{mapping-ul} între tabelele din baza de date și clasele din Java;
 
 \item pentru Python am folosit SQLAlchemy\footnote{\url{http://www.sqlalchemy.org/}}. Acest toolkit este un adaptor pentru SQL cât și un Object Relational Mapper.
 
@@ -299,9 +300,9 @@ Am folosit atât pentru Python, cât și pentru Java ORM-uri pentru aces la baza
 \subsection{Apache Log4J}
 
 \index{logging}
-Este binecunoscut faptul că foarte multă lume foloște \texttt{printf} sau \texttt{System.out.println} pentru a afișa mesaje de debugging în aplicație. Acest lucru nu reprezintă ceva bun. Este un lucru bine de evitat, mai ales într-o aplicație \textit{enterprise}, profesională.
+Este binecunoscut faptul că foarte multă lume folosește \texttt{printf} sau \texttt{System.out.println} pentru a afișa mesaje de debugging în aplicație. Acest lucru nu reprezintă ceva bun. Este un lucru de evitat, mai ales într-o aplicație \textit{enterprise}, profesională.
 
-O practică bună este să folosim un librările de \textit{logging} pentru a afișa diferitele mesaje pe care aplicația le dă pe parcurs. Foarte important este că aceste mesaje pot avea niveluri de severitate (info, debug, warning, error) și că sursa lor poate fi identificată precis la clasa și linia de unde a fost emis mesajul. Fiecare clasă are un logger. De asemenea, afișarea mesajolor poate să nu fie făcută la consolă ci într-un fișier. Un exemplu a ceea ce am explicat poate fi urmărit în \labelindexref{Listingg-ul}{lst:logging}.
+O practică bună este să folosim o librărie de \textit{logging} pentru a afișa diferitele mesaje pe care aplicația le dă pe parcurs. Foarte important este că aceste mesaje pot avea niveluri de severitate diferite (info, debug, warning, error) și că sursa lor poate fi identificată precis la clasa și linia de unde a fost emis mesajul. Fiecare clasă are un logger. De asemenea, afișarea mesajelor poate să nu fie făcută la consolă ci într-un fișier. Un exemplu a ceea ce am explicat poate fi urmărit în \labelindexref{Listingg-ul}{lst:logging}.
 
 
 \lstset{language=make}
