@@ -11,7 +11,7 @@
 Procesarea Limbajului Natural (eng. Natural Language Processing - NLP) este un domeniu din Sțiința Calculatoarelor (eng. Computer Science - CS), mai exact din Inteligența Artificială și Lingvistică. Multe probleme din NLP implică înțelegerea limbajului uman, adică să permită calculatoarelor sa extragă informație (să înțeleagă) limbajul pe care îl primesc de la un om în forma sa naturală, nestructurată. Astfel, Procesarea Limbajului Natural este legată oarecum de Interacțiunea Om-Calculator (eng. Human–Computer Interaction).
 \abbrev{HCI}{Human–Computer Interaction}
 
-Extragera de Informații (eng. Information Extraction - IE \abbrev{IE}{Information Extraction}) este \textit{task}-ul unui calculator de a extrage automat informații cu structură dintr-un text care nu are structură, dar care poate fi citit de o mașină. Deși procesarea limbajului natural se ocupă si de procesarea de limbaj vorbit, dificultățile suplimentare introduse de acest lucru (Speech to Text) au făcut ca problema de față să fie extensiv studiată pe texte scrise, texte ușor de citit de o mașină, însă greu de interpretat semantic.
+Extragera de Informații (eng. Information Extraction - IE \abbrev{IE}{Information Extraction}) este \textit{task}-ul unui calculator de a extrage automat informații cu structură dintr-un text care nu are structură, dar care poate fi citit de o mașină. Deși procesarea limbajului natural se ocupă și de procesarea de limbaj vorbit, dificultățile suplimentare introduse de acest lucru (Speech to Text) au făcut ca problema de față să fie extensiv studiată pe texte scrise, texte ușor de citit de o mașină, însă greu de interpretat semantic.
 
 
 \subsection{Ușor pentru Oameni. Dificil pentru Calculatoare}
@@ -38,25 +38,25 @@ Formal, termenul de Entitate cu Nume (eng. Named Entity - NE) este des întâlni
 În definiera sarcinilor IE, oamenii au observat că era esențial să se recunoască unități de informație precum \textbf{nume proprii} ce includeau persoane, organizații și locații. Dacă în fazele inițiale ale formulării problemei, alte entități (nume proprii) erau considerate ca fiind \textit{Amestecate} (eng. Misc. - Miscellaneous), mai târziu, alte unități informaționale au fost introduse, entități care nu se mai identificau cu conceptul de nume propriu (substantiv propriu), ci aveau o corelare cu \textbf{expresiile numerice}, sau \textbf{expresii temporale} cum ar fi: dată calendaristică, numeral cardinal, numeral ordinal, timp, unități monetare și procente.
 
 
-Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre sracinilie importante la IE și a fost denumită \textbf{Identificarea Entităților cu Nume} (eng. \textit{Named Entity Recognition} - NER).\abbrev{NER}{Named Entity Recognition}
+Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre sarcinilie importante la IE și a fost denumită \textbf{Identificarea Entităților cu Nume} (eng. \textit{Named Entity Recognition} - NER).\abbrev{NER}{Named Entity Recognition}
 
 
 Înainte ca domeniul NER să fie oficial recunoscut la MUC-6 în 1996, cercetări înrudite au fost făcute pentru identificarea numelor proprii. O lucrare publicată în 1991 de Lisa F. Rau este adesea citată ca punctul de naștere al domeniului.\cite{rau1991}
 
 Pentru mai bine de 20 de ani, o comuniate de cercetători a abordat această problemă, folosind diferite tehnici și a creat soluții pentru a perfecționa sistemele NER.
 
-Ca o definiție, un sistem NER este în esență un sistem care primește ca \textit{input} un text din limaj natural, nestructurat. \textit{Output}-ul său reprezintă informație structurată, formată din entitățile identificate și categorisite din textul dat.
+Ca o definiție, un sistem NER este în esență un sistem care primește ca \textit{input} un text din limbaj natural, nestructurat. \textit{Output}-ul său reprezintă informație structurată, formată din entitățile identificate și categorisite din textul dat.
 
 Vasta majoritate a sistemelor propuse până în prezent se împart în două categorii:
 
 \abbrev{ML}{Machine Learning}
 \begin{itemize}
 \item sisteme bazate pe reguli făcute de mână;
-\item sisteme care folosesc algoritmi de Învățare Automată (eng. Machine Learning ML), bazate pe \textit{modele statistice}.
+\item sisteme care folosesc algoritmi de Învățare Automată (eng. Machine Learning - ML), bazate pe \textit{modele statistice}.
 \end{itemize}
 
 
-În ambele cazuri, colecții mari de documente trebuie să fie analizate ori pentru a deduce reguli și \textit{pattern}-uri, ori pentru a le putea folosi ca date  de antrenament pentru algoritmii de Învățare Automată. Lingviști specializați trebuie să execute această sarcină importantă, care reprezintă un volum semnificativ de muncă. Este foarte important ca această sarcină să fie făcută corect, deoarece stă la baza algoritmilor de ML. Fiind destul de anevoios și necesitand lucru manual, această sarcină constituie un impediment in construirea și întreținerea unui sistem NER la scară largă.
+În ambele cazuri, colecții mari de documente trebuie să fie analizate ori pentru a deduce reguli și \textit{pattern}-uri, ori pentru a le putea folosi ca date  de antrenament pentru algoritmii de Învățare Automată. Lingviști specializați trebuie să execute această sarcină importantă, care reprezintă un volum semnificativ de muncă. Este foarte important ca această sarcină să fie făcută corect, deoarece stă la baza algoritmilor de ML. Fiind destul de anevoios și necesitând lucru manual, această sarcină constituie un impediment în construirea și întreținerea unui sistem NER la scară largă.
 
 \subsection{Motivația Recunoașterii Entităților cu Nume}
 
