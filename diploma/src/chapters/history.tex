@@ -5,14 +5,14 @@
 
 \section{Definirea Formală}
 
-În comunitatea științifică, nu există in momentul de față un acrod clar în definirea unei entități cu nume. Totuși se pot da câteva definiții destul de bune.
+În comunitatea științifică, nu există în momentul de față un acord clar în definirea unei entități cu nume. Totuși se pot da câteva definiții destul de bune.
 
 Entitățile cu nume sunt expresii care conțin nume de presoane, organizații, locații, timpi și cantități. (eng. "Named entities are phrases that contain the names of persons, organizations, locations, times, and quantities.") (CoNLL-2002)
 
 Definiția dată de CoNLL-2002 este pragmatică în sensul că poate clarifica sarcina NER, a identificării entităților cu nume. Ea limitează entitățile cu nume la conceptele de \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, \texttt{TIMP} și \texttt{CANTITATE}.
 
 
-\textit{Identificarea Entităților cu Nume} constă in identificarea aparițiilor unor tipuri predefinite de expresii într-un text. Vom arăta pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
+\textit{Identificarea Entităților cu Nume} constă în identificarea aparițiilor unor tipuri predefinite de expresii într-un text. Vom arăta pe un exemplu din Mikheev et al. (1999)\cite{mikheev1999}, care a fost adnotat cu 4 tipuri de entități:\\
 
 \textbf{<Date>}, \textbf{<Person>}, \textbf{<Organization>} și \textbf{<Location>}.\\
 
@@ -22,11 +22,11 @@ On \textbf{<Date>}Jan $13^{th}$\textbf{</Date>}, \textbf{<Person>}John Briggs Jr
 York\textbf{</Location>} and instructed them to sell all his shares in
 \textbf{<Organization>}Acme\textbf{</Organization>}.\\
 
-In expresia "Entitate cu nume", cuvântul "nume" rastrânge entitățile doar la acelea pentru care există indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți includ numele proprii, precum și anumiți termeni naturali, cum ar fi unele specii biologice sau substanțe.
+În expresia "Entitate cu nume", cuvântul "nume" restrânge entitățile doar la acelea pentru care există indicatori concreți (eng. rigid designators), așa cum îi definește Kripke (1982). Indicatorii concreți includ numele proprii, precum și anumiți termeni naturali, cum ar fi unele specii biologice sau substanțe.
 
 O extindere general agreată este să se includă și expresii temporale (\texttt{TIMEX}) și expresii numerice (\texttt{NUMEX}).
 
-În continuare, vom utiliza cuvintele entiate și entitate cu nume, alternativ. Ele vor semnfica același lucru în contextul de față.
+În continuare, vom utiliza cuvintele entitate și entitate cu nume, alternativ. Ele vor semnifica același lucru în contextul de față.
 
 \subsection{Tipuri de Entități}
 
@@ -35,7 +35,7 @@ Vom începe cu un exemplu ilustrativ, care arată legătura între entități si
 
 \fig[scale=0.5]{src/img/entity-concept.png}{img:entity-concept}{Relația între concepte și entități}
 
-Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce voi prezenta este o împărțire realizată cu o \textit{granularitate} mare. Se pot realiza împărțiri cu granularități mult mai fine, adică de exemplu categoria \texttt{PERSON} poate fi împărțită în mai multe subtipuri, de exemplu:
+Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce vom prezenta este o împărțire realizată cu o \textit{granularitate} mare. Se pot realiza împărțiri cu granularități mult mai fine, adică de exemplu categoria \texttt{PERSON} poate fi împărțită în mai multe subtipuri, de exemplu:
 
 \begin{itemize}
 \item politician;
@@ -62,7 +62,7 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 		\item NUMBER (numeral cardinal, număr);
 		\item ORDINAL (numeral ordinal, "al doilea", "primul" etc.);
 		\item PERCENT (procent, de exemplu 25\%, 30 de procente);
-		\item MONEY (de exemplu \$20,000).
+		\item MONEY (de exemplu 20,000\$).
 	\end{enumerate}
 	
 		\item Entități de tip \texttt{TIMEX}: \index{TIMEX}
@@ -82,7 +82,7 @@ Astfel, se poate realiza o împărțire în mai multe tipuri de entități. Ce v
 Majoritatea cercetării pe NER s-a făcut și se face pe texte scrise. Acest lucru a fost ales pentru a nu introduce și mai multe surse de erori decât sistemul NER poate comite. Așa cum am precizat, problema poate fi modelată matematic ca \textit{Sequence labeling}. Deoarece scrierea cu majusculă și alte elemente de morfologia și forma cuvintelor sunt folosite ca \textit{feature-uri} pentru identificarea candidaților la entități cu nume, textele scrise au fost studiate extensiv. Ele păstrează informații despre scrierea cuvintelor.
 
 \begin{description}
-\item[O primă] alternativă a task-ului NER este folosirea vorbirii ca input(Favre et al, 2005).\cite{favre2005} Task-ul este considerat mai dificil deoarece scrierea cu majusculă a cuvintelor este pierdută. De asemenea, cuvintele sunt aproximate de tehnologii de recunoaștere a vorbirii(eng. Automatic Speech Recognition - ASR)\abbrev{ASR}{Automatic Speech Recognition}, care sunt predispuse la erori. Astfel apare propagarea erorilor. Input-ul pentru sistemul NER este astfel degradat din start.
+\item[O primă] alternativă a task-ului NER este folosirea vorbirii ca input (Favre et al, 2005).\cite{favre2005} Task-ul este considerat mai dificil deoarece scrierea cu majusculă a cuvintelor este pierdută. De asemenea, cuvintele sunt aproximate de tehnologii de recunoaștere a vorbirii(eng. Automatic Speech Recognition - ASR)\abbrev{ASR}{Automatic Speech Recognition}, care sunt predispuse la erori. Astfel apare propagarea erorilor. Input-ul pentru sistemul NER este astfel degradat din start.
 
 \item[O a doua] alternativă de formulare a problemei NER este folosirea unor pagini scanate ca input. Aceste pagini sunt trecute prin sisteme de de recunoaștere a caracterelor (eng. Optical Character Recognition - OCR)\abbrev{OCR}{Optical Character Recognition}. Cum și aceste sisteme introduc erori, problema degradării input-ului se manifestă și aici.(Maynard et al., 2002)\cite{maynard2002}
 
@@ -112,11 +112,11 @@ De asemenea, cercetări ample s-au făcut folosind Wikipedia ca sursă de cunos�
 
 \paragraph{Traducerea entităților cu nume}
 
-reprezintă sarcina de a traduce entitățile în mod automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților genereaza până la 10\% din erorile de traducere automată (Vilar et al, 2006) \cite{vilar2006}.
+reprezintă sarcina de a traduce entitățile în mod automat dintr-o limbă în alta. De exemplu "The United States of America" se traduce în română ca "Statele Unite ale Americii". Este cunoscut faptul ca traducerea entităților generează până la 10\% din erorile de traducere automată (Vilar et al, 2006) \cite{vilar2006}.
 
 \paragraph{Identificarea acronimelor}
 
-este sarcina de a putea identifica in mod corespunzător definiția corectă a unui acronim. De exemplu, "CS" poate însemna "Computer Science", dar și "Counter-Strike". Rezolvarea  acronimelor este utilă în construirea rețelelor de coreferință. Poate îmbunătăți \textit{recall}-ul informației (procentul de entitați corecte identificate din totalul entităților corecte), prin expandarea acronimului la semnificația sa originală. Problema este legată de NER deoarece foarte multe nume de organizații sunt date prin acronime: IBM, GE, EU etc. (Nadeau \& Tourney, 2005)\cite{Nadeau05asupervised}
+este sarcina de a putea identifica în mod corespunzător definiția corectă a unui acronim. De exemplu, "CS" poate însemna "Computer Science", dar și "Counter-Strike". Rezolvarea  acronimelor este utilă în construirea rețelelor de coreferință. Poate îmbunătăți \textit{recall}-ul informației (procentul de entități corecte identificate din totalul entităților corecte), prin expandarea acronimului la semnificația sa originală. Problema este legată de NER deoarece foarte multe nume de organizații sunt date prin acronime: IBM, GE, EU etc. (Nadeau \& Tourney, 2005)\cite{Nadeau05asupervised}
 
 \paragraph{Identificarea descrierilor entităților}
 
@@ -131,6 +131,7 @@ constă în rezolvarea coreferințelor pronomiale prin descoperirea entității 
 se referă la stabilirea corectă a scrierii cu majusculă sau fără a cuvintelor dintr-un text. De foarte multe ori, în textele din \textit{Web-ul social}\index{Web Social}, cum ar fi forum-uri, chat-uri, facebook, sau twitter, utilizatorii scriu cu literă mică numele de persoane. De asemenea, acest \textit{task} este util în Machine Translation, unde o propoziție este tradusă de obicei, fără a ține cont de capitalizare. Totodată, în textele procesate din vorbire, capitalizarea nu este disponibilă. Dându-se o propoziție în care toate cuvintele sunt scrise cu literă mică, scopul este să se restaureze cuvintele care erau scrise cu literă mare.(Agbago et al., 2006)\cite{Agbago06}
 
 
+\pagebreak
 
 \subsection{Aplicații NER}
 
@@ -142,7 +143,7 @@ constă în detectarea unor entități temporale alăturate unor alte tipuri de 
 
 \paragraph{Răspunderea automată la întrebări}
 
-adesea implică folosirea unor siteme NER în capabilitățile de formulare a răspunsurilor. Foarte multe întrebări sunt formulate astfel încât răspunsul lor să fie o entitate cu nume. De exemplu, "Cine este președintele SUA?". Astfel, la TREC-8 (Text REtrieval Conference), 80\% din cele 200 de întrebări aveau ca răspuns o entitate cu nume, adică Cine? (persoană), Când? (timp sau dată calendaristică), Unde? (locație).\cite{trec8}
+adesea implică folosirea unor sisteme NER în capabilitățile de formulare a răspunsurilor. Foarte multe întrebări sunt formulate astfel încât răspunsul lor să fie o entitate cu nume. De exemplu, "Cine este președintele SUA?". Astfel, la TREC-8 (Text REtrieval Conference), 80\% din cele 200 de întrebări aveau ca răspuns o entitate cu nume, adică Cine? (persoană), Când? (timp sau dată calendaristică), Unde? (locație).\cite{trec8}
 
 \paragraph{Căutarea semantică de informații}
 
@@ -162,7 +163,7 @@ De asemenea, are și alte aplicații mai puțin specifice. De exemplu, din textu
 
 \paragraph{Text/Web mining}
 
-urmărește extragerea informației dintr-un depozit imens de documente. Are ca scop extragerea de cunoștințe dintr-o cantitate de informații care nu este disponibilă în documente luate în mod izolat, ci in întregul ansamblu de documente. În lucrarea lui Sanchez și Moreno, entitățile cu nume din domeniul medical sunt extrase dintr-un corpus mare pentru a construi o ontologie\index{Ontologie}. Aceste ontologii pot fi folosite mai departe pentru clasificare de entități și relații între entități.\cite{sanchez2005}
+urmărește extragerea informației dintr-un depozit imens de documente. Are ca scop extragerea de cunoștințe dintr-o cantitate de informații care nu este disponibilă în documente luate în mod izolat, ci în întregul ansamblu de documente. În lucrarea lui Sanchez și Moreno, entitățile cu nume din domeniul medical sunt extrase dintr-un corpus mare pentru a construi o ontologie\index{Ontologie}. Aceste ontologii pot fi folosite mai departe pentru clasificare de entități și relații între entități.\cite{sanchez2005}
 
 \section{Dificultăți ale NER. Factori de Influență}
 
@@ -179,22 +180,22 @@ Multe strategii au fost propuse de-a lungul scurtei istorii a acestui domeniu, d
 
 Una dintre primele lucrări de cercetare din acest domeniu a fost prezentată de Lisa F. Rau(1991) la a șaptea Conferință IEEE de Aplicații ale Inteligenței Artificiale.\cite{rau1991}. Lucrarea lui Rau descrie un sistem capabil "să extragă și să recunoască nume de companii". Acest sistem a reprezentat pionieratul. El se baza totuși pe reguli făcute de mână și pe euristici. Nu avea nimic care să folosească tehnici de ML, de exemplu.
 
-Din 1991 până în 1995, ritmul publicări a râmas relativ scăzut, chiar și în limba engleză. Au fost identificate doar 8 publicații în engleză în acest interval de timp.
+Din 1991 până în 1995, ritmul de publicări a râmas relativ scăzut, chiar și în limba engleză. Au fost identificate doar 8 publicații în engleză în acest interval de timp.
 
 Anul 1996 a constituit un punct major de cotitură în istoria NER. Atunci a avut loc primul eveniment major dedicat acestui task, \textbf{MUC-6}(Grishman \& Sundheim, 1996)\footnote{\url{http://cs.nyu.edu/faculty/grishman/muc6.html}}\cite{grishman1996} La această conferință au fost propuse 20 de sisteme de identificare a entităților cu nume.
 
-Din anul 1996 până în prezent, cercetarea în domeniu s-a accelerat continuu. Nu a existat nicio perioadă în care interesul pentru acest domeniu să scadă. S-a cercetat constant și s-au căutat neîntrerupt soluții inovatoare pentru această problemă netrivială. Au avut loc foarte multe evenimente științifice dedicate acestui domeniu, printre care amintesc CoNLL-2003.\cite{conll2003}
+Din anul 1996 până în prezent, cercetarea în domeniu s-a accelerat continuu. Nu a existat nicio perioadă în care interesul pentru acest domeniu să scadă. S-a cercetat constant și s-au căutat neîntrerupt soluții inovatoare pentru această problemă netrivială. Au avut loc foarte multe evenimente științifice dedicate acestui domeniu, printre care amintim CoNLL-2003.\cite{conll2003}
 
 \index{n-gram}
-Putem observa, folosind Google books Ngram Viewer \footnote{\url{http://books.google.com/ngrams}}, evoluția de-a lungul timpului a referirilor în literatura de specialitate la cele două denumiri: \textit{named entity} și \textit{named entity recognition} Ea este prezentată în \labelindexref{Figura}{img:ner-evolution}. Se observă că termenii au un caracter accentuat de utilizare și încep să fie folosiți din ce în ce mai mult după anii 2000. De asemenea, din grafic reiese ceea ce era și de așteptat, ca termenul \textit{named entity} a apărut în literatura de specialitate înaintea termenului \textit{named entity recognition}.
+Putem observa, folosind Google books Ngram Viewer \footnote{\url{http://books.google.com/ngrams}}, evoluția de-a lungul timpului a referirilor în literatura de specialitate la cele două denumiri: \textit{named entity} și \textit{named entity recognition}. Ea este prezentată în \labelindexref{Figura}{img:ner-evolution}. Se observă că termenii au un caracter accentuat de utilizare și încep să fie folosiți din ce în ce mai mult după anii 2000. De asemenea, din grafic reiese ceea ce era și de așteptat, ca termenul \textit{named entity} a apărut în literatura de specialitate înaintea termenului \textit{named entity recognition}.
 
 Acest lucru era de așteptat, deoarece Saul Kripke a introdus noțiunea de indicator concret (eng. rigid designator) în 1982, iar termenul de "Named Entity Recognition" a fost introdus în literatură mai târziu, la conferința MUC-6 din 1996.\cite{grishman1996}
 
 \fig[scale=0.5]{src/img/ner-evolution.png}{img:ner-evolution}{Evoluția termenilor \textit{named entity} și \textit{named entity recognition} în timp}
 
-Treptat, tehnici de Inteligență Artificială și-au făcut apariția în acest domeniu. Astfel, modelarea matematică de tip problemă de \textit{sequence tagging} a îndreptat cercetarea către studiul ei folosind Modele Markov Ascunse, într-o primă instanță. Lucrarea lui Bickel, An Algorithm that Learns What's in A Name a fost printre primele lucrări influente care folosesc această abordare. (Bickel et al, 1999)\cite{Bikel99analgorithm}
+Treptat, tehnici de Inteligență Artificială și-au făcut apariția în acest domeniu. Astfel, modelarea matematică de tip problemă de \textit{sequence tagging} a îndreptat cercetarea către studiul ei folosind Modele Markov Ascunse, într-o primă instanță. Lucrarea lui Bickel, An Algorithm that Learns What's in A Name, a fost printre primele lucrări influente care folosesc această abordare. (Bickel et al, 1999)\cite{Bikel99analgorithm}
 
-Apoi, lucrările lu McCallum, Lafferty și Pereira care propuneau nișțe metode pentru evitarea limitărilor HMM (care este un model generativ) au reprezentat din nou momente cheie. Aceste două lucrări prezentau Maximum Entropy Markov Models (MEMM)(McCallum et al. 2000)\cite{Mccallum00maximumentropy}, respectiv Conditional Random Fields(CRFs)(Lafferty et. al, 2001).\cite{Lafferty01conditionalrandom}. Au folosit multor aplicații din NLP, cum ar fi identificarea părților de vorbire într-un text (eng. Part of Speech Tagging - POS tagging) dar și identificării entităților cu nume. Asta deoarece erau metode pentru \textit{sequence labeling}.
+Apoi, lucrările lu McCallum, Lafferty și Pereira care propuneau niște metode pentru evitarea limitărilor HMM (care este un model generativ) au reprezentat din nou momente cheie. Aceste două lucrări prezentau Maximum Entropy Markov Models (MEMM) (McCallum et al. 2000)\cite{Mccallum00maximumentropy}, respectiv Conditional Random Fields(CRFs) (Lafferty et. al, 2001)\cite{Lafferty01conditionalrandom}. Au folosit multor aplicații din NLP, cum ar fi identificarea părților de vorbire într-un text (eng. Part of Speech Tagging - POS tagging) dar și identificării entităților cu nume. Asta deoarece erau metode pentru \textit{sequence labeling}.
 
 
 \subsection{Influența Limbii}
@@ -203,10 +204,10 @@ O proporție covârșitoare din cercetarea în domeniul NER este dedicată studi
 
 \begin{itemize}
 	\item Studiul general NLP este puternic axat pe limba engleză;
-	\item Necesitatea identificării entităților cu nume a fost descoperită la MUC (Message Understanding Conferences), conferințe care erau sprijinite de Departamentul de Aparare American. Ele au avut ca scop inițial extragerea de informații din texte din domeniul militar, în care erau relatate crime, atentate etc, cu scopul îmbunătățirii securității SUA;
+	\item Necesitatea identificării entităților cu nume a fost descoperită la MUC (Message Understanding Conferences), conferințe care erau sprijinite de Departamentul de Apărare American. Ele au avut ca scop inițial extragerea de informații din texte din domeniul militar, în care erau relatate crime, atentate etc., cu scopul îmbunătățirii securității SUA;
 	\item Limba engleză este o limbă destul de simplă în comparație cu alte limbi. Nu are acord între subiect și predicat, nu are gen pentru substantive și adjective, are reguli bine definite de generare a limbajului față de alte limbi. Setul de caractere este restrâns la cele 26 de caractere latine standard, etc.;
 	\item Corpusurile adnotate cu entități cu nume au fost făcute mai întâi pe articole de știri în limba engleză, Wall Street Journal și Reuters. Deci, pentru algoritmii de ML utilizați în studiul NER, avem un set de date de antrenament de pornire pe această limbă;
-	\item Este o limbă de circulație internațională. Chiar și în studiul NER folosind Wikipedia, cele mai multe articole sunt scrise în engleză.
+	\item Este o limbă de circulație internațională. Chiar și în studiul NER folosind Wikipedia, Wikipedia are cele mai multe articole scrise în engleză.
 \end{itemize}
 
 
@@ -256,12 +257,12 @@ Un exmplu de împărțire în \textbf{domenii} poate fi dat așa:
 	\end{itemize}
 \end{itemize}
 
-În general, se observă că textul \textit{informal} este textul generat de utilizatorii din Web-ul Social\index{Web Social}. Acest tip de text, este dificil de analizat de sistemele NER pentru că adesea nu respectă convențiile limbii în care este scris. De exemplu, numele proprii sunt scrise fără majusculă, se mănâncă des litere, se fac greșeli de ortografie și nu se respectă semnele de punctuație. Există chiar un limbaj propriu, plin de prescurtări și alte notații, caracteristic acestui domeniu de exemplu, cuvântul \texttt{wait} poate fi scris ca \texttt{w8}. Există și o titulatură pentru acest tip de text informal. Ea se numește \textit{Netiquette}.\footnote{\url{http://en.wikipedia.org/wiki/Etiquette_(technology)}}
+În general, se observă că textul \textit{informal} este textul generat de utilizatorii din Web-ul Social\index{Web Social}. Acest tip de text este dificil de analizat de sistemele NER pentru că adesea nu respectă convențiile limbii în care este scris. De exemplu, numele proprii sunt scrise fără majusculă, se mănâncă des litere, se fac greșeli de ortografie și nu se respectă semnele de punctuație. Există chiar un limbaj propriu, plin de prescurtări și alte notații, caracteristic acestui domeniu. De exemplu, cuvântul \texttt{wait} poate fi scris ca \texttt{w8}. Există și o titulatură pentru acest tip de text informal. Ea se numește \textit{Netiquette}.\footnote{\url{http://en.wikipedia.org/wiki/Etiquette_(technology)}}
 
-Împărțirea textului în genuri și domenii, la grade diferite de granularitate, așa cum am văzut că se poate face, complică mult problema NER. Probleme apar din cauza \textit{transferului de vocabular} (eng. Vocabulary Transfer\index{Vocabulary Transfer}). Aceasta reprezintă câte cuvinte din textul pe care un sistem NER a fost antrenat (și le-a văzut) apar și în textul ce trebuie analizat. De exemplu, dacă antrenăm un sistem NER pe articole din domeniul sportiv și apoi îl punem să analizeze texte din domeniul astronomic, sau biomedical, este foarte probabil ca el să dea peste cuvinte pe care nu le-a văzut deloc. Astfel, el va merge foarte prost. De asemenea, genul joacă un rol important. De pildă, în articolele sțiințifice persoanele apar foarte des ca referințe, de forma (Mayer, S. 2001). Pe de altă parte, în articolele de știri ele apar ca subiect în propoziții, de exemplu "Traian Băsescu a afirmat că...". Un sistem antrenat să recunoască astfel de entități de tip persoană din articole de știri nu va identifica bine persoanele care apar sub formă de referințe în articolele de cercetare. Această problemă am tratat-o și eu și voi arăta într-un capitol ulterior, cum antrenarea pe un corpus adecvat crește performanțele sistemului NER.
+Împărțirea textului în genuri și domenii, la grade diferite de granularitate, așa cum am văzut că se poate face, complică mult problema NER. Probleme apar din cauza \textit{transferului de vocabular} (eng. Vocabulary Transfer\index{Vocabulary Transfer}). Aceasta reprezintă câte cuvinte din textul pe care un sistem NER a fost antrenat (și le-a văzut) apar și în textul ce trebuie analizat. De exemplu, dacă antrenăm un sistem NER pe articole din domeniul sportiv și apoi îl punem să analizeze texte din domeniul astronomic, sau biomedical, este foarte probabil ca el să dea peste cuvinte pe care nu le-a văzut deloc. Astfel, el va merge foarte prost. De asemenea, genul joacă un rol important. De pildă, în articolele sțiințifice persoanele apar foarte des ca referințe, de forma (Mayer, S. 2001). Pe de altă parte, în articolele de știri ele apar ca subiect în propoziții, de exemplu "Traian Băsescu a afirmat că...". Un sistem antrenat să recunoască astfel de entități de tip persoană din articole de știri nu va identifica bine persoanele care apar sub formă de referințe în articolele de cercetare. Această problemă am tratat-o și noi și vom arăta într-un capitol ulterior, cum antrenarea pe un corpus adecvat crește performanțele sistemului NER.
 
 
-De exemplu, Poibeau și Kosseim, (2001) \cite{Poibeau01propername} au testat unele sisteme de identificare a entităților cu nume pe colectia MUC-6 ce cuprindea articole din ziar (jurnalistice) și pe un corpus propriu făcut din conversații telefonice scrise manual (text \textit{informal}), și pe e-mail-uri tehnice. Ei au raportat o scădere drastică în performanță a sistemelor cuprinsă între 20\% și chiar 40\%, atât în \textit{precizie (eng. precision)} (numărul de entități  găsite și clasificate corect raportat la numărul total de entități) și în \textit{recall} (numărul de entități gasite și clasificate corect raportat la numărul total de entități corecte). Mai multe detalii despre \textit{preczie} și \textit{recall} voi da într-o secțiune ulterioară.
+De exemplu, Poibeau și Kosseim, (2001) \cite{Poibeau01propername} au testat unele sisteme de identificare a entităților cu nume pe colectia MUC-6 ce cuprindea articole din ziar (jurnalistice) și pe un corpus propriu făcut din conversații telefonice scrise manual (text \textit{informal}) și pe e-mail-uri tehnice. Ei au raportat o scădere drastică în performanță a sistemelor cuprinsă între 20\% și chiar 40\%, atât în \textit{precizie (eng. precision)} (numărul de entități  găsite și clasificate corect raportat la numărul total de entități) și în \textit{recall} (numărul de entități gasite și clasificate corect raportat la numărul total de entități corecte). Mai multe detalii despre \textit{preczie} și \textit{recall} vom da în \labelindexref{Secțiunea}{subsec:precision-and-recall}.
 
 
 Problema recunoașterii entităților în texte \textit{informale} este abordată recent pe texte din \textit{tweet-uri} prin metode de învățare nesupervizată (K-Nearest Neighbors - KNN\abbrev{KNN}{K-Nearest Neighbors}). Acest clasificator este apoi combinat cu un clasificator supervizat CRF. Această manieră de abordare se numește \textit{semi-supervised} - semisupervizată. Problema clasificatoarelor care folosesc metode nesupervizate este următoarea. Chiar dacă la final sunt identificate anumite clase de entități sistemul este incapabil să atribuie nume cu înțeles acestor clase. El va da nume generice, de exemplu C1, C2 etc. Un om trebuie să decidă dacă o clasă este specifică Persoanelor, de exemplu.(Liu et al., 2009)\cite{Liu_recognizingnamed}
@@ -273,9 +274,9 @@ Tipurile de entități pot influența în mai multe moduri performanțele unui s
 
 \paragraph{Numărul tipurilori de entități}
 
-influențează sistemele bazate pe ML. Asta deoarece crescând numărul, un calcul matematic simplu arată următorul lucru. Voi calcula probabilitatea medie ca o entitate să fie într-o anumită clasă. De exemplu, pentru 3 clase, probabilitatea medie este $ P_1 = \frac{1}{3} \simeq 0.33 $. Acest lucru înseamnă că putem foarte ușor să depășim probabiliatea de 50\% ($ \frac{1}{2} $). Adică, putem fi siguri că o entitate cu nume are o apartenență majoritară la clasa respectivă, aparține cu o certitudine destul de mare. Pe de altă parte, dacă vom crește numărul de clase, de exemplu, la 10 clase, probabilitatea medie va deveni $ P_2 = \frac{1}{10} \simeq 0.1 $. Acest lucru semnifică faptul că este dificil să fim siguri că o entitate aparține cu certitudine (50 \%) la o clasă anume. Sistemul nostru va întoarece un răspuns, cu probabilități, cel mai adesea, sub 0.5 toate. O vom alege pe cea maximă, dar nu va fi majoritară. 
+influențează sistemele bazate pe ML. Asta deoarece crescând numărul, un calcul matematic simplu arată următorul lucru. Vom calcula probabilitatea medie ca o entitate să fie într-o anumită clasă. De exemplu, pentru 3 clase, probabilitatea medie este $ P_1 = \frac{1}{3} \simeq 0.33 $. Acest lucru înseamnă că putem foarte ușor să depășim probabiliatea de 50\% ($ \frac{1}{2} $). Adică, putem fi siguri că o entitate cu nume are o apartenență majoritară la clasa respectivă, aparține cu o certitudine destul de mare. Pe de altă parte, dacă vom crește numărul de clase, de exemplu, la 10 clase, probabilitatea medie va deveni $ P_2 = \frac{1}{10} \simeq 0.1 $. Acest lucru semnifică faptul că este dificil să fim siguri că o entitate aparține cu certitudine (50 \%) la o clasă anume. Sistemul nostru va întoarece un răspuns, cu probabilități, cel mai adesea, sub 0.5 toate. O vom alege pe cea maximă, dar nu va fi majoritară. 
 
-O altă problemă ce apare când creștem numărul de clase este cauzată de creșterea timpului de antrenare al modelului. Cu această problema m-am confruntat de multe ori. Funcția ce trebuie optimizată de algoritmul de ML devine foarte complexă, cu multe variabile, iar costul computațional cresțe cu minim $ O(n^k) $ în funcție de numărul de clase ($n = C)$ pentru că vom vedea că trebuie să ridicăm numărul de clase la puterea ordinului $k$ al modelului secvenței, care este minim 2, adică, în cel mai bun caz vom avea $ O(n^2) $.
+O altă problemă ce apare când creștem numărul de clase este cauzată de creșterea timpului de antrenare al modelului. Cu această problemă ne-am confruntat de multe ori. Funcția ce trebuie optimizată de algoritmul de ML devine foarte complexă, cu multe variabile, iar costul computațional cresțe cu minim $ O(n^k) $ în funcție de numărul de clase ($n = C)$ pentru că vom vedea că trebuie să ridicăm numărul de clase la puterea ordinului $k$ al modelului secvenței, care este minim 2, adică, în cel mai bun caz vom avea $ O(n^2) $.
 
 Așa cum vom vedea într-o secțiune ulterioară, matematic, în mod concret, dacă avem 3 clase de entități, de exemplu, \texttt{PERSOANĂ}, \texttt{ORGANIZAȚIE}, \texttt{LOCAȚIE}, problema se modelează cu $3 + 1  = 4$ clase. În secvența de cuvinte, fiecărui cuvânt (token)\index{token} i se va asocia o clasă. Cuvintele care nu vor fi entități cu nume, vor avea asociată clasa \texttt{O} - Out, Other. Deci, vom avea practic 4 clase. În general, la $C$ tipuri de entități corespunde un număr de $C + 1$ tipuri de clase. Deci, algortimul nostru, mai rău, va avea de decis între mai multe clase. 
 
@@ -310,7 +311,7 @@ De remarcat este și lucrul în care nu se limitează tipurile posibile de entit
 
 \section{State of The Art}
 
-În această secțiune voi prezenta produsele software și sistemle de recunoaștere a entităților cu nume care există în prezent, atât \textit{open source}\index{open source} și \textit{free}, cât și sistemele comerciale. Acestea reprezintă \textit{vârful de lance} a ceea ce există în momentul de față în domeniu. 
+În această secțiune vom prezenta produsele software și sistemle de recunoaștere a entităților cu nume care există în prezent, atât \textit{open source}\index{open source} și \textit{free}, cât și sistemele comerciale. Acestea reprezintă \textit{vârful de lance} a ceea ce există în momentul de față în domeniu. 
 
 Totuși, chiar și aceste sisteme sunt departe de a fi perfecte. Sistemele \textit{vârf de lance} actuale sunt fragile. Acest lucru este valabil pentru ambele abordări, atât pentru cele bazate pe reguli, cât și pentru cele bazate pe modele statistice. Un sistem NER dezvoltat pentru un domeniu nu se comportă în general bine pe alte domenii.
 
@@ -322,7 +323,7 @@ Stanford Named Entity  Recognizer\footnote{\url{http://nlp.stanford.edu/software
 
 Reprezintă o implementare a unui sistem NER în limbajul de programare Java. Este un produs software \textit{open source}.
 
-Are o vechime de aproape șapte ani, având Inital release-ul pe 18 septembrie 2006. La data scrierii articolului, Stanford NLP este la versiunea 3.2.0 (20-06-2013). Din păcate, dependențele Apache Maven nu au fost updat-ate în repository cu versiunea curentă. Astfel, eu am folosit o versiune mai veche a Stanford NLP.
+Are o vechime de aproape șapte ani, având Inital release-ul pe 18 septembrie 2006. La data scrierii articolului, Stanford NLP este la versiunea 3.2.0 (20-06-2013). Din păcate, dependențele Apache Maven nu au fost updat-ate în repository cu versiunea curentă. Astfel, noi am folosit o versiune mai veche a Stanford NLP.
 
 \index{Apache Maven}
 
@@ -333,7 +334,7 @@ Stanford NER folesesțe pentru identificarea entităților cu nume un Conditiona
 Modelele incluse cu care a fost antrenat Stanford NER pentru \textbf{limba engleză} sunt:
 
 \begin{itemize}
-\item un model de 4 clase (Location, Person, Organization, Misc.) antrenat pentru CoNLL (Retures Corpora);
+\item un model de 4 clase (Location, Person, Organization, Misc.) antrenat pentru CoNLL (Reuters Corpora);
 \item un model de 7 clase (Time, Location, Organization, Person, Money, Percent, Date) antrenat pentru MUC-6 (Wall Street Journal Corpora);
 \item un model de 3 clase  (Location, Person, Organization) antrenat atât pe CoNLL cât și pe MUC pentru intersecția dintre cele 2 tipuri de clase.
 \end{itemize}
@@ -342,7 +343,7 @@ Există modele și pentru alte limbi, cum ar fi limba germană, cât și limba c
 
 De remarcat este faptul că Stanford CRF Classifier poate fi antrenat pe un alt corpus adnotat cu un număr arbitrar de categorii de entități cu nume. Apoi acest model statistic obținut poate fi \textit{serializat} și arhivat pe disc și poate fi folosit de Stanford NER ca și celelalte modele puse la dispoziție în distribuția oficială.
 
-Din păcate, am dorit să obțin scorurile $F_1$ pe care Stanford NER le face pe corpusurile pe care a fost antrenat, dar nu am găsit pe niciunde. Deoarece sistemul a apărut după Conferința CoNLL-2003, el nu a participat la competiție. Dacă aș fi avut corpusul, aș fi putut calcula eu scorul $F_1$, dar pentru că nu am avut acces la corpus, nu am avut cum.
+Din păcate, am dorit să obținem scorurile $F_1$ pe care Stanford NER le face pe corpusurile pe care a fost antrenat, dar nu am găsit pe niciunde. Deoarece sistemul a apărut după Conferința CoNLL-2003, el nu a participat la competiție. Dacă am fi avut corpusul, am fi putut calcula scorul $F_1$, dar pentru că nu am avut acces la corpus, nu am avut cum.
 
 
 \subsection{Apache OpenNLP}
@@ -357,9 +358,9 @@ OpenNLP suportă cele mai uzuale task-uri de NLP, cum ar fi token-izarea, segmen
 
 Sistemul NER pus la dispoziție de OpenNLP este bazat pe \textit{one-vs-all classification}. Cu alte cuvinte, există câte un model statistic antrenat pentru fiecare clasă în parte. Celelalte clase sunt ignorate în acest model statistic. Adică, modelul care este antrenat să identifice de exemplu \texttt{PERSOANE} va ignora complet celelate categorii de entități, cum ar fi \texttt{LOCAȚII} și \texttt{ORGANIZAȚII}. Le va considera pe toate \texttt{O, Other, Out sau None}.
 
-Astfel, există modele diferite pentru Persoane, Organizații, Locații și Misc.\footnote{\url{http://opennlp.sourceforge.net/models-1.5/}}.
+Astfel, există modele diferite pentru Persoane, Organizații, Locații și Misc.\footnote{\url{http://opennlp.sourceforge.net/models-1.5/}}
 
-Pentru limba engleză avem 7 modele antrenate fiecare pe câte o clasă din MUC.:
+Pentru limba engleză avem 7 modele antrenate fiecare pe câte o clasă din MUC:
 
 \begin{itemize}
 \item model pentru Date, en-ner-date.bin
@@ -380,7 +381,7 @@ Această abordare cu mai mulți clasificatori are avantaje și dezavantaje.
 	\item Un singur tip de entitate scade timpul de antrenare a modelului, deoarece funcția ce trebuie optimizată are un număr redus de variabile, având doar o două clase.
 \end{itemize}
 
-\textit{Dezavantajul} major al antrenării mai multor clasificatori este reprezentat de distribuția nesimetrică a claselor. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON}, \texttt{LOCATION}, etc. Acum, având doar o singură categorie această asimetrie cauzată de faptul că numărul de exemple negative este mult mai mare decât numărul de exemple pozitive este și mai pronunțată. Asta deoarece, de exemplu, pentru modelul antrenat pe persoane, toate exemplele pozitive de tip locație, organizație etc, care înainte mai contrabalansau asimetria, vor deveni exemple negative de tip \texttt{O}. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}.
+\textit{Dezavantajul} major al antrenării mai multor clasificatori este reprezentat de distribuția nesimetrică a claselor. Chiar și într-un model cu 3 categorii, numărul de exemple negative, de tip \texttt{O - NONE} domină covârșitor numărul de exemple pozitive, de tip \texttt{PERSON}, \texttt{LOCATION}, etc. Acum, având doar o singură categorie această asimetrie cauzată de faptul că numărul de exemple negative este mult mai mare decât numărul de exemple pozitive este și mai pronunțată. Asta deoarece, de exemplu, pentru modelul antrenat pe persoane, toate exemplele pozitive de tip locație, organizație etc., care înainte mai contrabalansau asimetria, vor deveni exemple negative de tip \texttt{O}. Repartiția asimetrică afectează foarte mult acuratețea algoritmului și capacitatea modelului de a recunoaște \textit{cât mai multe} exemple pozitive pe un set de date de test, ceea ce numim \textit{recall}.
 
 De asemenea, Apache OpenNLP pune la dispoziție NER multilingvistic. Pe lângă engleză, avem modele antrenate pe limba spaniolă și pe limba olandeză, pe 4 clase de la CoNLL-2002.
 
@@ -388,7 +389,7 @@ De asemenea, Apache OpenNLP pune la dispoziție NER multilingvistic. Pe lângă 
 
 \index{Python NLTK}
 \index{Corpus}
-Python Natural Language Toolkit\footnote{\url{http://nltk.org/}} este platforma de vârf pentru scrierea de programe în limbajul Python care lucrează cu date din limbajul uman. Pune la dispoziție  o colecție impresionantă de peste 50 de corpusuri su resurse de NLP. Are un chiar și un GUI de download pentru modele și corpusuri. În \labelindexref{listing-ul}{lst:python-nltk} de mai jos avem un exemplu de cât de simplu se poate lansa NLTK download-manager-ul. El arată ca în \labelindexref{Figura}{img:nltk-downloader} de mai jos.
+Python Natural Language Toolkit\footnote{\url{http://nltk.org/}} este platforma de vârf pentru scrierea de programe în limbajul Python care lucrează cu date din limbajul uman. Pune la dispoziție  o colecție impresionantă de peste 50 de corpusuri su resurse de NLP. Are chiar și un GUI de download pentru modele și corpusuri. În \labelindexref{listing-ul}{lst:python-nltk} de mai jos avem un exemplu de cât de simplu se poate lansa NLTK download-manager-ul. El arată ca în \labelindexref{Figura}{img:nltk-downloader} de mai jos.
 
 % Inline Listing example
 \lstset{language=python,caption=Python NLTK,label=lst:python-nltk}
@@ -403,7 +404,7 @@ Din păcate, deși are o colecție impresionantă de corpusuri, printe ele nu se
 
 \index{IOB encoding}
 \index{IO encoding}
-Din ce am putut citi pe site-ul lor, este de remarcat faptul că ei au antrenat modelele pe encodarea de tip \textit{IOB}, nu cea clasică, \textit{IO}. Encoding-ul IOB aduce un plus de complexitate. Înseamnă să marchezi diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje. Mai multe detalii despre aceste moduri de adnotare a textelor vor fi prezentate în capitolul de Tehnici și Algoritmi Folosiți, la  \labelindexref{Secțiunea}{sec:io-encoding}.
+Din ce am putut citi pe site-ul lor, este de remarcat faptul că ei au antrenat modelele pe encodarea de tip \textit{IOB}, nu cea clasică, \textit{IO}. Reprezentarea IOB aduce un plus de complexitate. Înseamnă să marcăm diferit începutul unei entități de restul ei. Acest lucru are și avantaje și dezavantaje. Mai multe detalii despre aceste moduri de adnotare a textelor vor fi prezentate în capitolul de Tehnici și Algoritmi Folosiți, la  \labelindexref{Secțiunea}{sec:io-encoding}.
 
 \subsection{Alte Aplicații}
 

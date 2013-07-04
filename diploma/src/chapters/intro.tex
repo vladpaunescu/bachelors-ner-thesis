@@ -9,9 +9,11 @@
 \abbrev{CS}{Computer Science}
 
 Procesarea Limbajului Natural (eng. Natural Language Processing - NLP) este un domeniu din Sțiința Calculatoarelor (eng. Computer Science - CS), mai exact din Inteligența Artificială și Lingvistică. Multe probleme din NLP implică înțelegerea limbajului uman, adică să permită calculatoarelor sa extragă informație (să înțeleagă) limbajul pe care îl primesc de la un om în forma sa naturală, nestructurată. Astfel, Procesarea Limbajului Natural este legată oarecum de Interacțiunea Om-Calculator (eng. Human–Computer Interaction).
-\abbrev{HCI}{Human–Computer Interaction}
 
-Extragera de Informații (eng. Information Extraction - IE \abbrev{IE}{Information Extraction}) este \textit{task}-ul unui calculator de a extrage automat informații cu structură dintr-un text care nu are structură, dar care poate fi citit de o mașină. Deși procesarea limbajului natural se ocupă și de procesarea de limbaj vorbit, dificultățile suplimentare introduse de acest lucru (Speech to Text) au făcut ca problema de față să fie extensiv studiată pe texte scrise, texte ușor de citit de o mașină, însă greu de interpretat semantic.
+\abbrev{HCI}{Human–Computer Interaction}
+\abbrev{IE}{Information Extraction}
+
+Extragera de Informații (eng. Information Extraction - IE) este \textit{task}-ul unui calculator de a extrage automat informații cu structură dintr-un text care nu are structură, dar care poate fi citit de o mașină. Deși procesarea limbajului natural se ocupă și de procesarea de limbaj vorbit, dificultățile suplimentare introduse de acest lucru (Speech to Text) au făcut ca problema de față să fie extensiv studiată pe texte scrise, texte ușor de citit de o mașină, însă greu de interpretat semantic.
 
 
 \subsection{Ușor pentru Oameni. Dificil pentru Calculatoare}
@@ -35,7 +37,7 @@ Există cel puțin o aplicație comercială, care pune la dispoziție \textit{In
 \abbrev{MUC}{Message Understanding Conference}
 Formal, termenul de Entitate cu Nume (eng. Named Entity - NE) este des întâlnit în Extragerea de Informații (eng. Information Extraction - IE). El a fost inventat la a șasea Conferință pentru Înțelegerea Mesajelor (eng. Message Understanding Conference - MUC), MUC-6. (Grishman \& Sundheim, 1996) \cite{grishman1996}. Aceste conferințe au influențat cercetarea in domeniul IE în anii '90. La acel moment, MUC se concentra pe task-uri de IE în care informația structurată trebuia extrasă din articole din ziar din domeniul militar sau antiterorist.
 
-În definiera sarcinilor IE, oamenii au observat că era esențial să se recunoască unități de informație precum \textbf{nume proprii} ce includeau persoane, organizații și locații. Dacă în fazele inițiale ale formulării problemei, alte entități (nume proprii) erau considerate ca fiind \textit{Amestecate} (eng. Misc. - Miscellaneous), mai târziu, alte unități informaționale au fost introduse, entități care nu se mai identificau cu conceptul de nume propriu (substantiv propriu), ci aveau o corelare cu \textbf{expresiile numerice}, sau \textbf{expresii temporale} cum ar fi: dată calendaristică, numeral cardinal, numeral ordinal, timp, unități monetare și procente.
+În definirea sarcinilor IE, oamenii au observat că era esențial să se recunoască unități de informație precum \textbf{nume proprii} ce includeau persoane, organizații și locații. Dacă în fazele inițiale ale formulării problemei, alte entități (nume proprii) erau considerate ca fiind \textit{Amestecate} (eng. Misc. - Miscellaneous), mai târziu, alte unități informaționale au fost introduse, entități care nu se mai identificau cu conceptul de nume propriu (substantiv propriu), ci aveau o corelare cu \textbf{expresiile numerice}, sau \textbf{expresiile temporale} cum ar fi: dată calendaristică, numeral cardinal, numeral ordinal, timp, unități monetare și procente.
 
 
 Identificarea referințelor la aceste entități a fost recunoscută ca fiind una dintre sarcinilie importante la IE și a fost denumită \textbf{Identificarea Entităților cu Nume} (eng. \textit{Named Entity Recognition} - NER).\abbrev{NER}{Named Entity Recognition}
@@ -75,12 +77,12 @@ Așa cum am precizat, este important să putem recunoaște într-un text dat ref
 \subsection{Construirea unui Set Semnificativ de Texte - Corpus}
 \label{sub-sec:corpus-building}
 
-Am studiat diferitele tehnici deja existente de extragere din text a entităților cu nume. Întrucât limba engleză a fost extensiv studiată, am decis să incep cu ea. Deoarece vasta majoritate a sistemelor NER actuale folosesc tehnici de Machine Learning, m-am axat pe această tehnică și eu.
+Au fost studiate diferitele tehnici deja existente de extragere din text a entităților cu nume. Întrucât limba engleză a fost extensiv studiată, am decis să începem cu ea. Deoarece vasta majoritate a sistemelor NER actuale folosesc tehnici de Machine Learning, ne-am axat pe această tehnică și noi.
 
 \abbrev{CoNLL}{Conference on Natural Language Learning}
-Din păcate, așa cum am spus, pentru a putea antrena un algoritm de ML este nevoie de o cantiate semnificativă de text adnotat de mână de un lingvist expert. Aceste colecții de texte se numesc în literatura de specialitate \textit{Corpusuri}.\index{Corpus} În prezent, există mai multe corpusuri pentru limba engleză, adnotate pentru NER, cum ar fi cel cu știrile Reuters din perioada 20-08-1996 - 19-08-1997.\cite{rcv1} Acest corpus conține peste 800,000 de articole de știri. Adnotarea a fost făcută pe un subset din aceste știri și a fost prezentată la CoNLL-2003\cite{conll2003} (eng. Conference on Natural Language Learning). Primul corpus adnotat cu entități cu nume este cel al conferinței MUC-6 (eng. Message Understanding Conference) și constă în articole din Wall Street Journal din perioada Ianuarie 1993 - Iunie 1994.  Există și alte corpusuri adnotate, însă aproape toate (cel puțin din ce am găsit eu) nu sunt gratuite, iar altele nu sunt publice. Așa că eu nu am avut acces la un astfel de corpus adnotat. Cercetări importante au loc și în domeniul biomedical și există și corpusuri adnotate pentru acest domeniu. Dar este un domeniu mult mai specializat și nu voi insista pe el.
+Din păcate, așa cum am spus, pentru a putea antrena un algoritm de ML este nevoie de o cantiate semnificativă de text adnotat de mână de un lingvist expert. Aceste colecții de texte se numesc în literatura de specialitate \textit{Corpusuri}.\index{Corpus} În prezent, există mai multe corpusuri pentru limba engleză, adnotate pentru NER, cum ar fi cel cu știrile Reuters din perioada 20-08-1996 - 19-08-1997.\cite{rcv1} Acest corpus conține peste 800,000 de articole de știri. Adnotarea a fost făcută pe un subset din aceste știri și a fost prezentată la CoNLL-2003\cite{conll2003} (eng. Conference on Natural Language Learning). Primul corpus adnotat cu entități cu nume este cel al conferinței MUC-6 (eng. Message Understanding Conference) și constă în articole din Wall Street Journal din perioada Ianuarie 1993 - Iunie 1994.  Există și alte corpusuri adnotate, însă aproape toate (cel puțin din ce am găsit noi) nu sunt gratuite, iar altele nu sunt publice. Așa că nu am avut acces la un astfel de corpus adnotat. Cercetări importante au loc și în domeniul biomedical și există și corpusuri adnotate pentru acest domeniu. Dar este un domeniu mult mai specializat și nu vom insista pe el.
 
-De asemenea, \textit{task}-ul meu consta în identificarea entităților cu nume pe texte din Științe Sociale. Așa cum voi prezenta ulterior, sistemele NER antrenate pe un corpus dintr-un domeniu se comportă foarte prost pe texte dintr-un alt domeniu. Din informațiile pe care le posed, nu s-au făcut adnotări până în prezent pe domeniul Științelor Sociale.
+De asemenea, \textit{task}-ul complet consta în identificarea entităților cu nume pe texte din Științe Sociale. Așa cum vom prezenta ulterior, sistemele NER antrenate pe un corpus dintr-un domeniu se comportă foarte prost pe texte dintr-un alt domeniu. Din informațiile pe care le avem, nu s-au făcut adnotări până în prezent pe domeniul Științelor Sociale.
 
 Prin urmare, prima sarcină a fost crearea unui corpus din domeniul Științelor Sociale. Am folosit pentru aceasta două motoare de căutare de documente științifice - pdf-uri:
 
@@ -89,31 +91,33 @@ Prin urmare, prima sarcină a fost crearea unui corpus din domeniul Științelor
 \item Microsoft Academic Search.\footnote{\url{http://academic.research.microsoft.com/}}
 \end{itemize}
 
-Voi descrie în \labelindexref{Secțiunea}{sec:web-module} cum am făcut strângerea automată a unui număr semnificativ de documente în format PDF.
+Vom descrie în \labelindexref{Secțiunea}{sec:web-module} cum s-a făcut strângerea automată a unui număr semnificativ de documente în format PDF.
 
 \subsection{Adnotarea unui Subset din Corpusul Creat}
 
-După ce au fost strânse, pdf-urile au fost prelucrate. S-a extras textul din ele, au fost eliminate anumite caractere \textit{neparsabile} și au fost eliminate despărțirile în silabe de la sfârșit de linie, acolo unde bineințeles se putea. Apoi, au fost amestecate și împărțite în bucăți mici de text (50- 100 de linii). Un număr de câteva sute de astfel de \textit{split}-uri a fost adnotat folosind BRAT(Brat Rapid Adnotation Tool).\footnote{\url{http://brat.nlplab.org/}}
+După ce au fost strânse, pdf-urile au fost prelucrate. S-a extras textul din ele, au fost eliminate anumite caractere \textit{neparsabile} și au fost eliminate despărțirile în silabe de la sfârșit de linie, acolo unde bineînțeles se putea. Apoi, au fost amestecate și împărțite în bucăți mici de text (50- 100 de linii). Un număr de câteva sute de astfel de \textit{split}-uri a fost adnotat folosind BRAT(Brat Rapid Adnotation Tool).\footnote{\url{http://brat.nlplab.org/}}
 
-Este cunsocut faptul că procedeul de adnotatare manuală implică un volum mare de muncă și un efort substanțial, consumând destul timp. Am încercat să creez un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți. Mai multe detalii voi prezenta în \labelindexref{Secțiunea}{section:brat-annotation}, dedicată acestei etape.
+Este cunsocut faptul că procedeul de adnotatare manuală implică un volum mare de muncă și un efort substanțial, consumând destul timp. Am încercat să creăm un corpus statistic reprezentativ, adică am adnotat bucăți diferite, de la început, cuprins, sau referințe și de la autori diferiți. Mai multe detalii vor fi prezentate în \labelindexref{Secțiunea}{section:brat-annotation}, dedicată acestei etape.
 
 \subsection{Antrenarea unui Sistem NER pe Textele Adnotate}
 
 \index{Maximum Entropy Markov Model}
 \index{Conditional Random Field}
 
-Folosind corpusul adnotat, am antrenat un sistem de recunoaștere a entităților cu nume pe el. Am folosit mai multe tipuri de \textit{feature}-uri pentru algoritmul de Învățare Automată. Textul natural vine in secvență (cuvânt după cuvânt), așa că am folosit algoritmi de ML bazați pe \textit{sequence labeling} (\textit{tagging}), cum ar fi Modele Markov Ascunse, (eng. Hidden Markov Models - HMM) \abbrev{HMM}{Hidden Markov Model}, care este un model generativ, dar și modele discriminative, mai eficiente, cum ar fi Maximum Entropy Markov Models(MEMM)\abbrev{MEMM}{Maximum-Entropy Markov Model}, dar și Conditional Random Fields(CRF)\abbrev{CRF}{Conditional Random Field}.
+\abbrev{HMM}{Hidden Markov Model}
 
-Am antrenat mai multe modele folsoind două librării care implementează Conditional Random Fields (CRFs):
+Folosind corpusul adnotat, am antrenat un sistem de recunoaștere a entităților cu nume pe el. Am folosit mai multe tipuri de \textit{feature}-uri pentru algoritmul de Învățare Automată. Textul natural vine in secvență (cuvânt după cuvânt), așa că am folosit algoritmi de ML bazați pe \textit{sequence labeling} (\textit{tagging}), cum ar fi Modele Markov Ascunse, (eng. Hidden Markov Models - HMM), care este un model generativ, dar și modele discriminative, mai eficiente, cum ar fi Maximum Entropy Markov Models (MEMM)\abbrev{MEMM}{Maximum-Entropy Markov Model}, dar și Conditional Random Fields (CRF)\abbrev{CRF}{Conditional Random Field}.
+
+Au fost antrenate mai multe modele folosind două librării care implementează Conditional Random Fields (CRFs):
 \begin{itemize}
-\item Stanford CRF Classfier;
+\item Stanford CRF Classifier;
 \item MALLET(MAchine Learning for LanguagE Toolkit).
 \end{itemize}
 
 Mai multe detalii privitoare la antrenarea modelelor pot fi consultate la \labelindexref{Secțiunea}{sub-sec:crf-software}.
 
 
-Deoarece corpusul adnotat de mine este de dimensiuni relativ mici și are doar un format destul de restrâns, algoritmii testați au tendința de a memora ceea ce văd și nu prea generalizează. Astfel, că pe texte din setul de antrenament, algoritmul se comportă foarte bine - identifică și clasifică cu un scor foarte bun. Dar pe texte pe care nu le-a văzut, chiar și din același domeniu (set de PDF-uri), acuratețea scade. Mai mult, pe texte din domenii diferite, așa cum era de așteptat, se observă o degradare destul de drastică a performanțelor. Voi prezenta mai multe detalii în \labelindexref{Secțiunea}{sec:model-measurements}.
+Deoarece corpusul adnotat de noi este de dimensiuni relativ mici și are doar un format destul de restrâns, algoritmii testați au tendința de a memora ceea ce văd și nu prea generalizează. Astfel, că pe texte din setul de antrenament, algoritmul se comportă foarte bine - identifică și clasifică cu un scor foarte bun. Dar pe texte pe care nu le-a văzut, chiar și din același domeniu (set de PDF-uri), acuratețea scade. Mai mult, pe texte din domenii diferite, așa cum era de așteptat, se observă o degradare destul de drastică a performanțelor. Vom prezenta mai multe detalii în \labelindexref{Secțiunea}{sec:model-measurements}.
 
 Mai multe detalii privitoare la performanțele modelelor și explicarea arhitecturii sistemului vor fi prezentate în secțiunile corespunzătoare.
 

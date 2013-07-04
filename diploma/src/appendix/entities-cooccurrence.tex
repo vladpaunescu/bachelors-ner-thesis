@@ -3,7 +3,7 @@
 
 Așa cum am amintit în \labelindexref{Secțiunea}{paragraph:relation}, identificarea entităților cu nume are ca aplicație directă extragerea de relații între entități.
 
-În acest capitol, vom prezenta o aplicație asemănătoare cu extragerea relațiilor. Aplicația este de această dată bazată pe un sistem NER în limba română, care a identificat și clasificat entități în texte de știri ale publicațiilor românești online - ziare online. De asemenea, eu am preluat entitățile identificate de colegul meu, Adrian Zamfirescu, pe aceste texte. Ceea ce am realizat eu nu ar fi fost posibil fără lucrul colegului meu, Adrian, căruia țin să îi mulțumesc. 
+În acest capitol, vom prezenta o aplicație asemănătoare cu extragerea relațiilor. Aplicația este de această dată bazată pe un sistem NER în limba română, care a identificat și clasificat entități în texte de știri ale publicațiilor românești online - ziare online. De asemenea, noi am preluat entitățile identificate de colegul nostru, Adrian Zamfirescu, pe aceste texte. Ceea ce am realizat noi nu ar fi fost posibil fără lucrul lui Adrian, căruia ținem să îi mulțumim. 
 
 \section{Identificarea Coaparițiilor și Construirea Grafului}
 
@@ -11,7 +11,7 @@ Am decis că două entități \textit{coapar}, adică apar împreună, dacă ele
 
 \fig[scale=0.6]{src/img/entities-articles.png}{img:entities-articles}{Modelarea matematică a relației între entități și articolele în care apar}
 
-Ulterior, am creat un alt graf de coapariții în care nodurile erau reprezentate de entități. Puneam muchie între două entități, dacă acestea apăreau împreună în același articol. Muchia avea o pondere și graful era neorientat \textit{Ponderea} era crescută cu 1 de fiecare dată când entitățile apăreau împreună într-un articol. În acest graf, avem doar entități conectate între ele de muchii cu pondere mai mare cu cât apar mai des împreună.
+Ulterior, am creat un alt graf de coapariții în care nodurile erau reprezentate de entități. Puneam muchie între două entități, dacă acestea apăreau împreună în același articol. Muchia avea o pondere și graful era neorientat. \textit{Ponderea} era crescută cu 1 de fiecare dată când entitățile apăreau împreună într-un articol. În acest graf, avem doar entități conectate între ele de muchii cu pondere mai mare cu cât apar mai des împreună.
 
 \section{Tehnici de Modelare a Grafului}
 
@@ -23,7 +23,7 @@ Graful obținut a fost procesat din mai multe perspective:
 
 \item[Identificarea Comunităților (Modularitatea)] reprezintă o metrică ce poate fi aplicată pe un graf, astfel încât să îl putem descompune în comunități diferite, puternic conectate între ele. Problema este NP-Completă (K-clică), dar există algoritmi euristici (aproximativi) care rezolvă destul de bine această problemă. Metoda folosită este propusă de Blondel et al., 2008.\cite{Blondel08fastunfolding} Am folosit acest lucru pentru a vedea dacă utilizând doar informația conținută in ponderea muchiei care leagă două noduri, putem extrage ceva semantic.
 
-Rezultatele au fost spectaculoase. Comunitătile identificate erau foarte apropiate de categoriile reale. Adică au fost identificate țări, orașe, politicieni, scriitori, totul folosind doar gradul ponderat (\textit{weighted degree}), ponderea unei muchii care leagă două entități, cu alte cuvinte, cât de strâns erau legate conceptual acele entități. Exemplul ilustrator poate fi văzut în \labelindexref{Figura}{img:cooccurrences-graph-2}, in care cu verde sunt marcate țările, cu roșu colorați politicienii si unele orașe. Clasifiarea este aproximativă, dar cu toate acestea este destul de bună.
+Rezultatele au fost spectaculoase. Comunitățile identificate erau foarte apropiate de categoriile reale. Adică au fost identificate țări, orașe, politicieni, scriitori, totul folosind doar gradul ponderat (\textit{weighted degree}), ponderea unei muchii care leagă două entități, cu alte cuvinte, cât de strâns erau legate conceptual acele entități. Exemplul ilustrator poate fi văzut în \labelindexref{Figura}{img:cooccurrences-graph-2}, in care cu verde sunt marcate țările, cu roșu colorați politicienii si unele orașe. Clasifiarea este aproximativă, dar cu toate acestea este destul de bună.
  
 \index{centralitate}
 
@@ -43,7 +43,7 @@ Rezultatele au fost spectaculoase. Comunitătile identificate erau foarte apropi
 
 Nodurile au fost colorate în funcție de comunitatea din care făceau parte (clasa de modularitate). Dimensiunea nodurilor a fost calculată în funcție de gradul de centralitate a nodului, de cât era de important în graf.
 
-Graful generat astfel a fost vizualizat folodind un program de vizualizare, Gephi\footnote{\url{https://gephi.org/}}. Acest lucru este ilustrat în \labelindexref{Figura}{img:cooccurrences-graph-2}:
+Graful generat astfel a fost vizualizat folodind un program de vizualizare, Gephi\footnote{\url{https://gephi.org/}}. Acest lucru este ilustrat în \labelindexref{Figura}{img:cooccurrences-graph-2}.
 
 
 \fig[scale=0.37]{src/img/cooccurrences-graph-2.png}{img:cooccurrences-graph-2}{Vizualizarea grafului de coapariții folosind Gephi}
