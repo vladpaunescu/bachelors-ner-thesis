@@ -45,6 +45,7 @@ public class VisualNer extends javax.swing.JFrame {
     private String _annotatedText;
     private String _usedModel;
     private boolean _malletUsed;
+    private boolean _annotationDone;
 
     public VisualNer() {
 
@@ -57,6 +58,7 @@ public class VisualNer extends javax.swing.JFrame {
         nerTextPane.setPreferredSize(new Dimension(550, 578));
         nerTextPane.setMaximumSize(new Dimension(550, 578));
         _malletUsed = false;
+        _annotationDone = false;
 
 
     }
@@ -516,8 +518,10 @@ public class VisualNer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void annotateEntitiesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annotateEntitiesButtonActionPerformed
-
-        _rawText = nerTextPane.getText();
+        if(!_annotationDone){
+            _rawText = nerTextPane.getText();
+            _annotationDone = true;
+        }
         NerTask task = new NerTask(_rawText, _usedModel, this);
         task.execute();
 
@@ -672,6 +676,7 @@ public class VisualNer extends javax.swing.JFrame {
     private void loadText() {
         try {
             _rawText = FileUtils.readFileToString(_textFile, "UTF-8");
+            _annotationDone = false;
         } catch (IOException ex) {
             log.error(ex);
         }

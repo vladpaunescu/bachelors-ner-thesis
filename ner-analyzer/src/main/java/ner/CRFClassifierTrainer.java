@@ -22,7 +22,7 @@ public class CRFClassifierTrainer {
         System.out.println(crfClassfier.flags);
               
         crfClassfier.train(trainDirname, ".*_io\\.txt", crfClassfier.defaultReaderAndWriter());
-        crfClassfier.serializeClassifier("D:/Work/NLP/corpuses/ms_academic/train-io/14-class.ser.gz");
+        crfClassfier.serializeClassifier("D:/Work/NLP/corpuses/ms_academic/train-io/13-class.ser.gz");
    
     }
     

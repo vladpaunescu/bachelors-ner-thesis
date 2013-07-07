@@ -1,0 +1,32 @@
+setting nodeFeatureIndicesMap, size=13137
+setting edgeFeatureIndicesMap, size=0
+setting edgeFeatureIndicesMap, size=0
+Time to convert docs to feature indices: 2.9 seconds
+numClasses: 14 [0=O,1=PERSON,2=DATE,3=LOCATION,4=NUMBER,5=ORGANIZATION,6=MISC,7=DURATION,8=ORDINAL,9=SET,10=NATIONALITY,11=PERCENT,12=TIME,13=MONEY]
+numDocuments: 216
+numDatums: 133409
+numFeatures: 13137
+Time to convert docs to data/labels: 1.9 seconds
+numWeights: 183918
+QNMinimizer called on double function of 183918 variables, using M = 25.
+               An explanation of the output:
+Iter           The number of iterations
+evals          The number of function evaluations
+SCALING        <D> Diagonal scaling was used; <I> Scaled Identity
+LINESEARCH     [## M steplength]  Minpack linesearch
+                   1-Function value was too high
+                   2-Value ok, gradient positive, positive curvature
+                   3-Value ok, gradient negative, positive curvature
+                   4-Value ok, gradient negative, negative curvature
+               [.. B]  Backtracking
+VALUE          The current function value
+TIME           Total elapsed time
+|GNORM|        The current norm of the gradient
+{RELNORM}      The ratio of the current to initial gradient norms
+AVEIMPROVE     The average improvement / current value
+EVALSCORE      The last available eval score
+
+Iter ## evals ## <SCALING> [LINESEARCH] VALUE TIME |GNORM| {RELNORM} AVEIMPROVE EVALSCORE
+
+Iter 1 evals 1 <D> [1M 3.177E-2] 3.242E5 159.68s |1.193E3| {9.486E-2} 0.000E0 - 
+Iter 2 evals 3 <D> [
